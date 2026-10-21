@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- In-process COM server that Explorer loads. Published with NativeAOT, which only works
+       on Windows; on other machines this project builds as IL only (ADR-0001). -->
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishAot>true</PublishAot>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- No background GC thread inside Explorer and the other processes that load us. -->
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FBC.ShellExtension.Core\FBC.ShellExtension.Core.csproj" />
+  </ItemGroup>
+
+</Project>

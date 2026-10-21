@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Checks and repairs the installation and the config (Aşama 5): the Explorer registration,
+       the template, backup, restore, reset. A console program; the editor runs it too.
+       NativeAOT like the runner, so a portable copy needs no runtime for it. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishAot>true</PublishAot>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FBC.ShellExtension.Core\FBC.ShellExtension.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,1376 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ConfigEmpty" xml:space="preserve">
+    <value>The configuration file is empty.</value>
+  </data>
+  <data name="ConfigInvalidJson" xml:space="preserve">
+    <value>The configuration file is not valid: {0}</value>
+  </data>
+  <data name="ValidationUnsupportedVersion" xml:space="preserve">
+    <value>Unsupported configuration version {0}; this version of FBCTools reads versions 1 to {1}.</value>
+  </data>
+  <data name="ValidationNullEntry" xml:space="preserve">
+    <value>The menu entry is empty.</value>
+  </data>
+  <data name="ValidationLabelRequired" xml:space="preserve">
+    <value>A label is required.</value>
+  </data>
+  <data name="ValidationSubmenuEmpty" xml:space="preserve">
+    <value>The submenu has no items.</value>
+  </data>
+  <data name="ValidationCommandRequired" xml:space="preserve">
+    <value>A command or a built-in tool is required.</value>
+  </data>
+  <data name="ValidationToolAndCommand" xml:space="preserve">
+    <value>An entry runs either a command or a built-in tool, not both.</value>
+  </data>
+  <data name="ValidationToolNeedsVersion" xml:space="preserve">
+    <value>This built-in tool needs configuration version {0}.</value>
+  </data>
+  <data name="ValidationEnabledNeedsVersion" xml:space="preserve">
+    <value>"enabled" needs configuration version 3.</value>
+  </data>
+  <data name="ValidationFileNameRequired" xml:space="preserve">
+    <value>A file name is required.</value>
+  </data>
+  <data name="ValidationMinCount" xml:space="preserve">
+    <value>The minimum item count must be at least 1.</value>
+  </data>
+  <data name="ValidationMaxCount" xml:space="preserve">
+    <value>The maximum item count must not be less than the minimum ({0}).</value>
+  </data>
+  <data name="ValidationExtensionInvalid" xml:space="preserve">
+    <value>The extension '{0}' is empty or contains a wildcard or path separator.</value>
+  </data>
+  <data name="ValidationPatternInvalid" xml:space="preserve">
+    <value>The pattern '{0}' is empty or contains a path separator; patterns match the file or folder name only.</value>
+  </data>
+  <data name="ValidationMaxParallelism" xml:space="preserve">
+    <value>The maximum parallelism must be at least 1.</value>
+  </data>
+  <data name="ValidationVerbNeedsShellExecute" xml:space="preserve">
+    <value>The verb '{0}' requires UseShellExecute; only 'runas' works without it.</value>
+  </data>
+  <data name="MenuNoConfig" xml:space="preserve">
+    <value>No configuration found</value>
+  </data>
+  <data name="MenuConfigInvalid" xml:space="preserve">
+    <value>The configuration has errors</value>
+  </data>
+  <data name="MenuEditConfig" xml:space="preserve">
+    <value>Edit FBCTools menu…</value>
+  </data>
+  <data name="JobInvalid" xml:space="preserve">
+    <value>The job file could not be read: {0}</value>
+  </data>
+  <data name="JobUnsupportedVersion" xml:space="preserve">
+    <value>The job file has version {0}; this runner reads version {1}. Restart Explorer so that it loads the current shell extension.</value>
+  </data>
+  <data name="RunnerUsage" xml:space="preserve">
+    <value>This program is started by the FBCTools context menu.</value>
+  </data>
+  <data name="ValidationShowOutputNeedsNoShellExecute" xml:space="preserve">
+    <value>ShowOutput requires UseShellExecute to be off; output cannot be captured through the shell.</value>
+  </data>
+  <data name="ValidationShowOutputNeedsTrack" xml:space="preserve">
+    <value>ShowOutput requires runMode 'track'; in launch mode the runner does not wait for output.</value>
+  </data>
+  <data name="ExecCommandLineTooLong" xml:space="preserve">
+    <value>The command line is {0} characters long; Windows accepts at most {1}. Use perFileSequential or perFileParallel instead of allAtOnce for this many items.</value>
+  </data>
+  <data name="ExecExitCode" xml:space="preserve">
+    <value>An error occurred (exit code {0})</value>
+  </data>
+  <data name="ExecCancelled" xml:space="preserve">
+    <value>Stopped because the run was cancelled.</value>
+  </data>
+  <data name="ExecNotStarted" xml:space="preserve">
+    <value>Not started because the run was cancelled.</value>
+  </data>
+  <data name="ExecUnexpected" xml:space="preserve">
+    <value>Unexpected error: {0}</value>
+  </data>
+  <data name="ExecStartFailed" xml:space="preserve">
+    <value>Could not start {0}: {1}</value>
+  </data>
+  <data name="ExecElevationRefused" xml:space="preserve">
+    <value>Not started because administrator approval was not given.</value>
+  </data>
+  <data name="ExecWorkerFailed" xml:space="preserve">
+    <value>The elevated runner stopped unexpectedly: {0}</value>
+  </data>
+  <data name="WorkerProtocolError" xml:space="preserve">
+    <value>Unexpected message from the other runner process: {0}</value>
+  </data>
+  <data name="SummaryHeadline" xml:space="preserve">
+    <value>{0} succeeded / {1} failed</value>
+  </data>
+  <data name="SummaryCancelled" xml:space="preserve">
+    <value>, {0} cancelled</value>
+  </data>
+  <data name="SummaryNotStarted" xml:space="preserve">
+    <value>, {0} not started</value>
+  </data>
+  <data name="LogNotStartedReason" xml:space="preserve">
+    <value>– {0}: {1}</value>
+  </data>
+  <data name="ExecCommandLineTooLongPerFile" xml:space="preserve">
+    <value>The command line is {0} characters long; Windows accepts at most {1}. If the command uses {{allPaths}}, every selected item is on each command line: select fewer items.</value>
+  </data>
+  <data name="ExecCancelledIncomplete" xml:space="preserve">
+    <value>Stopped because the run was cancelled, but some of its processes could not be stopped and may still be running.</value>
+  </data>
+  <data name="RunnerLogTrimmed" xml:space="preserve">
+    <value>… earlier output was removed to keep the log within its size limit …</value>
+  </data>
+  <data name="SummaryItems" xml:space="preserve">
+    <value>{0} items</value>
+  </data>
+  <data name="LogSucceeded" xml:space="preserve">
+    <value>✓ {0}</value>
+  </data>
+  <data name="LogFailed" xml:space="preserve">
+    <value>✗ {0}: {1}</value>
+  </data>
+  <data name="LogCancelled" xml:space="preserve">
+    <value>– {0}: cancelled</value>
+  </data>
+  <data name="LogNotStarted" xml:space="preserve">
+    <value>– {0}: not started</value>
+  </data>
+  <data name="RunnerWindowTitle" xml:space="preserve">
+    <value>{0} – FBCTools</value>
+  </data>
+  <data name="RunnerCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RunnerClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="RunnerConfirmCancel" xml:space="preserve">
+    <value>Cancel the run? Files not yet started are skipped, and running programs are stopped, which can leave their output incomplete.</value>
+  </data>
+  <data name="RunnerStarting" xml:space="preserve">
+    <value>Starting…</value>
+  </data>
+  <data name="RunnerRunning" xml:space="preserve">
+    <value>{0} of {1} done – {2}</value>
+  </data>
+  <data name="RunnerCancelling" xml:space="preserve">
+    <value>Cancelling…</value>
+  </data>
+  <data name="RunnerWaitingForElevation" xml:space="preserve">
+    <value>Waiting for administrator approval…</value>
+  </data>
+  <data name="RunnerSummaryTitle" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="RunnerVersionMismatch" xml:space="preserve">
+    <value>Explorer has shell extension {0} loaded, the runner is {1}. Restart Explorer to load the current shell extension.</value>
+  </data>
+  <data name="RunnerFatal" xml:space="preserve">
+    <value>The runner stopped because of an unexpected error: {0}</value>
+  </data>
+  <data name="EditorTitle" xml:space="preserve">
+    <value>{0} – FBCTools Editor</value>
+  </data>
+  <data name="EditorMenuFile" xml:space="preserve">
+    <value>&amp;File</value>
+  </data>
+  <data name="EditorMenuSave" xml:space="preserve">
+    <value>&amp;Save</value>
+  </data>
+  <data name="EditorMenuReload" xml:space="preserve">
+    <value>&amp;Reload from disk</value>
+  </data>
+  <data name="EditorMenuOpenFolder" xml:space="preserve">
+    <value>Open the config &amp;folder</value>
+  </data>
+  <data name="EditorMenuExit" xml:space="preserve">
+    <value>E&amp;xit</value>
+  </data>
+  <data name="EditorMenuEdit" xml:space="preserve">
+    <value>&amp;Edit</value>
+  </data>
+  <data name="EditorMenuUndo" xml:space="preserve">
+    <value>&amp;Undo</value>
+  </data>
+  <data name="EditorMenuRedo" xml:space="preserve">
+    <value>&amp;Redo</value>
+  </data>
+  <data name="EditorMenuAddCommand" xml:space="preserve">
+    <value>Add &amp;command</value>
+  </data>
+  <data name="EditorMenuAddSubmenu" xml:space="preserve">
+    <value>Add sub&amp;menu</value>
+  </data>
+  <data name="EditorMenuAddSeparator" xml:space="preserve">
+    <value>Add se&amp;parator</value>
+  </data>
+  <data name="EditorMenuDuplicate" xml:space="preserve">
+    <value>D&amp;uplicate</value>
+  </data>
+  <data name="EditorMenuDelete" xml:space="preserve">
+    <value>&amp;Delete</value>
+  </data>
+  <data name="EditorMenuMoveUp" xml:space="preserve">
+    <value>Move u&amp;p</value>
+  </data>
+  <data name="EditorMenuMoveDown" xml:space="preserve">
+    <value>Move dow&amp;n</value>
+  </data>
+  <data name="EditorMenuMoveIn" xml:space="preserve">
+    <value>Move &amp;into the submenu above</value>
+  </data>
+  <data name="EditorMenuMoveOut" xml:space="preserve">
+    <value>Move &amp;out of the submenu</value>
+  </data>
+  <data name="EditorMenuTest" xml:space="preserve">
+    <value>&amp;Test</value>
+  </data>
+  <data name="EditorMenuPreview" xml:space="preserve">
+    <value>&amp;Preview the menu…</value>
+  </data>
+  <data name="EditorMenuHelp" xml:space="preserve">
+    <value>&amp;Help</value>
+  </data>
+  <data name="EditorMenuAbout" xml:space="preserve">
+    <value>&amp;About</value>
+  </data>
+  <data name="EditorDeleteKey" xml:space="preserve">
+    <value>Del</value>
+  </data>
+  <data name="EditorSeparatorNode" xml:space="preserve">
+    <value>──────────</value>
+  </data>
+  <data name="EditorNoLabel" xml:space="preserve">
+    <value>(no label)</value>
+  </data>
+  <data name="EditorNothingSelected" xml:space="preserve">
+    <value>Select an entry on the left, or add one.</value>
+  </data>
+  <data name="EditorSeparatorSelected" xml:space="preserve">
+    <value>A separator line. Separators at the start, at the end or next to another separator are not shown.</value>
+  </data>
+  <data name="EditorIssueLocation" xml:space="preserve">
+    <value>Where</value>
+  </data>
+  <data name="EditorIssueProblem" xml:space="preserve">
+    <value>Problem</value>
+  </data>
+  <data name="EditorIssueDocument" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="EditorStatusSaved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="EditorStatusUnsaved" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
+  <data name="EditorStatusNew" xml:space="preserve">
+    <value>New file; saving creates it</value>
+  </data>
+  <data name="EditorStatusIssues" xml:space="preserve">
+    <value>{0} problem(s)</value>
+  </data>
+  <data name="EditorStatusNoIssues" xml:space="preserve">
+    <value>No problems</value>
+  </data>
+  <data name="EditorStatusBackup" xml:space="preserve">
+    <value>The previous file was saved as {0}</value>
+  </data>
+  <data name="EditorNewCommandLabel" xml:space="preserve">
+    <value>New command</value>
+  </data>
+  <data name="EditorNewSubmenuLabel" xml:space="preserve">
+    <value>New submenu</value>
+  </data>
+  <data name="EditorLoadFailedHeading" xml:space="preserve">
+    <value>The configuration could not be read</value>
+  </data>
+  <data name="EditorLoadFailedNotepad" xml:space="preserve">
+    <value>Open it in Notepad</value>
+  </data>
+  <data name="EditorLoadFailedStartOver" xml:space="preserve">
+    <value>Start with an empty menu</value>
+  </data>
+  <data name="EditorLoadFailedStartOverNote" xml:space="preserve">
+    <value>The file is copied to a backup before it is overwritten.</value>
+  </data>
+  <data name="EditorLoadFailedExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="EditorSaveWithIssues" xml:space="preserve">
+    <value>The configuration has {0} problem(s). Until they are fixed, the FBCTools menu shows only "The configuration has errors".
+
+Save anyway?</value>
+  </data>
+  <data name="EditorOverwriteChanged" xml:space="preserve">
+    <value>The file was changed outside the editor after it was opened here. Overwrite it with your version?</value>
+  </data>
+  <data name="EditorCommentsWarning" xml:space="preserve">
+    <value>The file contains comments. Saving writes it anew and the comments are lost; the current file is first copied to a backup next to it.
+
+Save?</value>
+  </data>
+  <data name="EditorSaveFailed" xml:space="preserve">
+    <value>The configuration could not be saved: {0}</value>
+  </data>
+  <data name="EditorReadFailed" xml:space="preserve">
+    <value>The configuration could not be read: {0}</value>
+  </data>
+  <data name="EditorReloadDiscard" xml:space="preserve">
+    <value>Discard your changes and reload the file?</value>
+  </data>
+  <data name="EditorChangedOnDisk" xml:space="preserve">
+    <value>The file was changed outside the editor. Reload it?</value>
+  </data>
+  <data name="EditorChangedOnDiskDirty" xml:space="preserve">
+    <value>The file was changed outside the editor. Reload it and discard your changes?</value>
+  </data>
+  <data name="EditorSaveChanges" xml:space="preserve">
+    <value>Save the changes to {0}?</value>
+  </data>
+  <data name="EditorAbout" xml:space="preserve">
+    <value>FBCTools Editor
+Version {0}
+
+Configuration: {1}</value>
+  </data>
+  <data name="EditorFieldLabel" xml:space="preserve">
+    <value>&amp;Label:</value>
+  </data>
+  <data name="EditorGroupMatch" xml:space="preserve">
+    <value>Show when</value>
+  </data>
+  <data name="EditorGroupCommand" xml:space="preserve">
+    <value>Command</value>
+  </data>
+  <data name="EditorMatchTargets" xml:space="preserve">
+    <value>Item types:</value>
+  </data>
+  <data name="EditorMatchFiles" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="EditorMatchFolders" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="EditorMatchBackground" xml:space="preserve">
+    <value>Folder background</value>
+  </data>
+  <data name="EditorMatchDrives" xml:space="preserve">
+    <value>Drives</value>
+  </data>
+  <data name="EditorMatchTargetsHint" xml:space="preserve">
+    <value>None checked: every type.</value>
+  </data>
+  <data name="EditorMatchExtensions" xml:space="preserve">
+    <value>Extensions:</value>
+  </data>
+  <data name="EditorMatchExtensionsHint" xml:space="preserve">
+    <value>Files only, separated by commas: jpg, png, tar.gz</value>
+  </data>
+  <data name="EditorMatchPatterns" xml:space="preserve">
+    <value>Names:</value>
+  </data>
+  <data name="EditorMatchPatternsHint" xml:space="preserve">
+    <value>One per line, matched against the name; * and ? are wildcards: *.min.js</value>
+  </data>
+  <data name="EditorMatchExclude" xml:space="preserve">
+    <value>Except names:</value>
+  </data>
+  <data name="EditorMatchMode" xml:space="preserve">
+    <value>Several items:</value>
+  </data>
+  <data name="EditorMatchModeAll" xml:space="preserve">
+    <value>Every selected item must match</value>
+  </data>
+  <data name="EditorMatchModeAny" xml:space="preserve">
+    <value>At least one must match; the command gets the matching ones</value>
+  </data>
+  <data name="EditorMatchMinCount" xml:space="preserve">
+    <value>At least:</value>
+  </data>
+  <data name="EditorMatchMaxCount" xml:space="preserve">
+    <value>At most:</value>
+  </data>
+  <data name="EditorCommandKind" xml:space="preserve">
+    <value>&amp;Kind:</value>
+  </data>
+  <data name="EditorRunsProgram" xml:space="preserve">
+    <value>A program</value>
+  </data>
+  <data name="EditorCommandProgram" xml:space="preserve">
+    <value>&amp;Program:</value>
+  </data>
+  <data name="EditorCommandBrowse" xml:space="preserve">
+    <value>Browse…</value>
+  </data>
+  <data name="EditorCommandArguments" xml:space="preserve">
+    <value>&amp;Arguments:</value>
+  </data>
+  <data name="EditorCommandInsertVariable" xml:space="preserve">
+    <value>Insert ▾</value>
+  </data>
+  <data name="EditorCommandWorkingDirectory" xml:space="preserve">
+    <value>&amp;Working folder:</value>
+  </data>
+  <data name="EditorCommandWorkingDirectoryHint" xml:space="preserve">
+    <value>Empty: the folder of the item ({dir})</value>
+  </data>
+  <data name="EditorCommandRunMode" xml:space="preserve">
+    <value>Run:</value>
+  </data>
+  <data name="EditorRunModeTrack" xml:space="preserve">
+    <value>Wait and show the result</value>
+  </data>
+  <data name="EditorRunModeLaunch" xml:space="preserve">
+    <value>Start it and return</value>
+  </data>
+  <data name="EditorCommandMultiSelect" xml:space="preserve">
+    <value>Several items:</value>
+  </data>
+  <data name="EditorMultiSequential" xml:space="preserve">
+    <value>One process per item, one after another</value>
+  </data>
+  <data name="EditorMultiParallel" xml:space="preserve">
+    <value>One process per item, at the same time</value>
+  </data>
+  <data name="EditorMultiAllAtOnce" xml:space="preserve">
+    <value>One process for all items</value>
+  </data>
+  <data name="EditorCommandMaxParallelism" xml:space="preserve">
+    <value>At most at once:</value>
+  </data>
+  <data name="EditorCommandWindow" xml:space="preserve">
+    <value>Window:</value>
+  </data>
+  <data name="EditorWindowNormal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="EditorWindowHidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="EditorWindowMinimized" xml:space="preserve">
+    <value>Minimized</value>
+  </data>
+  <data name="EditorWindowMaximized" xml:space="preserve">
+    <value>Maximized</value>
+  </data>
+  <data name="EditorCommandEncoding" xml:space="preserve">
+    <value>Output encoding:</value>
+  </data>
+  <data name="EditorEncodingOem" xml:space="preserve">
+    <value>OEM (cmd and most console programs)</value>
+  </data>
+  <data name="EditorEncodingUtf8" xml:space="preserve">
+    <value>UTF-8 (ffmpeg, for example)</value>
+  </data>
+  <data name="EditorEncodingAnsi" xml:space="preserve">
+    <value>ANSI (the Windows code page)</value>
+  </data>
+  <data name="EditorCommandRunAs" xml:space="preserve">
+    <value>Run as a&amp;dministrator</value>
+  </data>
+  <data name="EditorCommandNoWindow" xml:space="preserve">
+    <value>No console wi&amp;ndow</value>
+  </data>
+  <data name="EditorCommandShellExecute" xml:space="preserve">
+    <value>Start through the &amp;shell</value>
+  </data>
+  <data name="EditorCommandCloseOnSuccess" xml:space="preserve">
+    <value>&amp;Close the result window when all succeed</value>
+  </data>
+  <data name="EditorCommandShowOutput" xml:space="preserve">
+    <value>Show the program's &amp;output</value>
+  </data>
+  <data name="EditorCommandVerb" xml:space="preserve">
+    <value>Shell verb:</value>
+  </data>
+  <data name="EditorBrowseFilter" xml:space="preserve">
+    <value>Programs (*.exe;*.cmd;*.bat;*.ps1)|*.exe;*.cmd;*.bat;*.ps1|All files (*.*)|*.*</value>
+  </data>
+  <data name="EditorVarPath" xml:space="preserve">
+    <value>Full path</value>
+  </data>
+  <data name="EditorVarDir" xml:space="preserve">
+    <value>Folder of the item</value>
+  </data>
+  <data name="EditorVarName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="EditorVarNameNoExt" xml:space="preserve">
+    <value>Name without the extension</value>
+  </data>
+  <data name="EditorVarExt" xml:space="preserve">
+    <value>Extension, with the dot</value>
+  </data>
+  <data name="EditorVarPathNoExt" xml:space="preserve">
+    <value>Full path without the extension</value>
+  </data>
+  <data name="EditorVarAllPaths" xml:space="preserve">
+    <value>Every item, each in quotes</value>
+  </data>
+  <data name="EditorPreviewTitle" xml:space="preserve">
+    <value>Preview – FBCTools Editor</value>
+  </data>
+  <data name="EditorPreviewRightClickOn" xml:space="preserve">
+    <value>Right-click on:</value>
+  </data>
+  <data name="EditorPreviewItems" xml:space="preserve">
+    <value>the selected items</value>
+  </data>
+  <data name="EditorPreviewBackground" xml:space="preserve">
+    <value>the empty area of a folder</value>
+  </data>
+  <data name="EditorPreviewAddFiles" xml:space="preserve">
+    <value>Add &amp;files…</value>
+  </data>
+  <data name="EditorPreviewAddFolder" xml:space="preserve">
+    <value>Add f&amp;older…</value>
+  </data>
+  <data name="EditorPreviewRemove" xml:space="preserve">
+    <value>Re&amp;move</value>
+  </data>
+  <data name="EditorPreviewClear" xml:space="preserve">
+    <value>C&amp;lear</value>
+  </data>
+  <data name="EditorPreviewPathColumn" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="EditorPreviewKindColumn" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="EditorKindFile" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="EditorKindFolder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="EditorKindBackground" xml:space="preserve">
+    <value>Folder background</value>
+  </data>
+  <data name="EditorKindDrive" xml:space="preserve">
+    <value>Drive</value>
+  </data>
+  <data name="EditorPreviewDropHint" xml:space="preserve">
+    <value>Add files or folders, or drag them here from Explorer.</value>
+  </data>
+  <data name="EditorPreviewNeedOneFolder" xml:space="preserve">
+    <value>For the empty area of a folder, add exactly one folder.</value>
+  </data>
+  <data name="EditorPreviewNoMenu" xml:space="preserve">
+    <value>Nothing in the menu matches these items.</value>
+  </data>
+  <data name="EditorPreviewInvalid" xml:space="preserve">
+    <value>The configuration has problems; until they are fixed Explorer shows "The configuration has errors" instead of this menu.</value>
+  </data>
+  <data name="EditorPreviewProgram" xml:space="preserve">
+    <value>Program</value>
+  </data>
+  <data name="EditorPreviewArguments" xml:space="preserve">
+    <value>Arguments</value>
+  </data>
+  <data name="EditorPreviewFolder" xml:space="preserve">
+    <value>Working folder</value>
+  </data>
+  <data name="EditorPreviewRun" xml:space="preserve">
+    <value>&amp;Run</value>
+  </data>
+  <data name="EditorPreviewClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="EditorPreviewSelectCommand" xml:space="preserve">
+    <value>Select a command to see the processes it would start.</value>
+  </data>
+  <data name="EditorPreviewProcessCount" xml:space="preserve">
+    <value>{0} process(es)</value>
+  </data>
+  <data name="EditorPreviewElevated" xml:space="preserve">
+    <value>{0} process(es), run as administrator after one approval</value>
+  </data>
+  <data name="EditorPreviewRunnerMissing" xml:space="preserve">
+    <value>The runner was not found next to the editor: {0}</value>
+  </data>
+  <data name="EditorPreviewRunFailed" xml:space="preserve">
+    <value>The command could not be started: {0}</value>
+  </data>
+  <data name="RestarterUsage" xml:space="preserve">
+    <value>Usage: FBC.ShellExtension.Restarter [--file &lt;path&gt;]... [--no-restore] [-- &lt;program&gt; [arguments]...]
+
+Restarts Windows Explorer through Restart Manager and opens its folder windows and tabs again where they were.
+
+  --file &lt;path&gt;   After Explorer stops, list the other programs that still use this file.
+  --no-restore    Do not open the windows again.
+  -- &lt;program&gt;    Run this while Explorer is stopped and wait for it, for example to replace the shell extension DLL.</value>
+  </data>
+  <data name="RestarterMissingValue" xml:space="preserve">
+    <value>{0} needs a value.</value>
+  </data>
+  <data name="RestarterMissingCommand" xml:space="preserve">
+    <value>A program must follow --.</value>
+  </data>
+  <data name="RestarterUnknownOption" xml:space="preserve">
+    <value>Unknown option: {0}</value>
+  </data>
+  <data name="RestarterElevated" xml:space="preserve">
+    <value>Run the restarter without administrator rights: Explorer has to be started again as the signed-in user.</value>
+  </data>
+  <data name="RestarterSaving" xml:space="preserve">
+    <value>Saving the open Explorer windows…</value>
+  </data>
+  <data name="RestarterSaved" xml:space="preserve">
+    <value>{0} window(s) with {1} tab(s) saved.</value>
+  </data>
+  <data name="RestarterSaveTimeout" xml:space="preserve">
+    <value>Explorer did not answer; its windows will not be opened again.</value>
+  </data>
+  <data name="RestarterSaveFailed" xml:space="preserve">
+    <value>The open windows could not be read: {0}</value>
+  </data>
+  <data name="RestarterStopping" xml:space="preserve">
+    <value>Stopping Explorer…</value>
+  </data>
+  <data name="RestarterNotRunning" xml:space="preserve">
+    <value>Explorer is not running.</value>
+  </data>
+  <data name="RestarterStopFailed" xml:space="preserve">
+    <value>Explorer could not be stopped: {0}</value>
+  </data>
+  <data name="RestarterStopped" xml:space="preserve">
+    <value>Explorer stopped.</value>
+  </data>
+  <data name="RestarterHolders" xml:space="preserve">
+    <value>These programs still use {0} and keep the old version until they are closed:</value>
+  </data>
+  <data name="RestarterHolder" xml:space="preserve">
+    <value>  {0} (process {1})</value>
+  </data>
+  <data name="RestarterRunning" xml:space="preserve">
+    <value>Running: {0}</value>
+  </data>
+  <data name="RestarterCommandFailed" xml:space="preserve">
+    <value>The command ended with exit code {0}.</value>
+  </data>
+  <data name="RestarterCommandStartFailed" xml:space="preserve">
+    <value>The command could not be started: {0}</value>
+  </data>
+  <data name="RestarterCancelled" xml:space="preserve">
+    <value>Cancelled; Explorer is started again.</value>
+  </data>
+  <data name="RestarterCameBack" xml:space="preserve">
+    <value>Explorer started again by itself while the command ran, so it may still use the old files. Run the restarter again without a command to load the new ones.</value>
+  </data>
+  <data name="RestarterStarting" xml:space="preserve">
+    <value>Starting Explorer…</value>
+  </data>
+  <data name="RestarterStartedDirectly" xml:space="preserve">
+    <value>Restart Manager did not bring Explorer back; it was started directly.</value>
+  </data>
+  <data name="RestarterShellTimeout" xml:space="preserve">
+    <value>Explorer did not come back within {0} seconds. Start it from Task Manager: File &gt; Run new task &gt; explorer.</value>
+  </data>
+  <data name="RestarterRestoring" xml:space="preserve">
+    <value>Opening {0} window(s) again…</value>
+  </data>
+  <data name="RestarterAlreadyOpen" xml:space="preserve">
+    <value>{0} window(s) Explorer had already opened again itself.</value>
+  </data>
+  <data name="RestarterWindowFailed" xml:space="preserve">
+    <value>Could not open {0} again: {1}</value>
+  </data>
+  <data name="RestarterTabAsWindow" xml:space="preserve">
+    <value>Could not open {0} as a tab; it opened in a window of its own.</value>
+  </data>
+  <data name="RestarterRestoreTimeout" xml:space="preserve">
+    <value>Opening the windows took too long and was given up.</value>
+  </data>
+  <data name="RestarterDone" xml:space="preserve">
+    <value>Done.</value>
+  </data>
+  <data name="RestarterDoneWithWarnings" xml:space="preserve">
+    <value>Done, with warnings.</value>
+  </data>
+  <data name="RestarterNoWindow" xml:space="preserve">
+    <value>no window appeared</value>
+  </data>
+  <data name="RestarterTabNotNavigated" xml:space="preserve">
+    <value>A tab for {0} was opened but stayed at its start folder.</value>
+  </data>
+  <data name="ValidationIdNeedsVersion" xml:space="preserve">
+    <value>An id needs configuration version 2.</value>
+  </data>
+  <data name="ValidationIdEmpty" xml:space="preserve">
+    <value>An id must not be empty.</value>
+  </data>
+  <data name="ValidationIdDuplicate" xml:space="preserve">
+    <value>The id "{0}" is used more than once.</value>
+  </data>
+  <data name="ManagerUsage" xml:space="preserve">
+    <value>Usage: FBC.ShellExtension.Manager [command]
+
+  check            Register this copy for Explorer if needed and bring the menu up to the template. The default.
+  register         Register this copy for Explorer, even when a newer one is registered.
+  unregister       Remove the Explorer registration. The configuration stays.
+  uninstall        Remove the Explorer registration and the ffmpeg PATH entry, before deleting a portable folder. The configuration stays.
+                   With --own (the installer's uninstall), the registration of another copy that is still there stays.
+  backup &lt;file&gt;    Copy the configuration to a file.
+  restore &lt;file&gt;   Replace the configuration with a file; the current one is backed up first.
+  reset            Replace the configuration with the template; the current one is backed up first.
+  ffmpeg           Check ffmpeg. With "install winget", "install download", "path add" or "path remove": install it or put it on the PATH.</value>
+  </data>
+  <data name="ManagerUnknownCommand" xml:space="preserve">
+    <value>Unknown command: {0}</value>
+  </data>
+  <data name="ManagerMissingFile" xml:space="preserve">
+    <value>{0} needs a file.</value>
+  </data>
+  <data name="ManagerDllMissing" xml:space="preserve">
+    <value>The shell extension is missing: {0}</value>
+  </data>
+  <data name="ManagerRegistrationOk" xml:space="preserve">
+    <value>Explorer uses this copy: {0}</value>
+  </data>
+  <data name="ManagerRegistered" xml:space="preserve">
+    <value>Registered for Explorer: {0}</value>
+  </data>
+  <data name="ManagerRegisteredElsewhere" xml:space="preserve">
+    <value>Explorer uses a newer copy, version {1}, at {0}. It was left as it is; run "register" to use this one.</value>
+  </data>
+  <data name="ManagerRegisterFailed" xml:space="preserve">
+    <value>Registering {0} failed; regsvr32 ended with code {1}.</value>
+  </data>
+  <data name="ManagerOtherCopyKept" xml:space="preserve">
+    <value>Explorer uses the copy at {0}; its registration was left as it is.</value>
+  </data>
+  <data name="ManagerUnregistered" xml:space="preserve">
+    <value>The Explorer registration was removed. Explorer keeps the menu until it restarts.</value>
+  </data>
+  <data name="ManagerTemplateMissing" xml:space="preserve">
+    <value>There is no template next to the manager ({0}); the menu was left as it is.</value>
+  </data>
+  <data name="ManagerTemplateCreated" xml:space="preserve">
+    <value>The menu was created from the template.</value>
+  </data>
+  <data name="ManagerTemplateReplaced" xml:space="preserve">
+    <value>The menu was updated to the new template.</value>
+  </data>
+  <data name="ManagerTemplateMerged" xml:space="preserve">
+    <value>New items from the template were added to the menu: {0}</value>
+  </data>
+  <data name="ManagerTemplateUpToDate" xml:space="preserve">
+    <value>The menu is up to date.</value>
+  </data>
+  <data name="ManagerBackupSaved" xml:space="preserve">
+    <value>The configuration was saved to {0}.</value>
+  </data>
+  <data name="ManagerNoConfig" xml:space="preserve">
+    <value>There is no configuration yet.</value>
+  </data>
+  <data name="ManagerRestored" xml:space="preserve">
+    <value>The configuration was replaced with {0}.</value>
+  </data>
+  <data name="ManagerReset" xml:space="preserve">
+    <value>The configuration was replaced with the template.</value>
+  </data>
+  <data name="ManagerPreviousSaved" xml:space="preserve">
+    <value>The previous configuration was saved as {0}.</value>
+  </data>
+  <data name="ManagerInvalidFile" xml:space="preserve">
+    <value>{0} is not a configuration FBCTools can read: {1}</value>
+  </data>
+  <data name="ManagerFailed" xml:space="preserve">
+    <value>The operation failed: {0}</value>
+  </data>
+  <data name="EditorMenuTools" xml:space="preserve">
+    <value>T&amp;ools</value>
+  </data>
+  <data name="EditorMenuCheck" xml:space="preserve">
+    <value>&amp;Check the installation</value>
+  </data>
+  <data name="EditorMenuBackup" xml:space="preserve">
+    <value>&amp;Back up the configuration…</value>
+  </data>
+  <data name="EditorMenuRestore" xml:space="preserve">
+    <value>&amp;Restore a configuration…</value>
+  </data>
+  <data name="EditorMenuReset" xml:space="preserve">
+    <value>Reset to the &amp;template…</value>
+  </data>
+  <data name="EditorResetConfirm" xml:space="preserve">
+    <value>Replace the menu with the template? The current configuration is saved as a backup next to it.</value>
+  </data>
+  <data name="EditorReplaceUnsaved" xml:space="preserve">
+    <value>You have unsaved changes. Save them before the configuration is replaced?</value>
+  </data>
+  <data name="EditorManagerMissing" xml:space="preserve">
+    <value>The manager was not found next to the editor: {0}</value>
+  </data>
+  <data name="EditorManagerTimeout" xml:space="preserve">
+    <value>The manager did not finish in time.</value>
+  </data>
+  <data name="EditorConfigFilter" xml:space="preserve">
+    <value>Configuration (*.json)|*.json|All files (*.*)|*.*</value>
+  </data>
+  <data name="ManagerTemplateNewer" xml:space="preserve">
+    <value>A newer FBCTools ({0}) keeps this menu up to date; it was left as it is.</value>
+  </data>
+  <data name="ManagerTemplateSkipped" xml:space="preserve">
+    <value>The template's new items would have made the menu invalid, so they were not added.</value>
+  </data>
+  <data name="FfmpegFound" xml:space="preserve">
+    <value>ffmpeg {1} at {0}</value>
+  </data>
+  <data name="FfmpegAllEncoders" xml:space="preserve">
+    <value>It has every encoder the Convert menu uses.</value>
+  </data>
+  <data name="FfmpegMissingEncoders" xml:space="preserve">
+    <value>It lacks encoders the Convert menu uses: {0}</value>
+  </data>
+  <data name="FfmpegNotFound" xml:space="preserve">
+    <value>ffmpeg was not found. The Convert menu needs it.</value>
+  </data>
+  <data name="FfmpegNotAnswering" xml:space="preserve">
+    <value>{0} did not answer.</value>
+  </data>
+  <data name="FfmpegNoWinget" xml:space="preserve">
+    <value>winget is not available on this computer; use the download instead.</value>
+  </data>
+  <data name="FfmpegWingetRunning" xml:space="preserve">
+    <value>Installing ffmpeg with winget ({0})…</value>
+  </data>
+  <data name="FfmpegWingetFailed" xml:space="preserve">
+    <value>winget ended with code 0x{0:X8}.</value>
+  </data>
+  <data name="FfmpegDownloading" xml:space="preserve">
+    <value>Downloading ffmpeg {0} from {1}…</value>
+  </data>
+  <data name="FfmpegBadVersion" xml:space="preserve">
+    <value>gyan.dev did not give a release version: {0}</value>
+  </data>
+  <data name="FfmpegBadChecksum" xml:space="preserve">
+    <value>The download does not match the checksum gyan.dev publishes; it was thrown away.</value>
+  </data>
+  <data name="FfmpegNoExeInArchive" xml:space="preserve">
+    <value>The archive has no bin/ffmpeg.exe.</value>
+  </data>
+  <data name="FfmpegInstalled" xml:space="preserve">
+    <value>ffmpeg was put in {0}. The runner finds it there without any PATH change.</value>
+  </data>
+  <data name="FfmpegPathAdded" xml:space="preserve">
+    <value>{0} was added to your PATH; programs started from now on find ffmpeg.</value>
+  </data>
+  <data name="FfmpegPathRemoved" xml:space="preserve">
+    <value>{0} was removed from your PATH.</value>
+  </data>
+  <data name="FfmpegPathNothingToAdd" xml:space="preserve">
+    <value>There is no downloaded ffmpeg in {0} to add to the PATH.</value>
+  </data>
+  <data name="EditorMenuFfmpeg" xml:space="preserve">
+    <value>&amp;ffmpeg…</value>
+  </data>
+  <data name="EditorFfmpegTitle" xml:space="preserve">
+    <value>ffmpeg – FBCTools</value>
+  </data>
+  <data name="EditorFfmpegHeading" xml:space="preserve">
+    <value>The Convert menu needs ffmpeg</value>
+  </data>
+  <data name="EditorFfmpegLicence" xml:space="preserve">
+    <value>FFmpeg is free software under the GPLv3, built by gyan.dev. FBCTools does not include it: it is put on this computer only if you ask for it here.</value>
+  </data>
+  <data name="EditorFfmpegWinget" xml:space="preserve">
+    <value>Install it with winget</value>
+  </data>
+  <data name="EditorFfmpegWingetNote" xml:space="preserve">
+    <value>Recommended. winget installs it for your account and can update it later (package Gyan.FFmpeg).</value>
+  </data>
+  <data name="EditorFfmpegDownload" xml:space="preserve">
+    <value>Download it into the FBCTools folder</value>
+  </data>
+  <data name="EditorFfmpegDownloadNote" xml:space="preserve">
+    <value>About 110 MB from gyan.dev, checked against its SHA-256. FBCTools finds it there; other programs do not, unless you also add it to your PATH.</value>
+  </data>
+  <data name="EditorFfmpegAddToPath" xml:space="preserve">
+    <value>Also add the downloaded ffmpeg to my PATH, for the command line</value>
+  </data>
+  <data name="EditorFfmpegNotNow" xml:space="preserve">
+    <value>Not now</value>
+  </data>
+  <data name="EditorFfmpegWorking" xml:space="preserve">
+    <value>Installing ffmpeg… This can take a few minutes.</value>
+  </data>
+  <data name="EditorManagerCancelled" xml:space="preserve">
+    <value>Cancelled.</value>
+  </data>
+  <data name="EditorFfmpegShadowed" xml:space="preserve">
+    <value>The ffmpeg found first lacks encoders. A copy installed with winget would come after it on the PATH and would not be used, so downloading into the FBCTools folder is the way to replace it for FBCTools.</value>
+  </data>
+  <data name="EditorCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ToolCopyPath" xml:space="preserve">
+    <value>Copy path</value>
+  </data>
+  <data name="ToolCopyPathNote" xml:space="preserve">
+    <value>Copies the full path of every item, one per line.</value>
+  </data>
+  <data name="ToolCopyName" xml:space="preserve">
+    <value>Copy name</value>
+  </data>
+  <data name="ToolCopyNameNote" xml:space="preserve">
+    <value>Copies the name of every item, one per line.</value>
+  </data>
+  <data name="ToolCopyUncPath" xml:space="preserve">
+    <value>Copy UNC path</value>
+  </data>
+  <data name="ToolCopyUncPathNote" xml:space="preserve">
+    <value>Copies full paths, one per line; a path on a mapped network drive as \\server\share\….</value>
+  </data>
+  <data name="ToolCopyContent" xml:space="preserve">
+    <value>Copy content</value>
+  </data>
+  <data name="ToolCopyContentNote" xml:space="preserve">
+    <value>Copies the text of the selected files, up to {0} MB in all.</value>
+  </data>
+  <data name="ToolNotAFile" xml:space="preserve">
+    <value>{0} is not a file.</value>
+  </data>
+  <data name="ToolNotText" xml:space="preserve">
+    <value>{0} does not look like a text file.</value>
+  </data>
+  <data name="ToolItemFailed" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="ToolContentTooLarge" xml:space="preserve">
+    <value>The selected files hold more than {0} MB of text; nothing was copied.</value>
+  </data>
+  <data name="ToolNothingCopied" xml:space="preserve">
+    <value>Nothing was copied to the clipboard.</value>
+  </data>
+  <data name="ToolClipboardBusy" xml:space="preserve">
+    <value>Another program is using the clipboard. Try again.</value>
+  </data>
+  <data name="ToolClipboardFailed" xml:space="preserve">
+    <value>The clipboard could not be written: {0}</value>
+  </data>
+  <data name="SplitPromptOne" xml:space="preserve">
+    <value>Split {0} ({1}) into parts of:</value>
+  </data>
+  <data name="SplitPromptMany" xml:space="preserve">
+    <value>Split {0} files into parts of:</value>
+  </data>
+  <data name="SplitPromptHint" xml:space="preserve">
+    <value>A size with KB, MB or GB, such as 25 MB or 1.5 GB.</value>
+  </data>
+  <data name="SplitPromptInvalid" xml:space="preserve">
+    <value>"{0}" is not a size of at least 1 KB. Write a number with KB, MB or GB, such as 25 MB.</value>
+  </data>
+  <data name="SplitPromptOk" xml:space="preserve">
+    <value>Split</value>
+  </data>
+  <data name="ToolChecksum" xml:space="preserve">
+    <value>Checksums</value>
+  </data>
+  <data name="ToolChecksumNote" xml:space="preserve">
+    <value>Shows the MD5, SHA-1, SHA-256 and SHA-512 of every file.</value>
+  </data>
+  <data name="ToolVerifyChecksum" xml:space="preserve">
+    <value>Verify checksum</value>
+  </data>
+  <data name="ToolVerifyChecksumNote" xml:space="preserve">
+    <value>Checks a checksum file (.sha256, .md5 …) line by line; any other file against the checksum file next to it, or else against a checksum on the clipboard.</value>
+  </data>
+  <data name="ToolSplit" xml:space="preserve">
+    <value>Split into parts</value>
+  </data>
+  <data name="ToolSplitNote" xml:space="preserve">
+    <value>Asks for a part size and cuts every file into .001, .002 … parts next to it, with its SHA-256 in a .sha256 file.</value>
+  </data>
+  <data name="ToolJoin" xml:space="preserve">
+    <value>Join parts</value>
+  </data>
+  <data name="ToolJoinNote" xml:space="preserve">
+    <value>Puts .001, .002 … parts back together next to them and checks the result against the .sha256 file.</value>
+  </data>
+  <data name="ToolCountLines" xml:space="preserve">
+    <value>Count lines</value>
+  </data>
+  <data name="ToolCountLinesNote" xml:space="preserve">
+    <value>Shows the number of lines of every file.</value>
+  </data>
+  <data name="ToolVerifyClipboard" xml:space="preserve">
+    <value>the clipboard</value>
+  </data>
+  <data name="ToolVerifyNothing" xml:space="preserve">
+    <value>Nothing to compare with: select its .sha256 (or .md5, .sha1, .sha512) file, or copy the expected checksum to the clipboard first.</value>
+  </data>
+  <data name="ToolVerifyMismatch" xml:space="preserve">
+    <value>{0} does not match {1}.
+Expected: {2}
+Found:    {3}</value>
+  </data>
+  <data name="ToolVerifyMatches" xml:space="preserve">
+    <value>{0} matches {1}.</value>
+  </data>
+  <data name="ToolVerifyListEmpty" xml:space="preserve">
+    <value>{0} lists no checksums.</value>
+  </data>
+  <data name="ToolVerifyEntryMatch" xml:space="preserve">
+    <value>✓ {0}</value>
+  </data>
+  <data name="ToolVerifyEntryMismatch" xml:space="preserve">
+    <value>✗ {0}: does not match</value>
+  </data>
+  <data name="ToolVerifyEntryMissing" xml:space="preserve">
+    <value>✗ {0}: not found</value>
+  </data>
+  <data name="ToolVerifyListFailed" xml:space="preserve">
+    <value>{0} of {1} files do not match or are missing.</value>
+  </data>
+  <data name="ToolVerifyListPassed" xml:space="preserve">
+    <value>All {0} files match.</value>
+  </data>
+  <data name="ToolSplitTooSmall" xml:space="preserve">
+    <value>The file is not larger than one part ({0}).</value>
+  </data>
+  <data name="ToolAlreadyExists" xml:space="preserve">
+    <value>{0} already exists; nothing was written.</value>
+  </data>
+  <data name="ToolFileChanged" xml:space="preserve">
+    <value>{0} changed while it was being read; nothing was kept.</value>
+  </data>
+  <data name="ToolSplitDone" xml:space="preserve">
+    <value>{0} parts of {1}: {2} … {3}</value>
+  </data>
+  <data name="ToolSplitChecksum" xml:space="preserve">
+    <value>The SHA-256 of the whole file is in {0}.</value>
+  </data>
+  <data name="ToolJoinNotAPart" xml:space="preserve">
+    <value>{0} is not a numbered part such as name.001.</value>
+  </data>
+  <data name="ToolJoinFirstMissing" xml:space="preserve">
+    <value>The first part, {0}, is missing.</value>
+  </data>
+  <data name="ToolJoinGap" xml:space="preserve">
+    <value>{0} is missing, but later parts are there; nothing was written.</value>
+  </data>
+  <data name="ToolJoinDone" xml:space="preserve">
+    <value>Joined {0} parts into {1} ({2}).</value>
+  </data>
+  <data name="ToolJoinMismatch" xml:space="preserve">
+    <value>The joined file does not match {0}. It was kept, and so were the parts.</value>
+  </data>
+  <data name="ToolJoinNotVerified" xml:space="preserve">
+    <value>There is no .sha256 next to the parts; the result was not checked.</value>
+  </data>
+  <data name="ToolLineCount" xml:space="preserve">
+    <value>{0} lines</value>
+  </data>
+  <data name="ToolVerifyListUnreadable" xml:space="preserve">
+    <value>{0} lines could not be read, so what they list was not checked.</value>
+  </data>
+  <data name="ToolCopyInternetPath" xml:space="preserve">
+    <value>Copy internet path</value>
+  </data>
+  <data name="ToolCopyInternetPathNote" xml:space="preserve">
+    <value>Copies every item as a file:/// address, one per line, as a browser or a document link wants it.</value>
+  </data>
+  <data name="ToolAppendClipboard" xml:space="preserve">
+    <value>Append clipboard</value>
+  </data>
+  <data name="ToolAppendClipboardNote" xml:space="preserve">
+    <value>Adds the clipboard's text at the end of every selected file, on a line of its own, in the file's own encoding.</value>
+  </data>
+  <data name="ToolDuplicate" xml:space="preserve">
+    <value>Duplicate</value>
+  </data>
+  <data name="ToolDuplicateNote" xml:space="preserve">
+    <value>Copies every file next to itself as "name - Copy", keeping its date.</value>
+  </data>
+  <data name="ToolFolderSize" xml:space="preserve">
+    <value>Folder size</value>
+  </data>
+  <data name="ToolFolderSizeNote" xml:space="preserve">
+    <value>Shows how much a folder holds, with all its files and subfolders, hidden ones included.</value>
+  </data>
+  <data name="ToolNotAFolder" xml:space="preserve">
+    <value>{0} is not a folder.</value>
+  </data>
+  <data name="ToolClipboardEmpty" xml:space="preserve">
+    <value>The clipboard holds no text.</value>
+  </data>
+  <data name="ToolAppendFailed" xml:space="preserve">
+    <value>The clipboard's text could not be added to these files:</value>
+  </data>
+  <data name="ToolDuplicateDone" xml:space="preserve">
+    <value>Copied to {0}</value>
+  </data>
+  <data name="ToolFolderSizeResult" xml:space="preserve">
+    <value>{0} ({1} bytes) in {2} files and {3} folders</value>
+  </data>
+  <data name="ToolFolderSizeUnreadable" xml:space="preserve">
+    <value>{0} folders could not be read and are not counted.</value>
+  </data>
+  <data name="PromptOk" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="PromptCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ToolAppendUnmappable" xml:space="preserve">
+    <value>{0} is saved in the Windows code page, which cannot hold every character on the clipboard; nothing was added.</value>
+  </data>
+  <data name="ToolClipboardTooLarge" xml:space="preserve">
+    <value>The clipboard holds more than {0} million characters; nothing was added.</value>
+  </data>
+  <data name="ToolPackToFolder" xml:space="preserve">
+    <value>Pack into folder</value>
+  </data>
+  <data name="ToolPackToFolderNote" xml:space="preserve">
+    <value>Asks for a name and moves the selected files and folders into a new folder of that name, next to them.</value>
+  </data>
+  <data name="ToolNewFolder" xml:space="preserve">
+    <value>New folder</value>
+  </data>
+  <data name="ToolNewFolderNote" xml:space="preserve">
+    <value>Asks for a name and makes a folder of that name in the folder you are looking at.</value>
+  </data>
+  <data name="ToolRunWithParameters" xml:space="preserve">
+    <value>Run with parameters</value>
+  </data>
+  <data name="ToolRunWithParametersNote" xml:space="preserve">
+    <value>Asks for arguments and starts the selected program with them, in its own folder.</value>
+  </data>
+  <data name="ToolUnpackFolder" xml:space="preserve">
+    <value>Unpack folder</value>
+  </data>
+  <data name="ToolUnpackFolderNote" xml:space="preserve">
+    <value>Moves everything in the folder up next to it and removes the folder; nothing moves when a name is already taken there.</value>
+  </data>
+  <data name="ToolDeleteEmptyFolders" xml:space="preserve">
+    <value>Delete empty folders</value>
+  </data>
+  <data name="ToolDeleteEmptyFoldersNote" xml:space="preserve">
+    <value>Lists the empty folders under the selected ones and removes them once you agree.</value>
+  </data>
+  <data name="ToolDeletePermanently" xml:space="preserve">
+    <value>Delete permanently</value>
+  </data>
+  <data name="ToolDeletePermanentlyNote" xml:space="preserve">
+    <value>Deletes the selected files and folders without the Recycle Bin, once you agree, as Shift+Delete does.</value>
+  </data>
+  <data name="ToolCopyTitle" xml:space="preserve">
+    <value>Copy title</value>
+  </data>
+  <data name="ToolCopyTitleNote" xml:space="preserve">
+    <value>Copies the Title property of every file (a song's, a document's), one per line.</value>
+  </data>
+  <data name="ToolWrongKind" xml:space="preserve">
+    <value>{0}: this tool does not work on this kind of item.</value>
+  </data>
+  <data name="ToolNameInvalid" xml:space="preserve">
+    <value>"{0}" cannot be a file or folder name: it holds one of &lt; &gt; : " / \ | ? *, ends in a dot or a space, or is a device name such as CON.</value>
+  </data>
+  <data name="ToolNameTaken" xml:space="preserve">
+    <value>{0} already exists here.</value>
+  </data>
+  <data name="ToolUnpackLink" xml:space="preserve">
+    <value>{0} is a link to another folder; its contents were not moved.</value>
+  </data>
+  <data name="ToolUnpackTaken" xml:space="preserve">
+    <value>Nothing in {0} was moved: {1} already exist next to it.</value>
+  </data>
+  <data name="ToolNoTitle" xml:space="preserve">
+    <value>{0} has no title.</value>
+  </data>
+  <data name="ToolPackFailed" xml:space="preserve">
+    <value>These items could not be moved:</value>
+  </data>
+  <data name="ToolUnpackFailed" xml:space="preserve">
+    <value>These folders could not be unpacked:</value>
+  </data>
+  <data name="ToolDeleteFoldersFailed" xml:space="preserve">
+    <value>These folders could not be removed:</value>
+  </data>
+  <data name="ToolRunFailed" xml:space="preserve">
+    <value>{0} could not be started: {1}</value>
+  </data>
+  <data name="PromptPackQuestion" xml:space="preserve">
+    <value>Move the {0} selected items into a new folder named:</value>
+  </data>
+  <data name="PromptPackQuestionOne" xml:space="preserve">
+    <value>Move {0} into a new folder named:</value>
+  </data>
+  <data name="PromptNewFolderQuestion" xml:space="preserve">
+    <value>Name of the new folder in {0}:</value>
+  </data>
+  <data name="PromptNewFolderName" xml:space="preserve">
+    <value>New folder</value>
+  </data>
+  <data name="PromptRunQuestion" xml:space="preserve">
+    <value>Arguments for {0}:</value>
+  </data>
+  <data name="PromptRunHint" xml:space="preserve">
+    <value>As you would type them after the program's name; quote anything with spaces.</value>
+  </data>
+  <data name="PromptRunOk" xml:space="preserve">
+    <value>Run</value>
+  </data>
+  <data name="ConfirmDeleteEmpty" xml:space="preserve">
+    <value>Remove these {0} empty folders?
+
+{1}</value>
+  </data>
+  <data name="NoEmptyFolders" xml:space="preserve">
+    <value>There are no empty folders under {0}.</value>
+  </data>
+  <data name="ConfirmDeletePermanently" xml:space="preserve">
+    <value>Delete these {0} items permanently? They do not go to the Recycle Bin and cannot be restored.
+
+{1}</value>
+  </data>
+  <data name="ConfirmListMore" xml:space="preserve">
+    <value>… and {0} more</value>
+  </data>
+  <data name="ToolPackDifferentFolders" xml:space="preserve">
+    <value>The selected items are in different folders; select items from one folder to pack them.</value>
+  </data>
+  <data name="ToolRunOneProgram" xml:space="preserve">
+    <value>Run with parameters starts one program at a time; select only one.</value>
+  </data>
+  <data name="ToolUnpackUndone" xml:space="preserve">
+    <value>{0} could not be unpacked, and what had been moved was put back: {1}</value>
+  </data>
+  <data name="ToolNothingRemoved" xml:space="preserve">
+    <value>Nothing was removed.</value>
+  </data>
+  <data name="ToolEmptyFoldersRemoved" xml:space="preserve">
+    <value>Removed {0} empty folders.</value>
+  </data>
+  <data name="ToolWikiImport" xml:space="preserve">
+    <value>Send to Wiki.js</value>
+  </data>
+  <data name="ToolWikiImportNote" xml:space="preserve">
+    <value>Sends the markdown file and the images it links to into a Wiki.js 2 page whose address it asks for; the images go into an asset folder with the page's path.</value>
+  </data>
+  <data name="WikiAddressNotUrl" xml:space="preserve">
+    <value>"{0}" is not a web address. Paste the page's address as the browser shows it, such as https://wiki.example.com/en/docs/page.</value>
+  </data>
+  <data name="WikiAddressNoPath" xml:space="preserve">
+    <value>The address names no page: add the page's path after the wiki's address.</value>
+  </data>
+  <data name="WikiAddressFirstSegment" xml:space="preserve">
+    <value>A page path cannot start with "{0}": Wiki.js keeps that name for itself, or reads it as a language. Choose another first folder.</value>
+  </data>
+  <data name="WikiAddressBadSegment" xml:space="preserve">
+    <value>"{0}" cannot be part of the page path: the images' folders are named after it, and Wiki.js takes no dot, space, control character or ()=!@#$%?&amp;*+`~&lt;&gt;,;:\/[]¬{{|" in a folder name.</value>
+  </data>
+  <data name="WikiAddressDeviceName" xml:space="preserve">
+    <value>"{0}" cannot be part of the page path: Windows keeps that name for a device, and Wiki.js leaves it out of a folder name. Choose another name.</value>
+  </data>
+  <data name="WikiSettingsInvalid" xml:space="preserve">
+    <value>{0} cannot be read: {1}. Fix or delete it.</value>
+  </data>
+  <data name="WikiKeyRejected" xml:space="preserve">
+    <value>The wiki did not accept the API key: {0}</value>
+  </data>
+  <data name="WikiFolderHidden" xml:space="preserve">
+    <value>The asset folder "{0}" is there, but the API key does not see it. A page rule of the key's group has to allow read:assets for the path "{0}" itself: write it as "Path starts with {0}", without a slash at the end.</value>
+  </data>
+  <data name="WikiRedirected" xml:space="preserve">
+    <value>{0} sends the request on to {1}. Use the address the wiki itself answers at (https:// rather than http://, for example).</value>
+  </data>
+  <data name="WikiPageNotMarkdown" xml:space="preserve">
+    <value>The page at {0} was written with another editor ({1}). Wiki.js keeps a page's editor when its content is replaced, so this file's markdown would be shown as {1}. Convert the page to Markdown in the wiki first, or choose another address.</value>
+  </data>
+  <data name="WikiUploadedReplacing" xml:space="preserve">
+    <value>Uploaded {0} as {1}, replacing the file of that name</value>
+  </data>
+  <data name="WikiSettingsNotSaved" xml:space="preserve">
+    <value>{0} was not saved ({1}); the address and the key will be asked for again next time.</value>
+  </data>
+  <data name="WikiUploadForbidden" xml:space="preserve">
+    <value>{0} was not uploaded: {1}. The API key's group needs write:assets, and a page rule that allows it for this path in all locales.</value>
+  </data>
+  <data name="WikiUploadFailed" xml:space="preserve">
+    <value>{0} was not uploaded: {1}. A file larger than the wiki's upload limit (5 MB unless changed in Administration &gt; Security) is refused like this.</value>
+  </data>
+  <data name="WikiUploadNotStored" xml:space="preserve">
+    <value>{0} is not in the asset folder after its upload; the wiki did not keep it (its log says why).</value>
+  </data>
+  <data name="WikiNoAnswer" xml:space="preserve">
+    <value>The wiki gave no answer to the request.</value>
+  </data>
+  <data name="WikiRefused" xml:space="preserve">
+    <value>The wiki refused: {0} (code {1})</value>
+  </data>
+  <data name="WikiError" xml:space="preserve">
+    <value>The wiki answered with an error: {0}</value>
+  </data>
+  <data name="WikiNotWikiJs2" xml:space="preserve">
+    <value>No Wiki.js 2 API answers at {0}/graphql ({1}). Wiki.js 3 is not supported.</value>
+  </data>
+  <data name="WikiUnreachable" xml:space="preserve">
+    <value>{0} cannot be reached: {1}</value>
+  </data>
+  <data name="WikiFoundImages" xml:space="preserve">
+    <value>{0} images to upload, {1} not found.</value>
+  </data>
+  <data name="WikiImageMissing" xml:space="preserve">
+    <value>Not found, the link stays as it is: {0}</value>
+  </data>
+  <data name="WikiFolderCreated" xml:space="preserve">
+    <value>Asset folder {0} (made: {1})</value>
+  </data>
+  <data name="WikiFolderFound" xml:space="preserve">
+    <value>Asset folder {0}</value>
+  </data>
+  <data name="WikiUploaded" xml:space="preserve">
+    <value>Uploaded {0} as {1}</value>
+  </data>
+  <data name="WikiPageCreated" xml:space="preserve">
+    <value>Page created: {0}</value>
+  </data>
+  <data name="WikiPageUpdated" xml:space="preserve">
+    <value>Page updated: {0}</value>
+  </data>
+  <data name="WikiAskUrl" xml:space="preserve">
+    <value>Wiki.js page for {0}:</value>
+  </data>
+  <data name="WikiAskUrlHint" xml:space="preserve">
+    <value>The page's address as the browser shows it. A page that does not exist yet is created.</value>
+  </data>
+  <data name="WikiAskKey" xml:space="preserve">
+    <value>API key for {0}:</value>
+  </data>
+  <data name="WikiAskKeyHint" xml:space="preserve">
+    <value>Administration &gt; API Access in the wiki. Kept encrypted for your Windows account.</value>
+  </data>
+  <data name="WikiKeyTooShort" xml:space="preserve">
+    <value>That is too short to be a Wiki.js API key.</value>
+  </data>
+  <data name="WikiConfirmUpdate" xml:space="preserve">
+    <value>A page already exists at {0}.
+
+Replace its content with this file? Its title comes from the file; its description, tags and published state stay as they are. Images with the same name in its asset folder are replaced, and a publishing schedule (start and end dates) is cleared: Wiki.js 2's API cannot read it to keep it.</value>
+  </data>
+  <data name="WikiSavedWithMissing" xml:space="preserve">
+    <value>The page was saved ({0}), but {1} images were not found and their links were left as they are:
+{2}</value>
+  </data>
+  <data name="WikiOneFile" xml:space="preserve">
+    <value>Send to Wiki.js takes one markdown file at a time.</value>
+  </data>
+</root>

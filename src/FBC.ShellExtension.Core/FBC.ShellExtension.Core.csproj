@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Shared by the shell extension, the runner and the editor. The first two are published
+       with NativeAOT, so everything here must stay trim- and AOT-safe (ADR-0001). -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- A seam or two the tests need to make a failure happen (FileTools.Unpack). -->
+    <InternalsVisibleTo Include="FBC.ShellExtension.Core.Tests" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,32 @@
+<Project>
+
+  <!--
+    A NativeAOT or self-contained publish carries parts of the .NET runtime, whose MIT licence
+    asks for its notice in every copy. Put the notices of the runtime pack this publish used
+    next to the published files (ADR-0013).
+  -->
+  <Target Name="CopyDotnetNotices" AfterTargets="Publish" Condition="'$(SelfContained)' == 'true' or '$(PublishAot)' == 'true'">
+    <ItemGroup>
+      <_DotnetRuntimePack Include="@(ResolvedRuntimePack)" Condition="'%(FrameworkName)' == 'Microsoft.NETCore.App' and '%(PackageDirectory)' != ''" />
+      <_DotnetNotice Include="@(_DotnetRuntimePack->'%(PackageDirectory)/LICENSE.TXT')" PublishedName="dotnet-LICENSE.txt" />
+      <_DotnetNotice Include="@(_DotnetRuntimePack->'%(PackageDirectory)/THIRD-PARTY-NOTICES.TXT')" PublishedName="dotnet-THIRD-PARTY-NOTICES.txt" />
+
+      <!--
+        The Windows Forms runtime pack has the same MIT licence but no notices file, while
+        dotnet/winforms declares one of its own; dist keeps a copy of it.
+      -->
+      <_WindowsDesktopRuntimePack Include="@(ResolvedRuntimePack)" Condition="'%(FrameworkName)' == 'Microsoft.WindowsDesktop.App'" />
+      <_DotnetNotice Include="$(MSBuildThisFileDirectory)dist/winforms-THIRD-PARTY-NOTICES.txt" PublishedName="winforms-THIRD-PARTY-NOTICES.txt" Condition="'@(_WindowsDesktopRuntimePack)' != ''" />
+
+      <_MissingDotnetNotice Include="@(_DotnetNotice)" Condition="!Exists('%(FullPath)')" />
+    </ItemGroup>
+
+    <Warning Condition="'@(_DotnetRuntimePack)' == '' or '@(_MissingDotnetNotice)' != ''"
+             Text="The .NET runtime notices were not found; the published files go out without them. @(_MissingDotnetNotice)" />
+    <Copy Condition="'@(_DotnetRuntimePack)' != '' and '@(_MissingDotnetNotice)' == ''"
+          SourceFiles="@(_DotnetNotice)"
+          DestinationFiles="@(_DotnetNotice->'$(PublishDir)%(PublishedName)')"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Sends a markdown file and its images to Wiki.js 2 (ADR-0020). Used by the runner, which is
+       published with NativeAOT; the network code lives here, away from the library the shell
+       extension loads into Explorer. -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FBC.ShellExtension.Core\FBC.ShellExtension.Core.csproj" />
+  </ItemGroup>
+
+</Project>

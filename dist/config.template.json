@@ -1,0 +1,291 @@
+{
+  // The template: the menu FBCTools starts with. README.md describes its entries ("Varsayilan
+  // menu") and the fields. Every entry has an id, so a later template can add its new entries to
+  // a menu the user has changed (ADR-0009).
+  "version": 7,
+  "items": [
+    {
+      "type": "command",
+      "id": "open-in-notepad",
+      "label": "Open in Notepad",
+      "match": { "targets": ["file"], "maxCount": 5 },
+      "command": {
+        "fileName": "notepad.exe",
+        "arguments": "\"{path}\"",
+        "runMode": "launch"
+      }
+    },
+    {
+      "type": "command",
+      "id": "command-prompt-here",
+      "label": "Command prompt here",
+      "match": { "targets": ["folder", "background", "drive"], "maxCount": 1 },
+      "command": {
+        "fileName": "%ComSpec%",
+        "arguments": "/k cd /d \"{path}\"",
+        "runMode": "launch"
+      }
+    },
+    {
+      "type": "command",
+      "id": "command-prompt-here-admin",
+      "label": "Command prompt here (administrator)",
+      "match": { "targets": ["folder", "background"], "maxCount": 1 },
+      "command": {
+        "fileName": "%ComSpec%",
+        "arguments": "/k cd /d \"{path}\"",
+        "verb": "runas",
+        "runMode": "launch"
+      }
+    },
+    {
+      // Built-in tools: the runner copies to the clipboard itself, in Unicode (ADR-0015).
+      "type": "submenu",
+      "id": "copy",
+      "label": "Copy",
+      "items": [
+        { "type": "command", "id": "copy-path", "label": "Full path", "tool": "copyPath" },
+        { "type": "command", "id": "copy-name", "label": "Name", "tool": "copyName" },
+        { "type": "command", "id": "copy-unc-path", "label": "UNC path", "tool": "copyUncPath" },
+        { "type": "command", "id": "copy-internet-path", "label": "Internet path", "tool": "copyInternetPath" },
+        {
+          "type": "command",
+          "id": "copy-title",
+          "label": "Title",
+          "match": { "targets": ["file"] },
+          "tool": "copyTitle"
+        },
+        {
+          "type": "command",
+          "id": "copy-content",
+          "label": "Content",
+          "match": { "targets": ["file"] },
+          "tool": "copyContent"
+        }
+      ]
+    },
+    {
+      // Built-in tools in the runner's window, with progress and a cancel button (ADR-0017,
+      // ADR-0018); the DLL items are commands.
+      "type": "submenu",
+      "id": "file-tools",
+      "label": "File tools",
+      "match": { "targets": ["file"], "mode": "any" },
+      "items": [
+        { "type": "command", "id": "duplicate", "label": "Duplicate", "match": { "targets": ["file"] }, "tool": "duplicate" },
+        { "type": "separator", "id": "file-tools-checksum-separator" },
+        { "type": "command", "id": "checksum", "label": "Calculate checksums", "match": { "targets": ["file"] }, "tool": "checksum" },
+        { "type": "command", "id": "verify-checksum", "label": "Verify checksum", "match": { "targets": ["file"] }, "tool": "verifyChecksum" },
+        { "type": "separator", "id": "file-tools-separator" },
+        { "type": "command", "id": "split", "label": "Split into parts…", "match": { "targets": ["file"] }, "tool": "split" },
+        {
+          "type": "command",
+          "id": "join",
+          "label": "Join parts",
+          "match": { "targets": ["file"], "patterns": ["*.001"], "mode": "any" },
+          "tool": "join"
+        },
+        { "type": "separator", "id": "file-tools-dll-separator" },
+        {
+          "type": "command",
+          "id": "run-with-parameters",
+          "label": "Run with parameters…",
+          "match": { "targets": ["file"], "extensions": ["exe", "bat", "cmd", "com"], "maxCount": 1 },
+          "tool": "runWithParameters"
+        },
+        {
+          // regsvr32 shows its own result. Most COM DLLs register for every user, hence runas.
+          "type": "command",
+          "id": "register-dll",
+          "label": "Register DLL",
+          "match": { "targets": ["file"], "extensions": ["dll", "ocx", "ax"], "mode": "any" },
+          "command": {
+            "fileName": "%SystemRoot%\\System32\\regsvr32.exe",
+            "arguments": "\"{path}\"",
+            "verb": "runas",
+            "runMode": "launch"
+          }
+        },
+        {
+          "type": "command",
+          "id": "unregister-dll",
+          "label": "Unregister DLL",
+          "match": { "targets": ["file"], "extensions": ["dll", "ocx", "ax"], "mode": "any" },
+          "command": {
+            "fileName": "%SystemRoot%\\System32\\regsvr32.exe",
+            "arguments": "/u \"{path}\"",
+            "verb": "runas",
+            "runMode": "launch"
+          }
+        }
+      ]
+    },
+    {
+      "type": "submenu",
+      "id": "folder-tools",
+      "label": "Folder tools",
+      "match": { "targets": ["folder", "background", "drive"], "mode": "any" },
+      "items": [
+        {
+          "type": "command",
+          "id": "folder-size",
+          "label": "Folder size",
+          "match": { "targets": ["folder", "background", "drive"], "mode": "any" },
+          "tool": "folderSize"
+        }
+      ]
+    },
+    {
+      // Built-in tools that ask for a name or a confirmation, then act at once (ADR-0019).
+      "type": "submenu",
+      "id": "organize",
+      "label": "Organize",
+      "items": [
+        {
+          "type": "command",
+          "id": "pack-into-folder",
+          "label": "Pack into folder…",
+          "match": { "targets": ["file", "folder"], "mode": "any" },
+          "tool": "packToFolder"
+        },
+        { "type": "command", "id": "new-folder", "label": "New folder…", "match": { "maxCount": 1 }, "tool": "newFolder" },
+        {
+          "type": "command",
+          "id": "unpack-folder",
+          "label": "Unpack folder",
+          "match": { "targets": ["folder"], "mode": "any" },
+          "tool": "unpackFolder"
+        },
+        { "type": "separator", "id": "organize-separator" },
+        {
+          "type": "command",
+          "id": "delete-empty-folders",
+          "label": "Delete empty folders…",
+          "match": { "targets": ["folder", "background", "drive"], "mode": "any" },
+          "tool": "deleteEmptyFolders"
+        },
+        {
+          // Off until turned on in the editor: Explorer's Shift+Delete does the same.
+          "type": "command",
+          "id": "delete-permanently",
+          "label": "Delete permanently…",
+          "enabled": false,
+          "match": { "targets": ["file", "folder"], "mode": "any" },
+          "tool": "deletePermanently"
+        }
+      ]
+    },
+    { "type": "separator", "id": "separator-1" },
+    {
+      "type": "submenu",
+      "id": "text-files",
+      "label": "Text files",
+      "match": { "targets": ["file"], "extensions": ["txt", "log", "md"], "mode": "any" },
+      "items": [
+        {
+          "type": "command",
+          "id": "count-lines",
+          "label": "Count lines",
+          "match": { "targets": ["file"], "extensions": ["txt", "log", "md"], "mode": "any" },
+          "tool": "countLines"
+        },
+        {
+          "type": "command",
+          "id": "append-clipboard",
+          "label": "Append clipboard",
+          "match": { "targets": ["file"], "extensions": ["txt", "log", "md"], "mode": "any" },
+          "tool": "appendClipboard"
+        },
+        {
+          // Asks for the page's address; the wiki's API key is asked once and kept (ADR-0020).
+          "type": "command",
+          "id": "send-to-wikijs",
+          "label": "Send to Wiki.js…",
+          "match": { "targets": ["file"], "extensions": ["md"], "maxCount": 1 },
+          "tool": "wikiImport"
+        }
+      ]
+    },
+    {
+      // Needs ffmpeg on PATH (or a full path in fileName). Each item shows only for the files
+      // it can convert, and receives only those. ffmpeg writes its errors in UTF-8.
+      // -y replaces an existing file of the same name without asking, as tomp3.cmd did:
+      // converting photo.png to JPG overwrites a photo.jpg next to it. -nostdin keeps ffmpeg
+      // from waiting on input nobody can type.
+      "type": "submenu",
+      "id": "convert",
+      "label": "Convert",
+      "match": { "targets": ["file"], "mode": "any" },
+      "items": [
+        {
+          "type": "command",
+          "id": "to-mp3",
+          "label": "To MP3",
+          "match": {
+            "extensions": ["mp4", "mkv", "avi", "mov", "webm", "wmv", "flv", "m4v", "wav", "flac", "m4a", "ogg", "opus", "wma", "aac"],
+            "mode": "any"
+          },
+          "command": {
+            "fileName": "ffmpeg",
+            "arguments": "-y -nostdin -hide_banner -loglevel error -i \"{path}\" -vn -c:a libmp3lame -q:a 2 \"{pathNoExt}.mp3\"",
+            "windowStyle": "hidden",
+            "createNoWindow": true,
+            "outputEncoding": "utf8",
+            "multiSelect": "perFileParallel",
+            "maxParallelism": 2
+          }
+        },
+        {
+          "type": "command",
+          "id": "to-mp4",
+          "label": "To MP4",
+          "match": {
+            "extensions": ["mkv", "avi", "mov", "webm", "wmv", "flv", "m4v", "mpg", "mpeg", "ts"],
+            "mode": "any"
+          },
+          "command": {
+            "fileName": "ffmpeg",
+            "arguments": "-y -nostdin -hide_banner -loglevel error -i \"{path}\" -c:v libx264 -preset medium -crf 23 -c:a aac -b:a 192k -movflags +faststart \"{pathNoExt}.mp4\"",
+            "windowStyle": "hidden",
+            "createNoWindow": true,
+            "outputEncoding": "utf8",
+            // x264 already uses every core; one file at a time.
+            "multiSelect": "perFileSequential"
+          }
+        },
+        { "type": "separator", "id": "convert-separator" },
+        {
+          "type": "command",
+          "id": "to-jpg",
+          "label": "To JPG",
+          "match": { "extensions": ["png", "bmp", "gif", "webp", "tif", "tiff"], "mode": "any" },
+          "command": {
+            "fileName": "ffmpeg",
+            // -frames:v 1: an animated GIF gives its first frame. Transparency is lost.
+            "arguments": "-y -nostdin -hide_banner -loglevel error -i \"{path}\" -frames:v 1 -q:v 2 \"{pathNoExt}.jpg\"",
+            "windowStyle": "hidden",
+            "createNoWindow": true,
+            "outputEncoding": "utf8",
+            "multiSelect": "perFileParallel",
+            "maxParallelism": 4
+          }
+        },
+        {
+          "type": "command",
+          "id": "to-png",
+          "label": "To PNG",
+          "match": { "extensions": ["jpg", "jpeg", "bmp", "gif", "webp", "tif", "tiff"], "mode": "any" },
+          "command": {
+            "fileName": "ffmpeg",
+            "arguments": "-y -nostdin -hide_banner -loglevel error -i \"{path}\" -frames:v 1 \"{pathNoExt}.png\"",
+            "windowStyle": "hidden",
+            "createNoWindow": true,
+            "outputEncoding": "utf8",
+            "multiSelect": "perFileParallel",
+            "maxParallelism": 4
+          }
+        }
+      ]
+    }
+  ]
+}

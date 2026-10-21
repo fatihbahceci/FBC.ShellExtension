@@ -1,0 +1,91 @@
+{
+  // Menu for the runner's Windows checks (README, W3-x). Copy over %APPDATA%\FBCTools\config.json
+  // for the checks (dev-run -Config checks), then reset the menu to the template with
+  // "FBC.ShellExtension.Manager.exe reset" (or dev-run -Config default). Every item works on any file.
+  "version": 1,
+  "items": [
+    {
+      "type": "submenu",
+      "label": "Runner checks",
+      "match": { "targets": ["file"] },
+      "items": [
+        {
+          "type": "command",
+          "label": "Exit 0",
+          "command": { "fileName": "%ComSpec%", "arguments": "/c exit 0", "createNoWindow": true }
+        },
+        {
+          "type": "command",
+          "label": "Exit 5, no stderr",
+          "command": { "fileName": "%ComSpec%", "arguments": "/c exit 5", "createNoWindow": true }
+        },
+        {
+          "type": "command",
+          "label": "Exit 3 with stderr",
+          "command": { "fileName": "%ComSpec%", "arguments": "/c echo bozuk dosya: çalışma şöyle 1>&2 & exit 3", "createNoWindow": true }
+        },
+        {
+          "type": "command",
+          "label": "Wait 30 s (cancel me)",
+          "command": { "fileName": "%ComSpec%", "arguments": "/c ping -n 31 127.0.0.1 >nul", "createNoWindow": true }
+        },
+        {
+          "type": "command",
+          "label": "Parallel, 2 at a time, 3 s each",
+          "command": {
+            "fileName": "%ComSpec%",
+            "arguments": "/c ping -n 4 127.0.0.1 >nul",
+            "createNoWindow": true,
+            "multiSelect": "perFileParallel",
+            "maxParallelism": 2
+          }
+        },
+        {
+          "type": "command",
+          "label": "Show output",
+          "command": {
+            "fileName": "%ComSpec%",
+            "arguments": "/c dir \"{dir}\"",
+            "createNoWindow": true,
+            "showOutput": true,
+            "closeOnSuccess": false,
+            "multiSelect": "allAtOnce"
+          }
+        },
+        {
+          "type": "command",
+          "label": "Prompt in a hidden window",
+          "command": { "fileName": "%ComSpec%", "arguments": "/c pause", "createNoWindow": true }
+        },
+        {
+          "type": "command",
+          "label": "Missing program",
+          "command": { "fileName": "does-not-exist.exe" }
+        },
+        {
+          "type": "command",
+          "label": "Missing program (launch)",
+          "command": { "fileName": "does-not-exist.exe", "runMode": "launch" }
+        },
+        { "type": "separator" },
+        {
+          "type": "command",
+          "label": "Admin check (runas)",
+          "command": {
+            "fileName": "%ComSpec%",
+            "arguments": "/c net session",
+            "verb": "runas",
+            "createNoWindow": true,
+            "showOutput": true,
+            "closeOnSuccess": false
+          }
+        },
+        {
+          "type": "command",
+          "label": "Admin check (no runas)",
+          "command": { "fileName": "%ComSpec%", "arguments": "/c net session", "createNoWindow": true }
+        }
+      ]
+    }
+  ]
+}

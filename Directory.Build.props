@@ -1,0 +1,13 @@
+<Project>
+
+  <!-- One version for every component, bumped on every push and tagged vX.Y.Z (ADR-0004). -->
+  <PropertyGroup>
+    <VersionPrefix>0.12.7</VersionPrefix>
+    <Product>FBCTools</Product>
+    <!-- The same holder as LICENSE (ADR-0013); shown in the files' version info. -->
+    <Copyright>Copyright (c) 2026 Fatih Bahceci</Copyright>
+    <!-- The public repository (ADR-0022); the setup links to it. -->
+    <PackageProjectUrl>https://github.com/fatihbahceci/FBC.ShellExtension</PackageProjectUrl>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FBC.ShellExtension.Core/FBC.ShellExtension.Core.csproj" />
+    <Project Path="src/FBC.ShellExtension.Editor/FBC.ShellExtension.Editor.csproj" />
+    <Project Path="src/FBC.ShellExtension.Manager/FBC.ShellExtension.Manager.csproj" />
+    <Project Path="src/FBC.ShellExtension.Restarter/FBC.ShellExtension.Restarter.csproj" />
+    <Project Path="src/FBC.ShellExtension.Runner/FBC.ShellExtension.Runner.csproj" />
+    <Project Path="src/FBC.ShellExtension.ShellExt/FBC.ShellExtension.ShellExt.csproj" />
+    <Project Path="src/FBC.ShellExtension.WikiImport/FBC.ShellExtension.WikiImport.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FBC.ShellExtension.Core.Tests/FBC.ShellExtension.Core.Tests.csproj" />
+    <Project Path="tests/FBC.ShellExtension.TestHost/FBC.ShellExtension.TestHost.csproj" />
+    <Project Path="tests/FBC.ShellExtension.WikiImport.Tests/FBC.ShellExtension.WikiImport.Tests.csproj" />
+  </Folder>
+</Solution>
