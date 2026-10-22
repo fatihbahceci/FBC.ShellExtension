@@ -26,6 +26,8 @@
 #define Manager "FBC.ShellExtension.Manager.exe"
 #define Editor "FBC.ShellExtension.Editor.exe"
 #define Restarter "FBC.ShellExtension.Restarter.exe"
+; The editor's single-instance mutex (Editor\Program.cs).
+#define EditorMutex "Local\FBCTools.Editor"
 
 [Setup]
 AppId={#AppId}
@@ -62,6 +64,13 @@ MinVersion=10.0
 ; use are moved aside instead (see [Code]).
 CloseApplications=no
 RestartApplications=no
+
+; An editor left open would be the old version over a menu the new one has just updated: it
+; would call that menu unreadable, and saving would put its own older one back (ADR-0038).
+; Setup and uninstall ask for it to be closed first, and setup asks again before it installs
+; (see [Code]); every editor since 0.4.0 holds this mutex. A silent setup (winget) stops
+; instead. An editor run as administrator holds it where this setup cannot see it.
+AppMutex={#EditorMutex}
 
 WizardStyle=modern
 Compression=lzma2
@@ -181,6 +190,18 @@ begin
     else
       Log('Could not move aside: ' + Path);
   end;
+end;
+
+{ AppMutex is checked when setup starts. An editor opened while the wizard was on screen would
+  be the old version over the updated menu all the same (ADR-0038), so it is asked again before
+  installing; a silent setup answers Cancel and stops. }
+function NextButtonClick(CurPageID: Integer): Boolean;
+begin
+  Result := True;
+  if CurPageID = wpReady then
+    while Result and CheckForMutexes('{#EditorMutex}') do
+      Result := SuppressibleMsgBox(FmtMessage(SetupMessage(msgSetupAppRunningError), ['FBCTools']),
+        mbError, MB_OKCANCEL, IDCANCEL) = IDOK;
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);

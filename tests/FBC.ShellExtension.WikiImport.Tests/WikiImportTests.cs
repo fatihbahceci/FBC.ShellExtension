@@ -9,6 +9,18 @@ public sealed class WikiPageAddressTests
     private const string Example = "https://wiki.example.com:19888/en/internal/third-party/about-markdown-typora-wikijs-and-documentation";
 
     [TestMethod]
+    [DataRow("https://wiki.example.com:19888/en/internal/page?x=1", "https://wiki.example.com:19888")]
+    [DataRow("  https://Wiki.Example.com/  ", "https://wiki.example.com")]
+    [DataRow("http://wiki.local", "http://wiki.local")]
+    [DataRow("wiki.example.com", null)]
+    [DataRow("ftp://wiki.example.com", null)]
+    [DataRow("", null)]
+    public void BaseUrlOf_IsTheWikiOfAnyOfItsAddresses(string text, string? expected)
+    {
+        Assert.AreEqual(expected, WikiPageAddress.BaseUrlOf(text));
+    }
+
+    [TestMethod]
     public void Address_GivesTheSiteTheLocaleAndThePath()
     {
         WikiPageAddress address = WikiPageAddress.Parse(Example);
@@ -305,6 +317,24 @@ public sealed class WikiClientTests
     }
 
     [TestMethod]
+    public async Task AProxysErrorPage_IsNeitherAnotherWikiNorTheKey_AndKeepsTheScripts()
+    {
+        using var site = new WikiClient("https://wiki.local", "k", new FakeWiki { GatewayTimeoutOn = "localization", TimeOutBeforeTheWiki = true });
+        WikiNoAnswerException lost = await Assert.ThrowsExactlyAsync<WikiNoAnswerException>(() => site.GetSiteAsync(default));
+        StringAssert.Contains(lost.Message, "HTTP 504 Gateway Time-out");
+        Assert.IsFalse(lost.Message.Contains("Wiki.js 3", StringComparison.Ordinal), lost.Message);
+
+        using var key = new WikiClient("https://wiki.local", "k", new FakeWiki { GatewayTimeoutOn = "profile" });
+        await Assert.ThrowsExactlyAsync<WikiNoAnswerException>(() => key.CheckKeyAsync(default));
+
+        // Taken for "cannot read them", the update would clear them.
+        var wiki = new FakeWiki { CanManagePages = true, GatewayTimeoutOn = "single(" };
+        wiki.Scripts[5] = ("body { color: red }", "");
+        using var scripts = new WikiClient("https://wiki.local", "k", wiki);
+        await Assert.ThrowsExactlyAsync<WikiNoAnswerException>(() => scripts.PageScriptsAsync(5, default));
+    }
+
+    [TestMethod]
     public async Task Upload_SendsTheFolderFirstAndAPlainName()
     {
         var wiki = new FakeWiki();
@@ -453,6 +483,91 @@ public sealed class WikiImporterTests
 
         Assert.AreEqual("<p>old</p>", wiki.Pages.Single().Content);
         Assert.IsEmpty(wiki.Assets);
+    }
+
+    [TestMethod]
+    public async Task ANewPageWhoseAnswerIsLost_IsReadBack()
+    {
+        var wiki = new FakeWiki { GatewayTimeoutOn = "create(content" };
+        using var client = new WikiClient("https://wiki.local", "k", wiki);
+        ImportPlan plan = WikiImporter.Prepare(WriteDocument(), removeFirstHeading: true, Encoding.Latin1);
+        var report = new Report();
+
+        ImportResult result = await WikiImporter.RunAsync(plan, WikiPageAddress.Parse("https://wiki.local/en/internal/notes"), "en", null, LinkStyle.Path, client, report, default);
+
+        Assert.IsTrue(result.Created);
+        Assert.HasCount(1, wiki.Pages);
+        Assert.IsTrue(report.Lines.Any(line => line.Contains("HTTP 504 Gateway Time-out", StringComparison.Ordinal) && line.Contains("page is saved", StringComparison.Ordinal)),
+            string.Join("\n", report.Lines));
+    }
+
+    [TestMethod]
+    public async Task ANewPageTheWikiNeverGot_StaysAFailure()
+    {
+        var wiki = new FakeWiki { GatewayTimeoutOn = "create(content", TimeOutBeforeTheWiki = true };
+        using var client = new WikiClient("https://wiki.local", "k", wiki);
+        ImportPlan plan = WikiImporter.Prepare(WriteDocument(), removeFirstHeading: true, Encoding.Latin1);
+
+        WikiNoAnswerException lost = await Assert.ThrowsExactlyAsync<WikiNoAnswerException>(
+            () => WikiImporter.RunAsync(plan, WikiPageAddress.Parse("https://wiki.local/en/internal/notes"), "en", null, LinkStyle.Path, client, new Report(), default));
+
+        StringAssert.Contains(lost.Message, "HTTP 504 Gateway Time-out");
+        Assert.IsEmpty(wiki.Pages);
+    }
+
+    [TestMethod]
+    public async Task AnUpdateWhoseAnswerIsLost_IsToldByItsTimeOfSaving()
+    {
+        var saved = new FakeWiki { GatewayTimeoutOn = "update(id" };
+        saved.Pages.Add((5, "internal/notes", "en", "Old", "old text", "", true, []));
+        using var client = new WikiClient("https://wiki.local", "k", saved);
+        WikiPage existing = (await client.FindPageAsync("internal/notes", "en", default))!;
+        ImportPlan plan = WikiImporter.Prepare(WriteDocument(), removeFirstHeading: true, Encoding.Latin1);
+        var address = WikiPageAddress.Parse("https://wiki.local/en/internal/notes");
+
+        ImportResult result = await WikiImporter.RunAsync(plan, address, "en", existing, LinkStyle.Path, client, new Report(), default);
+
+        Assert.IsFalse(result.Created);
+        Assert.AreEqual("Release Notes", saved.Pages.Single().Title);
+
+        // Saved again by Wiki.js itself after the page was first read (a render, say): a lost
+        // update that never got there is not taken for saved.
+        var notSaved = new FakeWiki { GatewayTimeoutOn = "update(id", TimeOutBeforeTheWiki = true };
+        notSaved.Pages.Add((5, "internal/notes", "en", "Old", "old text", "", true, []));
+        using var other = new WikiClient("https://wiki.local", "k", notSaved);
+        WikiPage read = (await other.FindPageAsync("internal/notes", "en", default))!;
+        notSaved.UpdatedAt[5] = "2026-10-22T11:59:00.000Z";
+        await Assert.ThrowsExactlyAsync<WikiNoAnswerException>(
+            () => WikiImporter.RunAsync(plan, address, "en", read, LinkStyle.Path, other, new Report(), default));
+        Assert.AreEqual("old text", notSaved.Pages.Single().Content);
+
+        // No time from the wiki: whether it was saved cannot be told, and is not claimed.
+        var timeless = new FakeWiki { GatewayTimeoutOn = "update(id", NoUpdatedAt = true };
+        timeless.Pages.Add((5, "internal/notes", "en", "Old", "old text", "", true, []));
+        using var third = new WikiClient("https://wiki.local", "k", timeless);
+        WikiPage noTime = (await third.FindPageAsync("internal/notes", "en", default))!;
+        WikiException unknown = await Assert.ThrowsExactlyAsync<WikiException>(
+            () => WikiImporter.RunAsync(plan, address, "en", noTime, LinkStyle.Path, third, new Report(), default));
+        StringAssert.Contains(unknown.Message, "could not be read back");
+    }
+
+    [TestMethod]
+    public async Task ABrokenConnection_IsReadBackToo_AndAWikiThatStaysDown_IsNotClaimed()
+    {
+        var wiki = new FakeWiki { GatewayTimeoutOn = "create(content", DropConnection = true };
+        using var client = new WikiClient("https://wiki.local", "k", wiki);
+        ImportPlan plan = WikiImporter.Prepare(WriteDocument(), removeFirstHeading: true, Encoding.Latin1);
+        var address = WikiPageAddress.Parse("https://wiki.local/en/internal/notes");
+
+        ImportResult result = await WikiImporter.RunAsync(plan, address, "en", null, LinkStyle.Path, client, new Report(), default);
+        Assert.IsTrue(result.Created);
+
+        var down = new FakeWiki { GatewayTimeoutOn = "create(content", DownAfterTimeout = true };
+        using var other = new WikiClient("https://wiki.local", "k", down);
+        WikiException unknown = await Assert.ThrowsExactlyAsync<WikiException>(
+            () => WikiImporter.RunAsync(plan, address, "en", null, LinkStyle.Path, other, new Report(), default));
+        StringAssert.Contains(unknown.Message, "could not be read back");
+        StringAssert.Contains(unknown.Message, "https://wiki.local/en/internal/notes");
     }
 
     [TestMethod]

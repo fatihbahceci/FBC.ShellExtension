@@ -52,6 +52,30 @@ internal sealed class FakeWiki : HttpMessageHandler
     /// <summary>Every request is answered with a redirect here.</summary>
     public string? RedirectTo { get; set; }
 
+    /// <summary>
+    /// A GraphQL request whose query holds this gets HTTP 504 from a proxy in front of the wiki,
+    /// after the wiki carried it out unless <see cref="TimeOutBeforeTheWiki"/>.
+    /// </summary>
+    public string? GatewayTimeoutOn { get; set; }
+
+    /// <summary>The proxy's 504 comes before the wiki got the request, which is then not carried out.</summary>
+    public bool TimeOutBeforeTheWiki { get; set; }
+
+    /// <summary>The answer is lost to a broken connection instead of the proxy's 504.</summary>
+    public bool DropConnection { get; set; }
+
+    /// <summary>After the lost answer, every request gets HTTP 502: the wiki is down from then on.</summary>
+    public bool DownAfterTimeout { get; set; }
+
+    /// <summary>The page list leaves out updatedAt.</summary>
+    public bool NoUpdatedAt { get; set; }
+
+    /// <summary>When each page was last saved, by its id; a page added by a test has a fixed time.</summary>
+    public Dictionary<int, string> UpdatedAt { get; } = [];
+
+    private int _saves;
+    private bool _down;
+
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         LastAuthorization = request.Headers.Authorization?.ToString();
@@ -81,6 +105,17 @@ internal sealed class FakeWiki : HttpMessageHandler
             return Json(new JsonObject { ["data"] = new JsonObject(), ["errors"] = new JsonArray(new JsonObject { ["message"] = FailWith }) }, HttpStatusCode.InternalServerError);
         }
 
+        if (_down)
+        {
+            return new HttpResponseMessage(HttpStatusCode.BadGateway) { ReasonPhrase = "Bad Gateway", Content = new StringContent("<html>502 Bad Gateway</html>", Encoding.UTF8, "text/html") };
+        }
+
+        bool timeOut = GatewayTimeoutOn is not null && query.Contains(GatewayTimeoutOn, StringComparison.Ordinal);
+        if (timeOut && TimeOutBeforeTheWiki)
+        {
+            return LoseTheAnswer();
+        }
+
         JsonNode data = query switch
         {
             _ when query.Contains("localization") => new JsonObject { ["localization"] = new JsonObject { ["config"] = new JsonObject { ["locale"] = "en" } } },
@@ -93,6 +128,7 @@ internal sealed class FakeWiki : HttpMessageHandler
                     ["description"] = page.Description, ["isPublished"] = page.IsPublished,
                     ["tags"] = new JsonArray([.. page.Tags.Select(tag => (JsonNode)JsonValue.Create(tag)!)]),
                     ["contentType"] = ContentTypes.GetValueOrDefault(page.Id, "markdown"),
+                    ["updatedAt"] = NoUpdatedAt ? null : UpdatedAt.GetValueOrDefault(page.Id, "2026-01-01T00:00:00.000Z"),
                 })]) } },
             _ when query.Contains("single(") => Single(variables["id"]!.GetValue<int>()),
             _ when query.Contains("folders(") => new JsonObject { ["assets"] = new JsonObject { ["folders"] = new JsonArray([.. Folders
@@ -106,6 +142,11 @@ internal sealed class FakeWiki : HttpMessageHandler
             _ when query.Contains("update(id") => UpdatePage(variables),
             _ => throw new InvalidOperationException("Unexpected query: " + query),
         };
+
+        if (timeOut)
+        {
+            return LoseTheAnswer();
+        }
 
         return data is JsonObject { Count: 1 } error && error.ContainsKey("errors")
             ? Json(new JsonObject { ["data"] = new JsonObject(), ["errors"] = error["errors"]!.DeepClone() })
@@ -162,6 +203,7 @@ internal sealed class FakeWiki : HttpMessageHandler
         int id = Pages.Count + 1;
         Pages.Add((id, path, variables["locale"]!.GetValue<string>(), variables["title"]!.GetValue<string>(), variables["content"]!.GetValue<string>(),
             variables["description"]!.GetValue<string>(), variables["isPublished"]!.GetValue<bool>(), [.. variables["tags"]!.AsArray().Select(tag => tag!.GetValue<string>())]));
+        UpdatedAt[id] = Now();
         return new JsonObject { ["pages"] = new JsonObject { ["create"] = new JsonObject { ["responseResult"] = Status(true), ["page"] = new JsonObject { ["id"] = id } } } };
     }
 
@@ -173,6 +215,7 @@ internal sealed class FakeWiki : HttpMessageHandler
         Pages[index] = (id, variables["path"]!.GetValue<string>(), variables["locale"]!.GetValue<string>(), variables["title"]!.GetValue<string>(),
             variables["content"]!.GetValue<string>(), variables["description"]!.GetValue<string>(), variables["isPublished"]!.GetValue<bool>(),
             [.. variables["tags"]!.AsArray().Select(tag => tag!.GetValue<string>())]);
+        UpdatedAt[id] = Now();
         return new JsonObject { ["pages"] = new JsonObject { ["update"] = new JsonObject { ["responseResult"] = Status(true) } } };
     }
 
@@ -195,6 +238,22 @@ internal sealed class FakeWiki : HttpMessageHandler
 
         return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("ok") };
     }
+
+    /// <summary>As the wiki writes it: $beforeInsert and $beforeUpdate set new Date().toISOString().</summary>
+    private string Now() => $"2026-10-22T12:00:{++_saves:00}.000Z";
+
+    private HttpResponseMessage LoseTheAnswer()
+    {
+        _down = DownAfterTimeout;
+        return DropConnection ? throw new HttpRequestException("The response ended prematurely.") : GatewayTimeout();
+    }
+
+    /// <summary>What nginx answers when the wiki behind it takes longer than proxy_read_timeout.</summary>
+    private static HttpResponseMessage GatewayTimeout() => new(HttpStatusCode.GatewayTimeout)
+    {
+        ReasonPhrase = "Gateway Time-out",
+        Content = new StringContent("<html><head><title>504 Gateway Time-out</title></head><body><center><h1>504 Gateway Time-out</h1></center></body></html>", Encoding.UTF8, "text/html"),
+    };
 
     private static JsonObject Status(bool succeeded, int code = 0, string? message = null) => new()
     {

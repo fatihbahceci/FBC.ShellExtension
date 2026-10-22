@@ -1420,4 +1420,54 @@ public static class Strings
     public static string SyncNotFullPath(string path) => Format(nameof(SyncNotFullPath), path);
 
     public static string SyncStopped() => Get(nameof(SyncStopped));
+
+    public static string WikiGatewayNoAnswer(string baseUrl, string status) => Format(nameof(WikiGatewayNoAnswer), baseUrl, status);
+
+    public static string WikiSavedWithoutAnswer(string reason) => Format(nameof(WikiSavedWithoutAnswer), reason);
+
+    public static string WikiSaveUnknown(string reason, string url) => Format(nameof(WikiSaveUnknown), reason, url);
+
+    public static string ConfigNewer(int version, int current, string detail) => Format(nameof(ConfigNewer), version, current, detail);
+
+    public static string ConfigNewerOnDisk(int version, int current) => Format(nameof(ConfigNewerOnDisk), version, current);
+
+    public static string EditorConfigNewer(string message) => Format(nameof(EditorConfigNewer), message);
+
+    public static string EditorLoadFailedFactory() => Get(nameof(EditorLoadFailedFactory));
+
+    public static string EditorLoadFailedFactoryNote() => Get(nameof(EditorLoadFailedFactoryNote));
+
+    public static string EditorConfigNewerHeading() => Get(nameof(EditorConfigNewerHeading));
+
+    public static string EditorMenuWikiKey() => Get(nameof(EditorMenuWikiKey));
+
+    public static string WikiKeyTitle() => Get(nameof(WikiKeyTitle));
+
+    public static string WikiKeyAddress() => Get(nameof(WikiKeyAddress));
+
+    public static string WikiKeyKey() => Get(nameof(WikiKeyKey));
+
+    public static string WikiKeyHelp() => Get(nameof(WikiKeyHelp));
+
+    public static string WikiKeySave() => Get(nameof(WikiKeySave));
+
+    public static string WikiKeyForget() => Get(nameof(WikiKeyForget));
+
+    public static string WikiKeyChecking(string site) => Format(nameof(WikiKeyChecking), site);
+
+    public static string WikiKeyStored(string site) => Format(nameof(WikiKeyStored), site);
+
+    public static string WikiKeyNoneStored(string site) => Format(nameof(WikiKeyNoneStored), site);
+
+    public static string WikiKeySaved(string site) => Format(nameof(WikiKeySaved), site);
+
+    public static string WikiKeyNotSaved(string message) => Format(nameof(WikiKeyNotSaved), message);
+
+    public static string WikiKeyForgetConfirm(string site) => Format(nameof(WikiKeyForgetConfirm), site);
+
+    public static string WikiKeyEnvironment() => Get(nameof(WikiKeyEnvironment));
+
+    public static string WikiKeySavedEnvironment(string site) => Format(nameof(WikiKeySavedEnvironment), site);
+
+    public static string WikiKeyForgetConfirmEnvironment(string site) => Format(nameof(WikiKeyForgetConfirmEnvironment), site);
 }

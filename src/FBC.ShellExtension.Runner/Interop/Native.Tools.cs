@@ -60,25 +60,4 @@ internal static unsafe partial class Native
     public const uint MB_TOPMOST = 0x00040000;
 
     public const uint ES_PASSWORD = 0x0020;
-    public const uint CRYPTPROTECT_UI_FORBIDDEN = 0x1;
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct DATA_BLOB
-    {
-        public uint cbData;
-        public byte* pbData;
-    }
-
-    [LibraryImport("crypt32.dll", EntryPoint = "CryptProtectData", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static partial bool CryptProtectData(DATA_BLOB* pDataIn, string? szDataDescr, DATA_BLOB* pOptionalEntropy,
-        nint pvReserved, nint pPromptStruct, uint dwFlags, DATA_BLOB* pDataOut);
-
-    [LibraryImport("crypt32.dll", EntryPoint = "CryptUnprotectData", SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static partial bool CryptUnprotectData(DATA_BLOB* pDataIn, nint ppszDataDescr, DATA_BLOB* pOptionalEntropy,
-        nint pvReserved, nint pPromptStruct, uint dwFlags, DATA_BLOB* pDataOut);
-
-    [LibraryImport("kernel32.dll", EntryPoint = "LocalFree")]
-    public static partial nint LocalFree(nint hMem);
 }

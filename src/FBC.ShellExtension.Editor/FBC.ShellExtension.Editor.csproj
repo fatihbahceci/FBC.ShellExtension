@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FBC.ShellExtension.Core\FBC.ShellExtension.Core.csproj" />
+    <!-- The wiki key or token window keeps what Send to Wiki.js reads (ADR-0039). -->
+    <ProjectReference Include="..\FBC.ShellExtension.WikiImport\FBC.ShellExtension.WikiImport.csproj" />
   </ItemGroup>
 
 </Project>

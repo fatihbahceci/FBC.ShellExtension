@@ -1,15 +1,17 @@
+using System.Runtime.InteropServices;
 using System.Text;
-using FBC.ShellExtension.WikiImport;
-using static FBC.ShellExtension.Runner.Interop.Native;
 
-namespace FBC.ShellExtension.Runner.Tools;
+namespace FBC.ShellExtension.WikiImport;
 
 /// <summary>
-/// Encrypts an API key for the Windows user with DPAPI: only the same user on the same machine
-/// can read it back (ADR-0020). The entropy keeps other programs' DPAPI blobs from passing as ours.
+/// Encrypts an API key or token for the Windows user with DPAPI: only the same user on the same
+/// machine can read it back (ADR-0020). The entropy keeps other programs' DPAPI blobs from passing
+/// as ours. Windows only; the runner and the editor share it (ADR-0039).
 /// </summary>
-internal sealed unsafe class DpapiProtector : ISecretProtector
+public sealed unsafe partial class DpapiProtector : ISecretProtector
 {
+    private const uint CRYPTPROTECT_UI_FORBIDDEN = 0x1;
+
     private static readonly byte[] s_entropy = Encoding.UTF8.GetBytes("FBCTools.WikiImport");
 
     public string Protect(string secret) =>
@@ -54,4 +56,24 @@ internal sealed unsafe class DpapiProtector : ISecretProtector
             }
         }
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    private struct DATA_BLOB
+    {
+        public uint cbData;
+        public byte* pbData;
+    }
+
+    [LibraryImport("crypt32.dll", EntryPoint = "CryptProtectData", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool CryptProtectData(DATA_BLOB* pDataIn, string? szDataDescr, DATA_BLOB* pOptionalEntropy,
+        nint pvReserved, nint pPromptStruct, uint dwFlags, DATA_BLOB* pDataOut);
+
+    [LibraryImport("crypt32.dll", EntryPoint = "CryptUnprotectData", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool CryptUnprotectData(DATA_BLOB* pDataIn, nint ppszDataDescr, DATA_BLOB* pOptionalEntropy,
+        nint pvReserved, nint pPromptStruct, uint dwFlags, DATA_BLOB* pDataOut);
+
+    [LibraryImport("kernel32.dll", EntryPoint = "LocalFree")]
+    private static partial nint LocalFree(nint hMem);
 }

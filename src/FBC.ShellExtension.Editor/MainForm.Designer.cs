@@ -51,6 +51,7 @@ partial class MainForm
         resetItem = new ToolStripMenuItem();
         ffmpegSeparator = new ToolStripSeparator();
         ffmpegItem = new ToolStripMenuItem();
+        wikiKeyItem = new ToolStripMenuItem();
         previewItem = new ToolStripMenuItem();
         helpMenu = new ToolStripMenuItem();
         aboutItem = new ToolStripMenuItem();
@@ -118,7 +119,7 @@ partial class MainForm
         //
         // fileMenu
         //
-        fileMenu.DropDownItems.AddRange(new ToolStripItem[] { saveItem, reloadItem, openFolderItem, fileSeparator, exitItem });
+        fileMenu.DropDownItems.AddRange(new ToolStripItem[] { saveItem, reloadItem, resetItem, openFolderItem, fileSeparator, exitItem });
         fileMenu.Name = "fileMenu";
         fileMenu.Text = "&File";
         //
@@ -251,7 +252,7 @@ partial class MainForm
         //
         // toolsMenu
         //
-        toolsMenu.DropDownItems.AddRange(new ToolStripItem[] { checkItem, toolsSeparator, backupItem, restoreItem, resetItem, ffmpegSeparator, ffmpegItem });
+        toolsMenu.DropDownItems.AddRange(new ToolStripItem[] { checkItem, toolsSeparator, backupItem, restoreItem, ffmpegSeparator, ffmpegItem, wikiKeyItem });
         toolsMenu.Name = "toolsMenu";
         toolsMenu.Text = "Tools";
         //
@@ -280,7 +281,7 @@ partial class MainForm
         // resetItem
         //
         resetItem.Name = "resetItem";
-        resetItem.Text = "Reset to the template…";
+        resetItem.Text = "Use factory default…";
         resetItem.Click += OnReset;
         //
         // ffmpegSeparator
@@ -292,6 +293,12 @@ partial class MainForm
         ffmpegItem.Name = "ffmpegItem";
         ffmpegItem.Text = "ffmpeg…";
         ffmpegItem.Click += OnFfmpeg;
+        //
+        // wikiKeyItem
+        //
+        wikiKeyItem.Name = "wikiKeyItem";
+        wikiKeyItem.Text = "Wiki.js key or token…";
+        wikiKeyItem.Click += OnWikiKey;
         //
         // helpMenu
         //
@@ -653,6 +660,7 @@ partial class MainForm
     private ToolStripMenuItem resetItem;
     private ToolStripSeparator ffmpegSeparator;
     private ToolStripMenuItem ffmpegItem;
+    private ToolStripMenuItem wikiKeyItem;
     private ToolStripMenuItem previewItem;
     private ToolStripMenuItem helpMenu;
     private ToolStripMenuItem aboutItem;

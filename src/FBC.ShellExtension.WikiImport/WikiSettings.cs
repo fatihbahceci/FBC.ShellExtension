@@ -27,6 +27,9 @@ public sealed class WikiSettings
 
     public const string ApiKeyVariable = "FBC_WIKI_APIKEY";
 
+    /// <summary>Shorter than this is no Wiki.js API key or token; the runner and the editor refuse it.</summary>
+    public const int MinimumKeyLength = 20;
+
     public LinkStyle LinkStyle { get; set; } = LinkStyle.Path;
 
     /// <summary>Wiki.js shows the title above the page; the file's own first heading would repeat it.</summary>

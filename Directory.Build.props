@@ -2,7 +2,7 @@
 
   <!-- One version for every component, bumped on every push and tagged vX.Y.Z (ADR-0004). -->
   <PropertyGroup>
-    <VersionPrefix>0.18.4</VersionPrefix>
+    <VersionPrefix>0.19.0</VersionPrefix>
     <Product>FBCTools</Product>
     <!-- The same holder as LICENSE (ADR-0013); shown in the files' version info. -->
     <Copyright>Copyright (c) 2026 Fatih Bahceci</Copyright>

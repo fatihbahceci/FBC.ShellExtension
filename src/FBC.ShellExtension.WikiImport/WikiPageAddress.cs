@@ -33,6 +33,17 @@ public sealed partial record WikiPageAddress(string BaseUrl, string? Locale, str
     /// <summary>The page's address with the locale it was saved in.</summary>
     public string PageUrl(string locale) => $"{BaseUrl}/{locale}/{Path}";
 
+    /// <summary>
+    /// The wiki an address belongs to, as <see cref="BaseUrl"/> writes it: scheme, host and port.
+    /// Any page of the wiki will do, or the wiki's own address; null for what is not a web address.
+    /// </summary>
+    public static string? BaseUrlOf(string text) =>
+        Uri.TryCreate(text.Trim(), UriKind.Absolute, out Uri? uri)
+            && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)
+            && uri.Host.Length > 0
+            ? uri.GetLeftPart(UriPartial.Authority)
+            : null;
+
     /// <summary>Why <paramref name="text"/> is not a page address this tool can use; null when it is one.</summary>
     public static string? Problem(string text) => TryParse(text, out _, out string? problem) ? null : problem;
 

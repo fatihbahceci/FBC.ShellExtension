@@ -1,4 +1,5 @@
 using FBC.ShellExtension.Core.Configuration;
+using FBC.ShellExtension.Core.Resources;
 
 namespace FBC.ShellExtension.Core.Editing;
 
@@ -82,8 +83,18 @@ public sealed class ConfigDocument
 
     /// <summary>Writes the document, copying the old file aside first when <see cref="BacksUpOnSave"/>.</summary>
     /// <returns>The backup's path, or null when none was made.</returns>
+    /// <exception cref="ConfigNewerException">
+    /// A newer FBCTools wrote the file since: saving this document over it would drop what that
+    /// version added, so nothing is written (ADR-0038).
+    /// </exception>
     public string? Save(DateTime now)
     {
+        if (File.Exists(Path) && ConfigSerializer.DeclaredVersion(File.ReadAllText(Path)) is int onDisk
+            && onDisk > MenuConfig.CurrentVersion && onDisk > Config.Version)
+        {
+            throw new ConfigNewerException(Strings.ConfigNewerOnDisk(onDisk, MenuConfig.CurrentVersion), onDisk, null);
+        }
+
         string? backup = null;
         if (BacksUpOnSave)
         {

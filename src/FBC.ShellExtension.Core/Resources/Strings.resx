@@ -807,10 +807,10 @@ Restarts Windows Explorer through Restart Manager and opens its folder windows a
     <value>&amp;Restore a configuration…</value>
   </data>
   <data name="EditorMenuReset" xml:space="preserve">
-    <value>Reset to the &amp;template…</value>
+    <value>Use factory &amp;default…</value>
   </data>
   <data name="EditorResetConfirm" xml:space="preserve">
-    <value>Replace the menu with the template? The current configuration is saved as a backup next to it.</value>
+    <value>Replace the menu with the factory default, the menu this version of FBCTools comes with? The current configuration is saved as a backup next to it.</value>
   </data>
   <data name="EditorReplaceUnsaved" xml:space="preserve">
     <value>You have unsaved changes. Save them before the configuration is replaced?</value>
@@ -1284,10 +1284,12 @@ Found:    {3}</value>
     <value>{0} cannot be read: {1}. Fix or delete it.</value>
   </data>
   <data name="WikiKeyRejected" xml:space="preserve">
-    <value>The wiki did not accept the API key: {0}</value>
+    <value>The wiki did not accept the API key or token: {0}
+
+A token copied from the browser stops working after a while (two weeks by default): copy a fresh one.</value>
   </data>
   <data name="WikiFolderHidden" xml:space="preserve">
-    <value>The asset folder "{0}" is there, but the API key does not see it. A page rule of the key's group has to allow read:assets for the path "{0}" itself: write it as "Path starts with {0}", without a slash at the end.</value>
+    <value>The asset folder "{0}" is there, but the API key or token does not see it. A page rule of its group (the key's group, or your own groups for a token) has to allow read:assets for the path "{0}" itself: write it as "Path starts with {0}", without a slash at the end.</value>
   </data>
   <data name="WikiRedirected" xml:space="preserve">
     <value>{0} sends the request on to {1}. Use the address the wiki itself answers at (https:// rather than http://, for example).</value>
@@ -1302,7 +1304,7 @@ Found:    {3}</value>
     <value>{0} was not saved ({1}); the address and the key will be asked for again next time.</value>
   </data>
   <data name="WikiUploadForbidden" xml:space="preserve">
-    <value>{0} was not uploaded: {1}. The API key's group needs write:assets, and a page rule that allows it for this path in all locales.</value>
+    <value>{0} was not uploaded: {1}. The group of the API key or token (your own groups for a token) needs write:assets, and a page rule that allows it for this path in all locales.</value>
   </data>
   <data name="WikiUploadFailed" xml:space="preserve">
     <value>{0} was not uploaded: {1}. A file larger than the wiki's upload limit (5 MB unless changed in Administration &gt; Security) is refused like this.</value>
@@ -1353,13 +1355,13 @@ Found:    {3}</value>
     <value>The page's address as the browser shows it. A page that does not exist yet is created.</value>
   </data>
   <data name="WikiAskKey" xml:space="preserve">
-    <value>API key for {0}:</value>
+    <value>API key or token for {0}:</value>
   </data>
   <data name="WikiAskKeyHint" xml:space="preserve">
-    <value>Administration &gt; API Access in the wiki. Kept encrypted for your Windows account.</value>
+    <value>An API key (Administration &gt; API Access) or the jwt cookie from your browser. Kept encrypted for your Windows account.</value>
   </data>
   <data name="WikiKeyTooShort" xml:space="preserve">
-    <value>That is too short to be a Wiki.js API key.</value>
+    <value>That is too short to be a Wiki.js API key or token.</value>
   </data>
   <data name="WikiConfirmUpdate" xml:space="preserve">
     <value>A page already exists at {0}.
@@ -2137,5 +2139,86 @@ Replace its content with this file? Its title comes from the file; its descripti
   </data>
   <data name="SyncStopped" xml:space="preserve">
     <value>Stopped before the end: compare again to see what is left.</value>
+  </data>
+  <data name="WikiGatewayNoAnswer" xml:space="preserve">
+    <value>No answer came from the wiki at {0} ({1}). The wiki may be busy or down, or a server in front of it stopped waiting.</value>
+  </data>
+  <data name="WikiSavedWithoutAnswer" xml:space="preserve">
+    <value>The wiki's answer did not come ({0}), but the page is saved: read back from the wiki.</value>
+  </data>
+  <data name="WikiSaveUnknown" xml:space="preserve">
+    <value>The wiki's answer did not come ({0}), and whether the page was saved could not be read back. Open {1} to see.</value>
+  </data>
+  <data name="ConfigNewer" xml:space="preserve">
+    <value>The configuration was saved by a newer FBCTools (version {0}; this one reads up to {1}) and holds what this one does not know: {2}</value>
+  </data>
+  <data name="ConfigNewerOnDisk" xml:space="preserve">
+    <value>The configuration on disk was saved by a newer FBCTools (version {0}; this one reads up to {1}). Saving over it would drop what that version added.</value>
+  </data>
+  <data name="EditorConfigNewer" xml:space="preserve">
+    <value>{0}
+
+Edit it with the FBCTools that saved it; if this copy replaced that one, install that version again. Nothing in this window is saved over it.</value>
+  </data>
+  <data name="EditorLoadFailedFactory" xml:space="preserve">
+    <value>Use the factory default menu</value>
+  </data>
+  <data name="EditorLoadFailedFactoryNote" xml:space="preserve">
+    <value>The menu this version of FBCTools comes with. The file is copied to a backup first.</value>
+  </data>
+  <data name="EditorConfigNewerHeading" xml:space="preserve">
+    <value>The configuration is from a newer FBCTools</value>
+  </data>
+  <data name="EditorMenuWikiKey" xml:space="preserve">
+    <value>&amp;Wiki.js key or token…</value>
+  </data>
+  <data name="WikiKeyTitle" xml:space="preserve">
+    <value>Wiki.js key or token</value>
+  </data>
+  <data name="WikiKeyAddress" xml:space="preserve">
+    <value>&amp;Wiki address:</value>
+  </data>
+  <data name="WikiKeyKey" xml:space="preserve">
+    <value>API &amp;key or token:</value>
+  </data>
+  <data name="WikiKeyHelp" xml:space="preserve">
+    <value>Send to Wiki.js uses what is kept here for that wiki.
+
+An API key: the wiki's administrator makes one in Administration &gt; API Access. It works with the rights of the group it belongs to.
+
+Or your own token, when you sign in to the wiki with your company account: sign in to the wiki in your browser, press F12, and copy the value of jwt under Application &gt; Cookies &gt; the wiki's address. With it you work with your own rights, and the page history shows your name. It stops working after a while (two weeks by default); then copy a fresh one. Keep it to yourself, like a password.</value>
+  </data>
+  <data name="WikiKeySave" xml:space="preserve">
+    <value>Check and &amp;save</value>
+  </data>
+  <data name="WikiKeyForget" xml:space="preserve">
+    <value>&amp;Forget</value>
+  </data>
+  <data name="WikiKeyChecking" xml:space="preserve">
+    <value>Checking with {0}…</value>
+  </data>
+  <data name="WikiKeyStored" xml:space="preserve">
+    <value>A key or token is kept for {0}.</value>
+  </data>
+  <data name="WikiKeyNoneStored" xml:space="preserve">
+    <value>Nothing is kept for {0} yet.</value>
+  </data>
+  <data name="WikiKeySaved" xml:space="preserve">
+    <value>Saved for {0}. Send to Wiki.js uses it from now on.</value>
+  </data>
+  <data name="WikiKeyNotSaved" xml:space="preserve">
+    <value>Not saved: {0}</value>
+  </data>
+  <data name="WikiKeyForgetConfirm" xml:space="preserve">
+    <value>Forget the key or token kept for {0}? Send to Wiki.js will ask for one next time.</value>
+  </data>
+  <data name="WikiKeyEnvironment" xml:space="preserve">
+    <value>FBC_WIKI_APIKEY is set: Send to Wiki.js uses it instead of what is kept here.</value>
+  </data>
+  <data name="WikiKeySavedEnvironment" xml:space="preserve">
+    <value>Saved for {0}. Send to Wiki.js uses it once FBC_WIKI_APIKEY is removed.</value>
+  </data>
+  <data name="WikiKeyForgetConfirmEnvironment" xml:space="preserve">
+    <value>Forget the key or token kept for {0}? While FBC_WIKI_APIKEY is set, Send to Wiki.js uses that instead.</value>
   </data>
 </root>

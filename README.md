@@ -65,8 +65,9 @@ whenever it changes, so Explorer never needs a restart for a menu change.
   - see the processes a command would start, with the variables filled in;
   - **Run** a command through FBCTools, as the menu would.
 - **Edit FBCTools menu…** at the bottom of the Explorer menu opens it.
-- Its **Tools** menu checks the installation, backs up, restores or resets your menu, and
-  checks and installs ffmpeg.
+- Its **Tools** menu checks the installation, backs up or restores your menu, checks and
+  installs ffmpeg, and keeps the Wiki.js key or token that Send to Wiki.js uses. **File › Use
+  factory default** puts back the menu this version comes with.
 
 **Updates that respect your changes.** New entries of a newer default menu are added to your
 menu, even if you changed it. Entries you deleted do not come back, and entries you switched

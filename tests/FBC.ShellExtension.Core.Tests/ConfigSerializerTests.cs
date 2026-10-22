@@ -128,4 +128,38 @@ public sealed class ConfigSerializerTests
 
         Assert.Contains("argument", ex.Message);
     }
+
+    [TestMethod]
+    [DataRow("""{ "version": 13, "items": [] }""", 13, DisplayName = "first")]
+    [DataRow("""{ "items": [ { "type": "submenu", "version": 99, "items": [] } ], "version": 7 }""", 7, DisplayName = "after a nested one")]
+    [DataRow("""
+        // comment
+        { /* c */ "version": 14, }
+        """, 14, DisplayName = "comments and a trailing comma")]
+    [DataRow("""{ "items": [] }""", null, DisplayName = "none")]
+    [DataRow("""{ "version": "13" }""", null, DisplayName = "not a number")]
+    [DataRow("""{ "items": [ , "version": 13 }""", null, DisplayName = "broken before it")]
+    [DataRow("not json", null, DisplayName = "not json")]
+    public void DeclaredVersion_ReadsTheTopLevelVersionOnly(string json, int? expected)
+    {
+        Assert.AreEqual(expected, ConfigSerializer.DeclaredVersion(json));
+    }
+
+    [TestMethod]
+    public void Deserialize_ANewerVersionsDocument_SaysSo()
+    {
+        int newer = MenuConfig.CurrentVersion + 1;
+        var ex = Assert.ThrowsExactly<ConfigNewerException>(() => ConfigSerializer.Deserialize($$"""
+            { "version": {{newer}}, "items": [ { "type": "command", "label": "x", "tool": "somethingNew" } ] }
+            """));
+
+        Assert.AreEqual(newer, ex.Version);
+        Assert.Contains("newer FBCTools", ex.Message);
+        Assert.Contains("$.items[0].tool", ex.Message);
+
+        // The same mistake in a document of this version is just invalid.
+        Assert.ThrowsExactly<ConfigLoadException>(() => ConfigSerializer.Deserialize($$"""
+            { "version": {{MenuConfig.CurrentVersion}}, "items": [ { "type": "command", "label": "x", "tool": "somethingNew" } ] }
+            """));
+    }
 }

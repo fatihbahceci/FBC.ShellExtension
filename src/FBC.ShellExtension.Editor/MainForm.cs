@@ -29,6 +29,7 @@ public partial class MainForm : Form
     private string? _statusTarget;
     private string? _pendingSnapshot;
     private string? _pendingKey;
+    private bool _closeWithoutSaving;
 
     public MainForm(string path)
     {
@@ -78,6 +79,7 @@ public partial class MainForm : Form
         restoreItem.Text = Strings.EditorMenuRestore();
         resetItem.Text = Strings.EditorMenuReset();
         ffmpegItem.Text = Strings.EditorMenuFfmpeg();
+        wikiKeyItem.Text = Strings.EditorMenuWikiKey();
         helpMenu.Text = Strings.EditorMenuHelp();
         aboutItem.Text = Strings.EditorMenuAbout();
         // The toolbar would otherwise answer Alt+letter too, against the fields' own access keys.
@@ -135,7 +137,7 @@ public partial class MainForm : Form
     {
         base.OnFormClosing(e);
         entryEditor.CommitPendingEdits();
-        if (e.Cancel || _document is null || !_document.IsDirty)
+        if (e.Cancel || _document is null || !_document.IsDirty || _closeWithoutSaving)
         {
             return;
         }
@@ -713,7 +715,7 @@ public partial class MainForm : Form
             _statusNote = backup is null ? null : Strings.EditorStatusBackup(Path.GetFileName(backup));
             _statusTarget = backup;
         }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ConfigNewerException)
         {
             MessageBox.Show(this, Strings.EditorSaveFailed(ex.Message), ProductInfo.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
             return false;
@@ -740,11 +742,27 @@ public partial class MainForm : Form
     private void Reload()
     {
         int[]? path = _selected is null ? null : MenuTree.PathOf(Config, _selected);
-        LoadResult result = DocumentLoader.Load(_path, this);
+
+        // The factory menu, chosen in the loader's dialog, rewrites the file: that is no change
+        // made outside to ask about when the window comes back to the front.
+        LoadResult result;
+        bool holding = _checkingDisk;
+        _checkingDisk = true;
+        try
+        {
+            result = DocumentLoader.Load(_path, this);
+        }
+        finally
+        {
+            _checkingDisk = holding;
+        }
+
         if (result.Exit)
         {
-            // Not saved over the file the user is fixing by hand: closing still asks.
+            // Not saved over the file the user is fixing by hand: closing still asks. Over a newer
+            // version's file nothing may be saved, so closing does not offer to (ADR-0038).
             _document.KeepDespiteUnreadableFile();
+            _closeWithoutSaving = result.Newer;
             BeginInvoke(new Action(Close));
             return;
         }
@@ -918,6 +936,13 @@ public partial class MainForm : Form
     }
 
     private async void OnFfmpeg(object? sender, EventArgs e) => await OfferFfmpegAsync(showWhenUsable: true);
+
+    /// <summary>The key or token Send to Wiki.js uses, changed or forgotten without editing its file (ADR-0039).</summary>
+    private void OnWikiKey(object? sender, EventArgs e)
+    {
+        using var form = new WikiKeyForm();
+        form.ShowDialog(this);
+    }
 
     /// <summary>
     /// Checks ffmpeg; if it is missing or lacks an encoder, offers the two install routes (ADR-0011).

@@ -13,11 +13,23 @@ public class WikiException(string message) : Exception(message);
 /// <summary>The server did not take the API key: unknown, revoked, expired, or the API is off.</summary>
 public sealed class WikiKeyException(string message) : WikiException(message);
 
+/// <summary>
+/// No answer came: the connection broke, the client's own wait ran out, or a server in front of
+/// the wiki answered for it with an error page (HTTP 5xx, 504 when it stopped waiting). The
+/// request may have been carried out all the same (G-0115).
+/// </summary>
+/// <param name="reason">What came instead of an answer, such as "HTTP 504 Gateway Time-out".</param>
+public sealed class WikiNoAnswerException(string message, string reason) : WikiException(message)
+{
+    public string Reason { get; } = reason;
+}
+
 /// <param name="DefaultLocale">The site's locale, for an address that names none.</param>
 public sealed record WikiSite(string DefaultLocale);
 
 /// <param name="ContentType">"markdown" for a page of the markdown editor; "html" for the visual and the raw HTML editors.</param>
-public sealed record WikiPage(int Id, string Path, string Locale, string Title, string Description, bool IsPublished, IReadOnlyList<string> Tags, string ContentType = "markdown")
+/// <param name="UpdatedAt">When the page was last saved, as the wiki writes it; "" when not known.</param>
+public sealed record WikiPage(int Id, string Path, string Locale, string Title, string Description, bool IsPublished, IReadOnlyList<string> Tags, string ContentType = "markdown", string UpdatedAt = "")
 {
     /// <summary>An update keeps a page's editor, so only a markdown page can take this file's text.</summary>
     public bool IsMarkdown => string.Equals(ContentType, "markdown", StringComparison.OrdinalIgnoreCase);
@@ -53,7 +65,8 @@ public sealed class WikiClient : IDisposable
         _http = new HttpClient(handler ?? new SocketsHttpHandler { AllowAutoRedirect = false });
         _http.BaseAddress = new Uri(baseUrl + "/");
         _http.Timeout = TimeSpan.FromMinutes(5);
-        _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+        // A key or token pasted with a space or a line break around it is still the same one.
+        _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey.Trim());
     }
 
     public void Dispose() => _http.Dispose();
@@ -77,7 +90,7 @@ public sealed class WikiClient : IDisposable
         {
             await QueryAsync("{ users { profile { id } } }", new JsonObject(), cancellationToken).ConfigureAwait(false);
         }
-        catch (WikiException ex) when (ex is not WikiKeyException)
+        catch (WikiException ex) when (ex is not WikiKeyException and not WikiNoAnswerException)
         {
             throw new WikiKeyException(Strings.WikiKeyRejected(ex.Message));
         }
@@ -87,7 +100,7 @@ public sealed class WikiClient : IDisposable
     public async Task<WikiPage?> FindPageAsync(string path, string locale, CancellationToken cancellationToken)
     {
         JsonNode data = await QueryAsync(
-            "query ($locale: String) { pages { list(locale: $locale) { id path locale title description isPublished tags contentType } } }",
+            "query ($locale: String) { pages { list(locale: $locale) { id path locale title description isPublished tags contentType updatedAt } } }",
             new JsonObject { ["locale"] = locale },
             cancellationToken).ConfigureAwait(false);
 
@@ -110,13 +123,15 @@ public sealed class WikiClient : IDisposable
             match["description"]?.GetValue<string>() ?? "",
             match["isPublished"]?.GetValue<bool>() ?? true,
             [.. (match["tags"]?.AsArray() ?? []).Select(tag => tag?.GetValue<string>()).OfType<string>()],
-            match["contentType"]?.GetValue<string>() ?? "markdown");
+            match["contentType"]?.GetValue<string>() ?? "markdown",
+            match["updatedAt"]?.ToString() ?? "");
     }
 
     /// <summary>
     /// The page's CSS and JavaScript, so that an update can send them back. Reading them needs
     /// manage:pages or delete:pages; without either the answer is null. (The page's publishing
-    /// dates cannot be read at all: Wiki.js 2.5 fails to serialize them.)
+    /// dates are not sent back: KI-0004.) A lost answer is not taken for "cannot read": the
+    /// update would then clear them.
     /// </summary>
     public async Task<PageScripts?> PageScriptsAsync(int id, CancellationToken cancellationToken)
     {
@@ -130,7 +145,7 @@ public sealed class WikiClient : IDisposable
                 ? new PageScripts(page["scriptCss"]?.GetValue<string>() ?? "", page["scriptJs"]?.GetValue<string>() ?? "")
                 : null;
         }
-        catch (WikiException ex) when (ex is not WikiKeyException)
+        catch (WikiException ex) when (ex is not WikiKeyException and not WikiNoAnswerException)
         {
             return null;
         }
@@ -325,8 +340,17 @@ public sealed class WikiClient : IDisposable
 
         if (!response.IsSuccessStatusCode || json?["data"] is not { } data)
         {
+            string status = $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}";
+
+            // An error page instead of the wiki's answer: a server in front of it (a proxy) found
+            // the wiki down, or stopped waiting while it was still at work (G-0115).
+            if ((int)response.StatusCode >= 500)
+            {
+                throw new WikiNoAnswerException(Strings.WikiGatewayNoAnswer(_baseUrl, status), status);
+            }
+
             // No GraphQL answer at all: not a Wiki.js 2 at this address (3.x has its API elsewhere).
-            throw new WikiException(Strings.WikiNotWikiJs2(_baseUrl, $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}"));
+            throw new WikiException(Strings.WikiNotWikiJs2(_baseUrl, status));
         }
 
         return data;
@@ -341,11 +365,12 @@ public sealed class WikiClient : IDisposable
         }
         catch (HttpRequestException ex)
         {
-            throw new WikiException(Strings.WikiUnreachable(_baseUrl, ex.Message));
+            // The request may have gone out before the connection broke.
+            throw new WikiNoAnswerException(Strings.WikiUnreachable(_baseUrl, ex.Message), ex.Message);
         }
         catch (TaskCanceledException ex) when (ex.InnerException is TimeoutException)
         {
-            throw new WikiException(Strings.WikiUnreachable(_baseUrl, ex.Message));
+            throw new WikiNoAnswerException(Strings.WikiUnreachable(_baseUrl, ex.Message), ex.Message);
         }
 
         if ((int)response.StatusCode is >= 300 and < 400)

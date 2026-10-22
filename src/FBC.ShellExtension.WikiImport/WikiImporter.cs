@@ -162,17 +162,74 @@ public static class WikiImporter
             existing?.Tags ?? [],
             existing is null ? null : await client.PageScriptsAsync(existing.Id, cancellationToken).ConfigureAwait(false));
 
-        if (existing is null)
-        {
-            await client.CreatePageAsync(page, cancellationToken).ConfigureAwait(false);
-        }
-        else
-        {
-            await client.UpdatePageAsync(existing.Id, page, cancellationToken).ConfigureAwait(false);
-        }
+        // A lost update is told by the page's time of saving, read just before it: the read at the
+        // start may be minutes old, and Wiki.js changes that time on its own too (a render, a link
+        // from a page made elsewhere). Whatever saves the page between here and the read-back is
+        // still taken for this update.
+        string savedBefore = existing is null ? ""
+            : await client.FindPageAsync(address.Path, locale, cancellationToken).ConfigureAwait(false) is { } fresh && fresh.Id == existing.Id
+                ? fresh.UpdatedAt
+                : existing.UpdatedAt;
 
         string url = address.PageUrl(locale);
+        try
+        {
+            if (existing is null)
+            {
+                await client.CreatePageAsync(page, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                await client.UpdatePageAsync(existing.Id, page, cancellationToken).ConfigureAwait(false);
+            }
+        }
+        catch (WikiNoAnswerException lost)
+        {
+            // Wiki.js saves the page first and answers only after rendering it, indexing it and
+            // handing it to storage (a new page also rebuilds the tree); a proxy in front of it may
+            // stop waiting before that (G-0115). Whether it was saved is read back, never assumed.
+            bool? saved;
+            try
+            {
+                saved = await SavedAsync(client, address.Path, locale, existing, savedBefore, cancellationToken).ConfigureAwait(false);
+            }
+            catch (WikiException)
+            {
+                saved = null;
+            }
+
+            if (saved == false)
+            {
+                throw;
+            }
+
+            if (saved is null)
+            {
+                throw new WikiException(Strings.WikiSaveUnknown(lost.Reason, url));
+            }
+
+            report.Output(Strings.WikiSavedWithoutAnswer(lost.Reason));
+        }
+
         report.Output(existing is null ? Strings.WikiPageCreated(url) : Strings.WikiPageUpdated(url));
         return new ImportResult(url, existing is null, uploads.Length, plan.Missing);
+    }
+
+    /// <summary>
+    /// Whether a page whose answer was lost is saved: a new one is there now, an updated one has
+    /// another time of saving than <paramref name="before"/>. Null when that cannot be told (no
+    /// time was read before).
+    /// </summary>
+    private static async Task<bool?> SavedAsync(WikiClient client, string path, string locale, WikiPage? existing, string before, CancellationToken cancellationToken)
+    {
+        if (existing is not null && before.Length == 0)
+        {
+            return null;
+        }
+
+        WikiPage? now = await client.FindPageAsync(path, locale, cancellationToken).ConfigureAwait(false);
+        return existing is null
+            ? now is not null
+            : now is not null && now.Id == existing.Id && now.UpdatedAt.Length > 0 && now.UpdatedAt != before;
     }
 }

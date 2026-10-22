@@ -116,4 +116,35 @@ public sealed class ConfigDocumentTests
         Assert.IsNotNull(backup);
         Assert.AreEqual("{ broken by hand", File.ReadAllText(backup));
     }
+
+    [TestMethod]
+    public void Save_DoesNotOverwriteWhatANewerVersionWrote()
+    {
+        ConfigDocument document = ConfigDocument.Load(_path);
+        document.Config.Items.Add(new SeparatorEntry());
+        string newer = $$"""{ "version": {{MenuConfig.CurrentVersion + 1}}, "items": [ { "type": "command", "label": "x", "tool": "somethingNew" } ] }""";
+        File.WriteAllText(_path, newer);
+
+        // Kept despite an unreadable file, the next save would copy it aside first: not even that.
+        document.KeepDespiteUnreadableFile();
+        ConfigNewerException ex = Assert.ThrowsExactly<ConfigNewerException>(() => document.Save(s_now));
+
+        Assert.AreEqual(MenuConfig.CurrentVersion + 1, ex.Version);
+        Assert.AreEqual(newer, File.ReadAllText(_path));
+        Assert.IsEmpty(Backups());
+    }
+
+    [TestMethod]
+    public void Save_GoesOverANewerFileItCouldRead()
+    {
+        int newer = MenuConfig.CurrentVersion + 1;
+        File.WriteAllText(_path, $$"""{ "version": {{newer}}, "items": [] }""");
+        ConfigDocument document = ConfigDocument.Load(_path);
+        document.Config.Items.Add(new SeparatorEntry());
+
+        document.Save(s_now);
+
+        Assert.AreEqual(newer, ConfigSerializer.Load(_path).Version);
+        Assert.HasCount(1, ConfigSerializer.Load(_path).Items);
+    }
 }

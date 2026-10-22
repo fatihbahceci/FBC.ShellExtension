@@ -38,8 +38,8 @@ Getting started
 4. Right-click a file. On Windows 11 the menu is under "Show more options"
    (Shift + right-click opens that menu directly).
 
-Your menu is stored in %APPDATA%\FBCTools\config.json. Tools in the Editor backs it up,
-restores it or resets it to the template.
+Your menu is stored in %APPDATA%\FBCTools\config.json. Tools in the Editor backs it up or
+restores it; File > Use factory default puts back the menu this version comes with.
 
 
 Moving or updating

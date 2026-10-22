@@ -56,7 +56,7 @@ internal static class WikiTool
             if (key is null)
             {
                 key = TextPrompt.Ask(new TextPromptOptions(title, Strings.WikiAskKey(new Uri(address.BaseUrl).Authority), "",
-                    Hint: Strings.WikiAskKeyHint(), Secret: true, Validate: text => text.Length < 20 ? Strings.WikiKeyTooShort() : null));
+                    Hint: Strings.WikiAskKeyHint(), Secret: true, Validate: text => text.Length < WikiSettings.MinimumKeyLength ? Strings.WikiKeyTooShort() : null));
                 if (key is null)
                 {
                     return 0;

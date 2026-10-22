@@ -19,6 +19,12 @@ public static class ConfigSerializer
         // its message still names the location.
         catch (Exception ex) when (ex is JsonException or NotSupportedException)
         {
+            // What a newer FBCTools added cannot be read here: that is said, rather than "invalid" (ADR-0038).
+            if (DeclaredVersion(json) is int version && version > MenuConfig.CurrentVersion)
+            {
+                throw new ConfigNewerException(Strings.ConfigNewer(version, MenuConfig.CurrentVersion, ex.Message), version, ex);
+            }
+
             throw new ConfigLoadException(Strings.ConfigInvalidJson(ex.Message), ex);
         }
 
@@ -65,6 +71,44 @@ public static class ConfigSerializer
     }
 
     /// <summary>
+    /// The "version" the document declares at its top level, read without the rest of it; null
+    /// when it declares none, or is not JSON up to there.
+    /// </summary>
+    public static int? DeclaredVersion(string json)
+    {
+        var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json), new JsonReaderOptions
+        {
+            CommentHandling = JsonCommentHandling.Skip,
+            AllowTrailingCommas = true,
+        });
+
+        try
+        {
+            if (!reader.Read() || reader.TokenType != JsonTokenType.StartObject)
+            {
+                return null;
+            }
+
+            while (reader.Read() && reader.TokenType == JsonTokenType.PropertyName)
+            {
+                bool isVersion = reader.ValueTextEquals("version"u8);
+                reader.Read();
+                if (isVersion)
+                {
+                    return reader.TokenType == JsonTokenType.Number && reader.TryGetInt32(out int version) ? version : null;
+                }
+
+                reader.Skip();
+            }
+        }
+        catch (JsonException)
+        {
+        }
+
+        return null;
+    }
+
+    /// <summary>
     /// Whether the text has comments, which <see cref="Serialize"/> cannot write back. False for
     /// text that is not JSON at all.
     /// </summary>
@@ -94,5 +138,16 @@ public static class ConfigSerializer
     }
 }
 
-public sealed class ConfigLoadException(string message, Exception? innerException)
+public class ConfigLoadException(string message, Exception? innerException)
     : Exception(message, innerException);
+
+/// <summary>
+/// The document was written by a newer FBCTools and uses what this one does not know. An older
+/// program must not save over it: what it cannot read, it would drop (ADR-0038).
+/// </summary>
+public sealed class ConfigNewerException(string message, int version, Exception? innerException)
+    : ConfigLoadException(message, innerException)
+{
+    /// <summary>The version the document declares.</summary>
+    public int Version { get; } = version;
+}
