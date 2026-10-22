@@ -7,6 +7,13 @@ internal static unsafe partial class Native
 {
     public const uint WM_NULL = 0x0000;
 
+    /// <summary>Any process: the editor, started next, may bring its window to the front.</summary>
+    public const uint ASFW_ANY = unchecked((uint)-1);
+
+    [LibraryImport("user32.dll", EntryPoint = "AllowSetForegroundWindow")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool AllowSetForegroundWindow(uint processId);
+
     [LibraryImport("kernel32.dll", EntryPoint = "GetCurrentThreadId")]
     public static partial uint GetCurrentThreadId();
 

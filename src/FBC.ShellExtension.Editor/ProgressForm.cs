@@ -29,6 +29,13 @@ public partial class ProgressForm : Form
         _cancellation.Cancel();
     }
 
+    /// <summary>Alt+F4 closes it despite the missing close box: that is a cancel too, not a window gone while the work goes on.</summary>
+    protected override void OnFormClosing(FormClosingEventArgs e)
+    {
+        _cancellation.Cancel();
+        base.OnFormClosing(e);
+    }
+
     protected override void Dispose(bool disposing)
     {
         if (disposing)

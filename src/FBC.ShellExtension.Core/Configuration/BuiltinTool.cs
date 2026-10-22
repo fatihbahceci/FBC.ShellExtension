@@ -72,18 +72,73 @@ public enum BuiltinTool
 
     /// <summary>Sends a markdown file and its images to a Wiki.js 2 page (ADR-0020).</summary>
     WikiImport,
+
+    /// <summary>Copies the selected items into a folder the user picks, with Windows' own copy engine (ADR-0026).</summary>
+    CopyToFolder,
+
+    /// <summary>Moves the selected items into a folder the user picks, with Windows' own copy engine.</summary>
+    MoveToFolder,
+
+    /// <summary>Makes a link to every selected item in a folder the user picks: a junction for a folder, a symbolic link for a file.</summary>
+    CreateLink,
+
+    /// <summary>Moves what the selected folders hold into a new folder whose name it asks for, and removes them.</summary>
+    JoinFolders,
+
+    /// <summary>Gives the selected folders an icon the user picks, through their <c>desktop.ini</c>.</summary>
+    ChangeFolderIcon,
+
+    /// <summary>Takes a custom icon off the selected folders.</summary>
+    RestoreFolderIcon,
+
+    /// <summary>Sets or clears read-only, hidden, system and archive, in a window of the editor (ADR-0028).</summary>
+    Attributes,
+
+    /// <summary>Sets when the items were created, modified and last accessed, in a window of the editor.</summary>
+    ChangeTime,
+
+    /// <summary>Moves files into folders named after their date or extension, next to them.</summary>
+    OrganizeIntoFolders,
+
+    /// <summary>Finds what matches name patterns under the selected folders and sends it to the Recycle Bin.</summary>
+    AdvancedDelete,
+
+    /// <summary>Renames the selected items by rules, with a preview of every new name (ADR-0029).</summary>
+    AdvancedRename,
+
+    /// <summary>Finds text in the content of files and replaces it, keeping each file's encoding.</summary>
+    FindReplace,
+
+    /// <summary>Shows the programs that use the items, closes them on request and deletes the items, or at the next restart (ADR-0031).</summary>
+    DeleteLocked,
+
+    /// <summary>Encrypts with a password or with Windows' EFS, as the user picks (ADR-0032).</summary>
+    Encrypt,
+
+    /// <summary>Decrypts what FBCTools encrypted with a password, or Windows' EFS.</summary>
+    Decrypt,
+
+    /// <summary>Copies what is new or changed in a folder into another, one way, with a preview (ADR-0033).</summary>
+    SyncFolders,
 }
 
 /// <summary>What the runner and the config rules need to know about each tool.</summary>
 public static class BuiltinTools
 {
-    /// <summary>The config version that introduced the tool (ADR-0015, ADR-0017, ADR-0018).</summary>
+    /// <summary>The config version that introduced the tool (ADR-0015 … ADR-0033).</summary>
     public static int SinceVersion(BuiltinTool tool) => tool switch
     {
         BuiltinTool.CopyPath or BuiltinTool.CopyName or BuiltinTool.CopyUncPath or BuiltinTool.CopyContent => 3,
         BuiltinTool.Checksum or BuiltinTool.VerifyChecksum or BuiltinTool.Split or BuiltinTool.Join or BuiltinTool.CountLines => 4,
         BuiltinTool.CopyInternetPath or BuiltinTool.AppendClipboard or BuiltinTool.Duplicate or BuiltinTool.FolderSize => 5,
         BuiltinTool.WikiImport => 7,
+        BuiltinTool.CopyToFolder or BuiltinTool.MoveToFolder or BuiltinTool.CreateLink or BuiltinTool.JoinFolders
+            or BuiltinTool.ChangeFolderIcon or BuiltinTool.RestoreFolderIcon => 8,
+        BuiltinTool.Attributes or BuiltinTool.ChangeTime or BuiltinTool.OrganizeIntoFolders or BuiltinTool.AdvancedDelete => 9,
+        BuiltinTool.AdvancedRename or BuiltinTool.FindReplace => 10,
+        BuiltinTool.DeleteLocked => 11,
+        BuiltinTool.Encrypt or BuiltinTool.Decrypt => 12,
+        BuiltinTool.SyncFolders => 13,
         _ => 6,
     };
 
@@ -96,14 +151,27 @@ public static class BuiltinTools
         or BuiltinTool.Split or BuiltinTool.Join or BuiltinTool.CountLines or BuiltinTool.Duplicate or BuiltinTool.FolderSize
         or BuiltinTool.DeletePermanently or BuiltinTool.DeleteEmptyFolders;
 
+    /// <summary>
+    /// Has a window of its own, with options and a preview: the editor's executable shows it, as
+    /// WinForms does not compile with NativeAOT; the runner only hands the job over (ADR-0028).
+    /// </summary>
+    public static bool UsesEditorWindow(BuiltinTool tool) => tool is BuiltinTool.Attributes or BuiltinTool.ChangeTime
+        or BuiltinTool.OrganizeIntoFolders or BuiltinTool.AdvancedDelete or BuiltinTool.AdvancedRename or BuiltinTool.FindReplace
+        or BuiltinTool.DeleteLocked or BuiltinTool.Encrypt or BuiltinTool.Decrypt or BuiltinTool.SyncFolders;
+
     /// <summary>The kinds of item the tool works on; the template's match rules offer it only for those.</summary>
     public static bool Accepts(BuiltinTool tool, ItemKind kind) => tool switch
     {
         BuiltinTool.CopyPath or BuiltinTool.CopyName or BuiltinTool.CopyUncPath or BuiltinTool.CopyInternetPath
             or BuiltinTool.NewFolder => true,
-        BuiltinTool.FolderSize or BuiltinTool.DeleteEmptyFolders => kind is ItemKind.Folder or ItemKind.Background or ItemKind.Drive,
-        BuiltinTool.UnpackFolder => kind == ItemKind.Folder,
-        BuiltinTool.PackToFolder or BuiltinTool.DeletePermanently => kind is ItemKind.File or ItemKind.Folder,
+        BuiltinTool.FolderSize or BuiltinTool.DeleteEmptyFolders or BuiltinTool.AdvancedDelete
+            => kind is ItemKind.Folder or ItemKind.Background or ItemKind.Drive,
+        BuiltinTool.UnpackFolder or BuiltinTool.JoinFolders => kind == ItemKind.Folder,
+        BuiltinTool.PackToFolder or BuiltinTool.DeletePermanently or BuiltinTool.CopyToFolder or BuiltinTool.MoveToFolder
+            or BuiltinTool.CreateLink or BuiltinTool.Attributes or BuiltinTool.ChangeTime or BuiltinTool.AdvancedRename
+            or BuiltinTool.DeleteLocked or BuiltinTool.Encrypt or BuiltinTool.Decrypt => kind is ItemKind.File or ItemKind.Folder,
+        BuiltinTool.OrganizeIntoFolders or BuiltinTool.FindReplace => kind is ItemKind.File or ItemKind.Folder or ItemKind.Background,
+        BuiltinTool.ChangeFolderIcon or BuiltinTool.RestoreFolderIcon or BuiltinTool.SyncFolders => kind is ItemKind.Folder or ItemKind.Background,
         _ => kind == ItemKind.File,
     };
 }

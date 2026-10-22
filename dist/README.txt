@@ -5,8 +5,12 @@ FBCTools adds an "FBCTools" menu to the right-click menu of Windows Explorer. Wh
 menu offers is set in a configuration file you edit with the FBCTools Editor. Out of the
 box it converts videos to MP3 or MP4 and images to JPG or PNG with ffmpeg, copies paths,
 names, UNC paths or the text of files to the clipboard, calculates and verifies checksums,
-splits files into parts and joins them again, and sends a markdown file with its images
-to a Wiki.js page.
+splits files into parts and joins them again, copies or moves items into a folder you
+pick, makes links, joins folders, changes folder icons, sorts files into folders by date or
+extension, changes attributes and times, deletes by name pattern into the Recycle Bin,
+renames by rules, finds and replaces text in files, deletes files that another program holds
+open, encrypts files with a password or Windows' EFS, synchronizes a folder into another, and
+sends a markdown file with its images to a Wiki.js page.
 
 Windows 10 or 11 on x64 (not Arm64). No administrator rights are needed.
 

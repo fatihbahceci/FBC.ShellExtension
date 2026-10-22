@@ -1373,4 +1373,769 @@ Replace its content with this file? Its title comes from the file; its descripti
   <data name="WikiOneFile" xml:space="preserve">
     <value>Send to Wiki.js takes one markdown file at a time.</value>
   </data>
+  <data name="ToolCopyToFolder" xml:space="preserve">
+    <value>Copy to folder</value>
+  </data>
+  <data name="ToolCopyToFolderNote" xml:space="preserve">
+    <value>Asks for a folder and copies the selected files and folders into it with Windows' own copying: its progress window, its question when a name is taken, and Undo in Explorer.</value>
+  </data>
+  <data name="ToolMoveToFolder" xml:space="preserve">
+    <value>Move to folder</value>
+  </data>
+  <data name="ToolMoveToFolderNote" xml:space="preserve">
+    <value>Asks for a folder and moves the selected files and folders into it with Windows' own moving: its progress window, its question when a name is taken, and Undo in Explorer.</value>
+  </data>
+  <data name="ToolCreateLink" xml:space="preserve">
+    <value>Create link</value>
+  </data>
+  <data name="ToolCreateLinkNote" xml:space="preserve">
+    <value>Asks for a folder and makes a link there to each selected item: a junction for a folder, a symbolic link for a file. A symbolic link needs Developer Mode or administrator rights.</value>
+  </data>
+  <data name="ToolJoinFolders" xml:space="preserve">
+    <value>Join folders</value>
+  </data>
+  <data name="ToolJoinFoldersNote" xml:space="preserve">
+    <value>Asks for a name and moves what the selected folders hold into a new folder of that name next to them, with Windows' own moving; the folders left empty are removed.</value>
+  </data>
+  <data name="ToolChangeFolderIcon" xml:space="preserve">
+    <value>Change folder icon</value>
+  </data>
+  <data name="ToolChangeFolderIconNote" xml:space="preserve">
+    <value>Opens Windows' icon picker and gives the selected folders the chosen icon, through their desktop.ini.</value>
+  </data>
+  <data name="ToolRestoreFolderIcon" xml:space="preserve">
+    <value>Restore folder icon</value>
+  </data>
+  <data name="ToolRestoreFolderIconNote" xml:space="preserve">
+    <value>Takes a custom icon off the selected folders, so that they show the usual folder icon again.</value>
+  </data>
+  <data name="PickCopyTitle" xml:space="preserve">
+    <value>Copy the {0} selected items to</value>
+  </data>
+  <data name="PickCopyTitleOne" xml:space="preserve">
+    <value>Copy {0} to</value>
+  </data>
+  <data name="PickMoveTitle" xml:space="preserve">
+    <value>Move the {0} selected items to</value>
+  </data>
+  <data name="PickMoveTitleOne" xml:space="preserve">
+    <value>Move {0} to</value>
+  </data>
+  <data name="PickLinkTitle" xml:space="preserve">
+    <value>Make links to the {0} selected items in</value>
+  </data>
+  <data name="PickLinkTitleOne" xml:space="preserve">
+    <value>Make a link to {0} in</value>
+  </data>
+  <data name="PickCopyOk" xml:space="preserve">
+    <value>Copy here</value>
+  </data>
+  <data name="PickMoveOk" xml:space="preserve">
+    <value>Move here</value>
+  </data>
+  <data name="PickLinkOk" xml:space="preserve">
+    <value>Make links here</value>
+  </data>
+  <data name="ToolFileOperationFailed" xml:space="preserve">
+    <value>Windows' copying could not start: {0}</value>
+  </data>
+  <data name="ToolJoinTwoOrMore" xml:space="preserve">
+    <value>Select two or more folders to join.</value>
+  </data>
+  <data name="ToolJoinDifferentFolders" xml:space="preserve">
+    <value>The selected folders are in different folders; select folders from one folder to join them.</value>
+  </data>
+  <data name="ToolJoinLink" xml:space="preserve">
+    <value>{0} is a link to another folder; nothing was joined.</value>
+  </data>
+  <data name="PromptJoinQuestion" xml:space="preserve">
+    <value>Move what the {0} selected folders hold into a new folder named:</value>
+  </data>
+  <data name="ToolJoinNotRemoved" xml:space="preserve">
+    <value>These folders were kept, as something is still in them:</value>
+  </data>
+  <data name="ToolLinkLoop" xml:space="preserve">
+    <value>{0}: a link to it inside itself would be a loop; choose a folder outside it.</value>
+  </data>
+  <data name="ToolLinkNeedsPrivilege" xml:space="preserve">
+    <value>{0}: a symbolic link to a file needs Developer Mode (Settings &gt; System &gt; For developers) or administrator rights.</value>
+  </data>
+  <data name="ToolLinkNotLocal" xml:space="preserve">
+    <value>{0}: a junction can only point at a folder on a drive of this computer, not on a network share.</value>
+  </data>
+  <data name="ToolLinkFailed" xml:space="preserve">
+    <value>{0}: the link was not made: {1}</value>
+  </data>
+  <data name="ToolLinksFailed" xml:space="preserve">
+    <value>These links were not made:</value>
+  </data>
+  <data name="ToolIconFailed" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="ToolIconsFailed" xml:space="preserve">
+    <value>The icon was not changed for these folders:</value>
+  </data>
+  <data name="ToolLinkTooLong" xml:space="preserve">
+    <value>the path is too long for a junction</value>
+  </data>
+  <data name="ToolPickerFailed" xml:space="preserve">
+    <value>The Windows dialog could not be opened: {0}</value>
+  </data>
+  <data name="ToolIconSpecialFolder" xml:space="preserve">
+    <value>{0} is one of Windows' own folders (such as Documents or Pictures); change its icon in its Properties.</value>
+  </data>
+  <data name="ToolIconFileMissing" xml:space="preserve">
+    <value>The icon file {0} was not found.</value>
+  </data>
+  <data name="ToolIconDrive" xml:space="preserve">
+    <value>{0} is a drive: Windows does not take a drive's icon from its folder settings.</value>
+  </data>
+  <data name="ToolLinkPlaceNotLocal" xml:space="preserve">
+    <value>{0}: a junction can only be made in a folder on a drive of this computer, not on a network share.</value>
+  </data>
+  <data name="ToolAttributes" xml:space="preserve">
+    <value>Attributes</value>
+  </data>
+  <data name="ToolAttributesNote" xml:space="preserve">
+    <value>Opens a window that sets or clears read-only, hidden, system and archive on the selected items, and on everything inside the selected folders if asked.</value>
+  </data>
+  <data name="ToolChangeTime" xml:space="preserve">
+    <value>Change time</value>
+  </data>
+  <data name="ToolChangeTimeNote" xml:space="preserve">
+    <value>Opens a window that sets when the selected items were created, modified and last accessed, and those of everything inside the selected folders if asked.</value>
+  </data>
+  <data name="ToolOrganizeIntoFolders" xml:space="preserve">
+    <value>Organize into folders</value>
+  </data>
+  <data name="ToolOrganizeIntoFoldersNote" xml:space="preserve">
+    <value>Opens a window that moves files into folders named after their date or their extension, next to them, with Windows' own moving; a selected folder gives the files in it.</value>
+  </data>
+  <data name="ToolAdvancedDelete" xml:space="preserve">
+    <value>Advanced delete</value>
+  </data>
+  <data name="ToolAdvancedDeleteNote" xml:space="preserve">
+    <value>Opens a window that finds the files and folders whose names match patterns under the selected folders, and sends the ones left ticked to the Recycle Bin.</value>
+  </data>
+  <data name="ToolNeedsEditor" xml:space="preserve">
+    <value>This tool's window is part of the FBCTools editor ({0}), which is not next to the runner. Install FBCTools again.</value>
+  </data>
+  <data name="ToolEditorFailed" xml:space="preserve">
+    <value>The FBCTools editor could not be started: {0}</value>
+  </data>
+  <data name="ToolWindowSelectedOne" xml:space="preserve">
+    <value>Selected: {0}</value>
+  </data>
+  <data name="ToolWindowSelected" xml:space="preserve">
+    <value>{0} items selected: {1}</value>
+  </data>
+  <data name="ToolWindowApply" xml:space="preserve">
+    <value>&amp;Apply</value>
+  </data>
+  <data name="ToolWindowClose" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="ToolWindowWorking" xml:space="preserve">
+    <value>Working…</value>
+  </data>
+  <data name="ToolWindowInside" xml:space="preserve">
+    <value>Also &amp;everything inside the selected folders</value>
+  </data>
+  <data name="ToolWindowNotChanged" xml:space="preserve">
+    <value>These items were not changed:</value>
+  </data>
+  <data name="AttributeReadOnly" xml:space="preserve">
+    <value>&amp;Read-only</value>
+  </data>
+  <data name="AttributeHidden" xml:space="preserve">
+    <value>&amp;Hidden</value>
+  </data>
+  <data name="AttributeSystem" xml:space="preserve">
+    <value>&amp;System</value>
+  </data>
+  <data name="AttributeArchive" xml:space="preserve">
+    <value>Ar&amp;chive</value>
+  </data>
+  <data name="AttributesHint" xml:space="preserve">
+    <value>A ticked box sets the attribute, an empty one clears it, a filled one leaves it as it is. Only what you change is written. Read-only and system go on files only: on a folder they mark its own settings (desktop.ini).</value>
+  </data>
+  <data name="TimeCreated" xml:space="preserve">
+    <value>C&amp;reated:</value>
+  </data>
+  <data name="TimeModified" xml:space="preserve">
+    <value>&amp;Modified:</value>
+  </data>
+  <data name="TimeAccessed" xml:space="preserve">
+    <value>Accesse&amp;d:</value>
+  </data>
+  <data name="TimeNow" xml:space="preserve">
+    <value>&amp;Now</value>
+  </data>
+  <data name="TimeHint" xml:space="preserve">
+    <value>Only the ticked times are written. The boxes start with the times of the first item; changing one ticks it.</value>
+  </data>
+  <data name="OrganizeByDate" xml:space="preserve">
+    <value>By &amp;date</value>
+  </data>
+  <data name="OrganizeByExtension" xml:space="preserve">
+    <value>By e&amp;xtension</value>
+  </data>
+  <data name="OrganizeDateLabel" xml:space="preserve">
+    <value>Date:</value>
+  </data>
+  <data name="OrganizeDateModified" xml:space="preserve">
+    <value>Modified</value>
+  </data>
+  <data name="OrganizeDateCreated" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="OrganizeDateTaken" xml:space="preserve">
+    <value>Taken (photos and videos; else modified)</value>
+  </data>
+  <data name="OrganizeFoldersLabel" xml:space="preserve">
+    <value>Folders:</value>
+  </data>
+  <data name="OrganizeFolderYear" xml:space="preserve">
+    <value>Year ({0})</value>
+  </data>
+  <data name="OrganizeFolderYearMonth" xml:space="preserve">
+    <value>Year and month ({0})</value>
+  </data>
+  <data name="OrganizeFolderYearMonthDay" xml:space="preserve">
+    <value>Day ({0})</value>
+  </data>
+  <data name="OrganizeFolderYearThenMonth" xml:space="preserve">
+    <value>Month inside year ({0})</value>
+  </data>
+  <data name="OrganizeFileColumn" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="OrganizeFolderColumn" xml:space="preserve">
+    <value>Goes into</value>
+  </data>
+  <data name="OrganizeNoExtension" xml:space="preserve">
+    <value>No extension</value>
+  </data>
+  <data name="OrganizeReadingDates" xml:space="preserve">
+    <value>Reading the dates…</value>
+  </data>
+  <data name="OrganizeSummary" xml:space="preserve">
+    <value>{0} files go into {1} folders next to them.</value>
+  </data>
+  <data name="OrganizeNothing" xml:space="preserve">
+    <value>There are no files to organize. Hidden and system files in a selected folder are left where they are.</value>
+  </data>
+  <data name="OrganizeMove" xml:space="preserve">
+    <value>&amp;Move</value>
+  </data>
+  <data name="OrganizeNotMoved" xml:space="preserve">
+    <value>These files were not moved:</value>
+  </data>
+  <data name="DeletePatternsLabel" xml:space="preserve">
+    <value>&amp;Names:</value>
+  </data>
+  <data name="DeletePatternsHint" xml:space="preserve">
+    <value>Names with * and ?, separated by ; — for example *.tmp; ~*; Thumbs.db. Hidden and system items are found too; links are not followed.</value>
+  </data>
+  <data name="DeleteFiles" xml:space="preserve">
+    <value>Fi&amp;les</value>
+  </data>
+  <data name="DeleteFolders" xml:space="preserve">
+    <value>F&amp;olders</value>
+  </data>
+  <data name="DeleteSubfolders" xml:space="preserve">
+    <value>In &amp;subfolders too</value>
+  </data>
+  <data name="DeleteFind" xml:space="preserve">
+    <value>&amp;Find</value>
+  </data>
+  <data name="DeletePathColumn" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="DeleteSizeColumn" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="DeleteModifiedColumn" xml:space="preserve">
+    <value>Modified</value>
+  </data>
+  <data name="DeleteFolderSize" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="DeleteRecycle" xml:space="preserve">
+    <value>Send to &amp;Recycle Bin</value>
+  </data>
+  <data name="DeleteConfirm" xml:space="preserve">
+    <value>Send {0} items to the Recycle Bin?</value>
+  </data>
+  <data name="DeleteFound" xml:space="preserve">
+    <value>{0} files ({1}) and {2} folders. Untick what should stay.</value>
+  </data>
+  <data name="DeleteNothingFound" xml:space="preserve">
+    <value>Nothing matches.</value>
+  </data>
+  <data name="DeleteUnreadable" xml:space="preserve">
+    <value>{0} folders could not be read and were not searched.</value>
+  </data>
+  <data name="DeleteSearching" xml:space="preserve">
+    <value>Searching…</value>
+  </data>
+  <data name="DeletePatternsEmpty" xml:space="preserve">
+    <value>Write at least one name or pattern.</value>
+  </data>
+  <data name="DeletePatternInvalid" xml:space="preserve">
+    <value>{0}: a pattern is a name with * and ?, without a folder.</value>
+  </data>
+  <data name="DeleteNotDeleted" xml:space="preserve">
+    <value>These items were not sent to the Recycle Bin:</value>
+  </data>
+  <data name="ToolRecycleFailed" xml:space="preserve">
+    <value>Windows could not start sending the items to the Recycle Bin: {0}</value>
+  </data>
+  <data name="OrganizeUnreadable" xml:space="preserve">
+    <value>{0} folders could not be read; their files are not in the list.</value>
+  </data>
+  <data name="ToolMoveFailed" xml:space="preserve">
+    <value>Windows could not move the files: {0}</value>
+  </data>
+  <data name="ToolAdvancedRename" xml:space="preserve">
+    <value>Advanced rename</value>
+  </data>
+  <data name="ToolAdvancedRenameNote" xml:space="preserve">
+    <value>Opens a window that renames the selected items by rules (find and replace, a name template with numbers and dates, the extension, the case) and shows every new name first.</value>
+  </data>
+  <data name="ToolFindReplace" xml:space="preserve">
+    <value>Find and replace</value>
+  </data>
+  <data name="ToolFindReplaceNote" xml:space="preserve">
+    <value>Opens a window that finds text in the selected files, or in the files of the selected folders, and replaces it after a preview, in each file's own encoding; the old file can stay next to it as name.bak.</value>
+  </data>
+  <data name="ToolRegexInvalid" xml:space="preserve">
+    <value>The regular expression is not valid: {0}</value>
+  </data>
+  <data name="ToolRegexTimeout" xml:space="preserve">
+    <value>the search took too long</value>
+  </data>
+  <data name="ToolRenameFailed" xml:space="preserve">
+    <value>Windows could not rename the items: {0}</value>
+  </data>
+  <data name="RenameProblemInvalid" xml:space="preserve">
+    <value>not a valid name</value>
+  </data>
+  <data name="RenameProblemDuplicate" xml:space="preserve">
+    <value>another item gets the same name</value>
+  </data>
+  <data name="RenameProblemExists" xml:space="preserve">
+    <value>an item of this name is already there</value>
+  </data>
+  <data name="RenameProblemSwap" xml:space="preserve">
+    <value>the names go round; rename in two steps</value>
+  </data>
+  <data name="RenameTokenUnknown" xml:space="preserve">
+    <value>{0} is not something a name can hold: use {{name}}, {{n}}, {{parent}}, {{date}}, {{date:yyyyMMdd}} or {{ext}}.</value>
+  </data>
+  <data name="RenameDateFormatInvalid" xml:space="preserve">
+    <value>{0} is not a date format.</value>
+  </data>
+  <data name="ReplaceFindEmpty" xml:space="preserve">
+    <value>Write what to look for.</value>
+  </data>
+  <data name="ReplaceTooLarge" xml:space="preserve">
+    <value>larger than {0} MB</value>
+  </data>
+  <data name="ReplaceUnmappable" xml:space="preserve">
+    <value>the file's code page cannot hold the replacement</value>
+  </data>
+  <data name="ReplaceNotText" xml:space="preserve">
+    <value>not a text file, or one that would not be written back the same</value>
+  </data>
+  <data name="SearchFindLabel" xml:space="preserve">
+    <value>&amp;Find:</value>
+  </data>
+  <data name="SearchReplaceLabel" xml:space="preserve">
+    <value>Replace &amp;with:</value>
+  </data>
+  <data name="SearchMatchCase" xml:space="preserve">
+    <value>Match &amp;case</value>
+  </data>
+  <data name="SearchRegularExpression" xml:space="preserve">
+    <value>Regular e&amp;xpression</value>
+  </data>
+  <data name="RenameNameLabel" xml:space="preserve">
+    <value>&amp;Name:</value>
+  </data>
+  <data name="RenameExtensionLabel" xml:space="preserve">
+    <value>Ex&amp;tension:</value>
+  </data>
+  <data name="RenameTokens" xml:space="preserve">
+    <value>{name} the name, {n} a number, {parent} the folder, {date} or {date:yyyyMMdd} the modified date, {ext} the extension</value>
+  </data>
+  <data name="RenameNumbersLabel" xml:space="preserve">
+    <value>Numbers:</value>
+  </data>
+  <data name="RenameStart" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="RenameStep" xml:space="preserve">
+    <value>step</value>
+  </data>
+  <data name="RenameDigits" xml:space="preserve">
+    <value>digits</value>
+  </data>
+  <data name="RenameCaseLabel" xml:space="preserve">
+    <value>Ca&amp;se:</value>
+  </data>
+  <data name="RenameCaseUnchanged" xml:space="preserve">
+    <value>As it is</value>
+  </data>
+  <data name="RenameCaseLower" xml:space="preserve">
+    <value>lower case</value>
+  </data>
+  <data name="RenameCaseUpper" xml:space="preserve">
+    <value>UPPER CASE</value>
+  </data>
+  <data name="RenameCaseTitle" xml:space="preserve">
+    <value>Title Case</value>
+  </data>
+  <data name="RenameOldColumn" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="RenameNewColumn" xml:space="preserve">
+    <value>New name</value>
+  </data>
+  <data name="RenameProblemColumn" xml:space="preserve">
+    <value>Problem</value>
+  </data>
+  <data name="RenameSummary" xml:space="preserve">
+    <value>{0} of {1} names change.</value>
+  </data>
+  <data name="RenameProblems" xml:space="preserve">
+    <value>{0} names have a problem; nothing is renamed while one has.</value>
+  </data>
+  <data name="RenameButton" xml:space="preserve">
+    <value>&amp;Rename</value>
+  </data>
+  <data name="RenameNotRenamed" xml:space="preserve">
+    <value>These items were not renamed:</value>
+  </data>
+  <data name="ReplaceWholeWord" xml:space="preserve">
+    <value>Whole w&amp;ords</value>
+  </data>
+  <data name="ReplaceFilesLabel" xml:space="preserve">
+    <value>File na&amp;mes:</value>
+  </data>
+  <data name="ReplaceSubfolders" xml:space="preserve">
+    <value>In &amp;subfolders too</value>
+  </data>
+  <data name="ReplaceBackup" xml:space="preserve">
+    <value>&amp;Keep the old file next to it as name.bak</value>
+  </data>
+  <data name="ReplaceHint" xml:space="preserve">
+    <value>Hidden and system folders such as .git are skipped, and so are files that are not text or larger than {0} MB. A file keeps its encoding, byte order mark and line endings.</value>
+  </data>
+  <data name="ReplaceFileColumn" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="ReplaceMatchesColumn" xml:space="preserve">
+    <value>Matches</value>
+  </data>
+  <data name="ReplaceNoteColumn" xml:space="preserve">
+    <value>Left alone because</value>
+  </data>
+  <data name="ReplacePreview" xml:space="preserve">
+    <value>&amp;Preview</value>
+  </data>
+  <data name="ReplaceButton" xml:space="preserve">
+    <value>&amp;Replace</value>
+  </data>
+  <data name="ReplaceSearching" xml:space="preserve">
+    <value>Searching…</value>
+  </data>
+  <data name="ReplaceSummary" xml:space="preserve">
+    <value>{0} matches in {1} files.</value>
+  </data>
+  <data name="ReplaceNothing" xml:space="preserve">
+    <value>No file holds it.</value>
+  </data>
+  <data name="ReplaceUnreadable" xml:space="preserve">
+    <value>{0} folders could not be read.</value>
+  </data>
+  <data name="ReplaceStale" xml:space="preserve">
+    <value>The options changed: preview again before replacing.</value>
+  </data>
+  <data name="ReplaceConfirm" xml:space="preserve">
+    <value>Replace {0} matches in {1} files?</value>
+  </data>
+  <data name="ReplaceNotReplaced" xml:space="preserve">
+    <value>These files were not changed:</value>
+  </data>
+  <data name="RenameRegexTooSlow" xml:space="preserve">
+    <value>The search takes too long on these names; make the expression simpler.</value>
+  </data>
+  <data name="RenameProblemTooLong" xml:space="preserve">
+    <value>the name or its path is too long</value>
+  </data>
+  <data name="ReplaceLink" xml:space="preserve">
+    <value>a link: open the file it points to instead</value>
+  </data>
+  <data name="ToolDeleteLocked" xml:space="preserve">
+    <value>Unlock and delete</value>
+  </data>
+  <data name="ToolDeleteLockedNote" xml:space="preserve">
+    <value>Opens a window that shows the programs using the selected items, closes them on request and sends the items to the Recycle Bin, or has Windows delete them at the next restart.</value>
+  </data>
+  <data name="LockedNotFound" xml:space="preserve">
+    <value>not found</value>
+  </data>
+  <data name="LockedSearching" xml:space="preserve">
+    <value>Looking for the programs that use these items…</value>
+  </data>
+  <data name="LockedProgramColumn" xml:space="preserve">
+    <value>Program</value>
+  </data>
+  <data name="LockedIdColumn" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="LockedKindColumn" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="LockedHint" xml:space="preserve">
+    <value>Close asks each program to close as you would; one that does not close within 10 seconds (it may be asking whether to save) can be ended, losing what it has not saved. Explorer, services and Windows' own processes are not closed: have the items deleted at the next restart instead.</value>
+  </data>
+  <data name="LockedCloseAndDelete" xml:space="preserve">
+    <value>&amp;Close them and delete</value>
+  </data>
+  <data name="LockedDelete" xml:space="preserve">
+    <value>&amp;Delete</value>
+  </data>
+  <data name="LockedAtRestart" xml:space="preserve">
+    <value>Delete at next &amp;restart</value>
+  </data>
+  <data name="LockedSearchFailed" xml:space="preserve">
+    <value>Windows could not say which programs use them: {0}</value>
+  </data>
+  <data name="LockedTooMany" xml:space="preserve">
+    <value>Only the first {0} files in the folders were checked.</value>
+  </data>
+  <data name="LockedNone" xml:space="preserve">
+    <value>No program uses these items now. If they still cannot be deleted, a folder may be some program's current folder: have them deleted at the next restart.</value>
+  </data>
+  <data name="LockedHolders" xml:space="preserve">
+    <value>These programs use the items:</value>
+  </data>
+  <data name="LockedKindService" xml:space="preserve">
+    <value>service: not closed</value>
+  </data>
+  <data name="LockedKindExplorer" xml:space="preserve">
+    <value>Explorer: not closed</value>
+  </data>
+  <data name="LockedKindCritical" xml:space="preserve">
+    <value>part of Windows: not closed</value>
+  </data>
+  <data name="LockedKindConsole" xml:space="preserve">
+    <value>console program</value>
+  </data>
+  <data name="LockedKindProgram" xml:space="preserve">
+    <value>program</value>
+  </data>
+  <data name="LockedClosing" xml:space="preserve">
+    <value>Closing the programs…</value>
+  </data>
+  <data name="LockedStillUsed" xml:space="preserve">
+    <value>Nothing was deleted: these programs still use the items:</value>
+  </data>
+  <data name="LockedEndQuestion" xml:space="preserve">
+    <value>{0} did not close; it may be asking whether to save. End it? What it has not saved is lost.</value>
+  </data>
+  <data name="LockedScheduled" xml:space="preserve">
+    <value>{0} items will be deleted when Windows restarts, whatever is under those names then.</value>
+  </data>
+  <data name="LockedArgumentsTooLong" xml:space="preserve">
+    <value>Too many items to mark at once (Windows passes about 2,000 characters to an administrator program): select fewer.</value>
+  </data>
+  <data name="LockedElevationFailed" xml:space="preserve">
+    <value>The editor could not be started as administrator: {0}</value>
+  </data>
+  <data name="LockedNotScheduled" xml:space="preserve">
+    <value>These items were not marked for deletion at restart:</value>
+  </data>
+  <data name="CryptNotOurs" xml:space="preserve">
+    <value>not a file encrypted by FBCTools</value>
+  </data>
+  <data name="CryptWrongPassword" xml:space="preserve">
+    <value>the password is wrong, or the file was changed</value>
+  </data>
+  <data name="CryptAlreadyEncrypted" xml:space="preserve">
+    <value>already encrypted with a password</value>
+  </data>
+  <data name="ToolEncrypt" xml:space="preserve">
+    <value>Encrypt</value>
+  </data>
+  <data name="ToolEncryptNote" xml:space="preserve">
+    <value>Opens a window that encrypts the selected files, and the files in the selected folders, with a password or with Windows' EFS.</value>
+  </data>
+  <data name="ToolDecrypt" xml:space="preserve">
+    <value>Decrypt</value>
+  </data>
+  <data name="ToolDecryptNote" xml:space="preserve">
+    <value>Opens a window that decrypts the selected files, and the files in the selected folders, encrypted by FBCTools with a password or by Windows' EFS.</value>
+  </data>
+  <data name="EncryptWithPassword" xml:space="preserve">
+    <value>With a &amp;password</value>
+  </data>
+  <data name="EncryptWithEfs" xml:space="preserve">
+    <value>With &amp;Windows (EFS)</value>
+  </data>
+  <data name="EncryptEfsHint" xml:space="preserve">
+    <value>No password: only your Windows account opens them, on this computer, and only while that account's certificate exists. Windows Home has no EFS.</value>
+  </data>
+  <data name="EncryptPasswordHint" xml:space="preserve">
+    <value>Opens on any computer with FBCTools (AES-256). A forgotten password cannot be recovered. A deleted original's bytes can stay on the disk until they are written over.</value>
+  </data>
+  <data name="CryptPasswordLabel" xml:space="preserve">
+    <value>Pass&amp;word:</value>
+  </data>
+  <data name="CryptConfirmLabel" xml:space="preserve">
+    <value>C&amp;onfirm:</value>
+  </data>
+  <data name="EncryptDeleteOriginals" xml:space="preserve">
+    <value>&amp;Delete the originals</value>
+  </data>
+  <data name="EncryptButton" xml:space="preserve">
+    <value>&amp;Encrypt</value>
+  </data>
+  <data name="CryptPasswordEmpty" xml:space="preserve">
+    <value>Type the password.</value>
+  </data>
+  <data name="CryptPasswordsDiffer" xml:space="preserve">
+    <value>The two passwords are not the same.</value>
+  </data>
+  <data name="CryptPasswordShort" xml:space="preserve">
+    <value>A password shorter than {0} characters is easy to guess. Use it all the same?</value>
+  </data>
+  <data name="EncryptNotEncrypted" xml:space="preserve">
+    <value>These were not encrypted:</value>
+  </data>
+  <data name="DecryptSearching" xml:space="preserve">
+    <value>Looking for encrypted files…</value>
+  </data>
+  <data name="DecryptFound" xml:space="preserve">
+    <value>{0} files encrypted with a password, {1} with Windows (EFS).</value>
+  </data>
+  <data name="DecryptNothing" xml:space="preserve">
+    <value>None of these files is encrypted.</value>
+  </data>
+  <data name="DecryptDeleteEncrypted" xml:space="preserve">
+    <value>&amp;Delete the encrypted files</value>
+  </data>
+  <data name="DecryptHint" xml:space="preserve">
+    <value>A file encrypted with a password comes back next to itself, under its own name. An EFS file is decrypted where it is; only the account that encrypted it can.</value>
+  </data>
+  <data name="DecryptButton" xml:space="preserve">
+    <value>&amp;Decrypt</value>
+  </data>
+  <data name="DecryptNotDecrypted" xml:space="preserve">
+    <value>These were not decrypted:</value>
+  </data>
+  <data name="ToolSyncFolders" xml:space="preserve">
+    <value>Synchronize folders</value>
+  </data>
+  <data name="ToolSyncFoldersNote" xml:space="preserve">
+    <value>Opens a window that compares a folder with another and copies what is new or changed in the first into the second, with Windows' own copying; what is only in the second goes to the Recycle Bin only when asked.</value>
+  </data>
+  <data name="SyncFrom" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="SyncTo" xml:space="preserve">
+    <value>&amp;To:</value>
+  </data>
+  <data name="SyncBrowse" xml:space="preserve">
+    <value>&amp;Browse…</value>
+  </data>
+  <data name="SyncSwap" xml:space="preserve">
+    <value>S&amp;wap</value>
+  </data>
+  <data name="SyncExtras" xml:space="preserve">
+    <value>Send what is only in the destination to the &amp;Recycle Bin</value>
+  </data>
+  <data name="SyncHint" xml:space="preserve">
+    <value>Files newer in the destination, and files of the same time but another size, are listed but not ticked. A file that is replaced goes to the Recycle Bin first. Links on either side are left alone.</value>
+  </data>
+  <data name="SyncCompare" xml:space="preserve">
+    <value>&amp;Compare</value>
+  </data>
+  <data name="SyncActionColumn" xml:space="preserve">
+    <value>What</value>
+  </data>
+  <data name="SyncButton" xml:space="preserve">
+    <value>&amp;Synchronize</value>
+  </data>
+  <data name="SyncComparing" xml:space="preserve">
+    <value>Comparing the folders…</value>
+  </data>
+  <data name="SyncNew" xml:space="preserve">
+    <value>new</value>
+  </data>
+  <data name="SyncChanged" xml:space="preserve">
+    <value>newer here</value>
+  </data>
+  <data name="SyncNewerThere" xml:space="preserve">
+    <value>newer in the destination</value>
+  </data>
+  <data name="SyncExtra" xml:space="preserve">
+    <value>only in the destination</value>
+  </data>
+  <data name="SyncSame" xml:space="preserve">
+    <value>The folders hold the same.</value>
+  </data>
+  <data name="SyncSummary" xml:space="preserve">
+    <value>{0} new, {1} changed, {2} newer in the destination, {3} only in the destination.</value>
+  </data>
+  <data name="SyncConfirm" xml:space="preserve">
+    <value>Copy {0} items into the destination, sending the {1} files they replace to the Recycle Bin first, and send {2} items that are only there to the Recycle Bin?</value>
+  </data>
+  <data name="SyncNotDone" xml:space="preserve">
+    <value>These were not synchronized:</value>
+  </data>
+  <data name="SyncNotCompared" xml:space="preserve">
+    <value>These could not be compared:</value>
+  </data>
+  <data name="SyncNoDestination" xml:space="preserve">
+    <value>Choose the folder to copy into.</value>
+  </data>
+  <data name="SyncDestinationMissing" xml:space="preserve">
+    <value>{0} is not there.</value>
+  </data>
+  <data name="SyncInside" xml:space="preserve">
+    <value>One folder is inside the other: synchronizing would copy a folder into itself.</value>
+  </data>
+  <data name="SyncKindDiffers" xml:space="preserve">
+    <value>a file on one side, a folder on the other: left alone</value>
+  </data>
+  <data name="CryptDestinationTaken" xml:space="preserve">
+    <value>{0} is already there.</value>
+  </data>
+  <data name="CryptOriginalKept" xml:space="preserve">
+    <value>encrypted, but the original was not deleted: {0}</value>
+  </data>
+  <data name="CryptEncryptedKept" xml:space="preserve">
+    <value>decrypted, but the encrypted file was not deleted: {0}</value>
+  </data>
+  <data name="SyncSizeDiffers" xml:space="preserve">
+    <value>same time, another size</value>
+  </data>
+  <data name="SyncNothingToCopy" xml:space="preserve">
+    <value>Nothing to copy.</value>
+  </data>
+  <data name="SyncLeftAlone" xml:space="preserve">
+    <value>{0} items were left alone, as listed after comparing.</value>
+  </data>
+  <data name="SyncLinkLeft" xml:space="preserve">
+    <value>a link on one side: left alone</value>
+  </data>
+  <data name="SyncNotFullPath" xml:space="preserve">
+    <value>{0} is not a full path, such as D:\Backup or \\server\share.</value>
+  </data>
+  <data name="SyncStopped" xml:space="preserve">
+    <value>Stopped before the end: compare again to see what is left.</value>
+  </data>
 </root>

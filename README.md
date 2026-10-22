@@ -94,17 +94,40 @@ them as the entry's **Kind**.
 | Join parts | `join` | Joins `name.001` … back into `name` and verifies it with `name.sha256` |
 | Count lines | `countLines` | Counts the lines of each file |
 | Folder size | `folderSize` | Size of a folder with everything in it, hidden files included, and its file and folder counts; does not follow links |
+| Change folder icon | `changeFolderIcon` | Opens Windows' icon picker and gives the selected folders that icon, through their `desktop.ini` |
+| Restore folder icon | `restoreFolderIcon` | Takes the custom icon off the selected folders |
+| Copy to folder | `copyToFolder` | Asks for a folder with Windows' folder picker and copies the selected items there with Windows' own copying: Explorer's progress window, its question when a name is taken, and Undo in Explorer |
+| Move to folder | `moveToFolder` | The same, moving |
+| Create link | `createLink` | Makes a link to every selected item in a folder you pick: a junction for a folder (no administrator rights needed), a symbolic link for a file (needs Developer Mode or administrator rights) |
+| Synchronize folders | `syncFolders` | Compares a folder with another (a second selected folder, or one you pick) and copies what is new or newer in the first into the second, one way, with Windows' own copying; a file it replaces goes to the Recycle Bin first. Files newer in the destination are listed but not ticked; what is only in the destination goes to the Recycle Bin only if you tick the box. Links on either side are left alone |
 | Pack into folder | `packToFolder` | Moves the selected items into a new folder whose name it asks for |
 | New folder | `newFolder` | Creates a folder, asking for its name |
 | Unpack folder | `unpackFolder` | Moves a folder's contents up one level and removes the folder; moves nothing if a name is taken |
+| Join folders | `joinFolders` | Moves what the selected folders hold into a new folder whose name it asks for, with Windows' own moving, and removes the folders left empty |
 | Delete empty folders | `deleteEmptyFolders` | Lists the empty folders under a folder and removes them after you confirm; leaves hidden and system folders (such as `.git`) alone |
+| Encrypt | `encrypt` | Encrypts files, or the files in folders, the way you pick: with a password, each file next to itself as `name.ext.fbcenc` (AES-256-GCM, the key from the password with PBKDF2-SHA256), which opens on any computer with FBCTools; or with Windows' EFS, with no password, for your Windows account only |
+| Decrypt | `decrypt` | Decrypts what Encrypt made, either way; a wrong password or a changed file writes nothing |
+| Unlock and delete | `deleteLocked` | Shows the programs that use the selected items (from Windows' Restart Manager), closes them as you would on request and sends the items to the Recycle Bin. Explorer, services and Windows' own processes are not closed; for those it has Windows delete the items at the next restart, with administrator rights |
 | Delete permanently | `deletePermanently` | Deletes without the Recycle Bin after you confirm, as Shift+Delete does |
+| Organize into folders | `organizeIntoFolders` | Moves files into folders named after their date (modified, created, or when a photo or video was taken; by year, month or day) or their extension, next to them. Shows where each file goes first; Windows does the moving |
+| Attributes | `attributes` | Sets or clears read-only, hidden, system and archive, on everything inside the selected folders too if you like. Only what you change is written |
+| Change time | `changeTime` | Sets when items were created, modified and last accessed |
+| Advanced rename | `advancedRename` | Renames the selected items by rules: find and replace (plain text or a regular expression), a name template with `{name}`, a number `{n}`, `{parent}` and `{date}`, the extension and the case. Every new name is shown first, and nothing is renamed while one has a problem. Windows does the renaming, so Undo in Explorer takes it back |
+| Find and replace | `findReplace` | Finds text in the selected files, or in the files of the selected folders that match a name pattern, shows how many matches each holds, and replaces them. Each file keeps its encoding, byte order mark and line endings; the old file can stay as `name.bak`. Hidden folders such as `.git` are skipped |
+| Advanced delete | `advancedDelete` | Finds the files and folders whose names match patterns such as `*.tmp; ~*; Thumbs.db` under a folder, lists them, and sends the ones you leave ticked to the Recycle Bin |
 | Run with parameters | `runWithParameters` | Asks for arguments and starts the selected program with them |
 | Send to Wiki.js | `wikiImport` | Sends a markdown file (written in Typora, for example) and the images it links to into a Wiki.js 2 page: see [Send to Wiki.js](docs/wiki-import/en.md) |
 
-The clipboard tools work without opening a window. The file and folder tools show their
-progress in a window that can be cancelled and stays open with the results. The built-in tools
-never replace an existing file: split, join, duplicate and the folder tools stop instead.
+The clipboard tools work without opening a window. Checksums, split and join, count lines,
+duplicate, folder size and the delete tools show their progress in a window that can be
+cancelled and stays open with the results. Organize into folders, Attributes, Change time,
+Advanced delete, Advanced rename, Find and replace, Unlock and delete, Encrypt, Decrypt and
+Synchronize folders open a window of their own, with their
+options and a preview. Copying, moving, joining, organizing and renaming use Windows' own engine,
+so Explorer asks what to do when a name is taken, and Advanced delete sends to the Recycle Bin
+through it; the other
+built-in tools never replace an existing file: split, join, duplicate and the folder tools stop
+instead.
 
 ## Ready-made commands in the default menu
 
@@ -148,6 +171,9 @@ FBCTools
 │  └─ Content
 ├─ File tools
 │  ├─ Duplicate
+│  ├─ Find and replace…
+│  ├─ Encrypt…
+│  ├─ Decrypt…
 │  ├─ Calculate checksums
 │  ├─ Verify checksum
 │  ├─ Split into parts…
@@ -156,12 +182,28 @@ FBCTools
 │  ├─ Register DLL
 │  └─ Unregister DLL
 ├─ Folder tools
-│  └─ Folder size
+│  ├─ Folder size
+│  ├─ Find and replace…
+│  ├─ Encrypt…
+│  ├─ Decrypt…
+│  ├─ Change icon…
+│  └─ Restore folder icon
 ├─ Organize
+│  ├─ Copy to folder…
+│  ├─ Move to folder…
+│  ├─ Create link…
+│  ├─ Synchronize folders…
+│  ├─ Advanced rename…
 │  ├─ Pack into folder…
 │  ├─ New folder…
 │  ├─ Unpack folder
+│  ├─ Join folders…
+│  ├─ Organize into folders…
+│  ├─ Attributes…
+│  ├─ Change time…
 │  ├─ Delete empty folders…
+│  ├─ Advanced delete…
+│  ├─ Unlock and delete…
 │  └─ Delete permanently…   (off)
 ├─ Text files
 │  ├─ Count lines
@@ -206,7 +248,7 @@ The Editor is the easy way. The file itself looks like this:
 
 ```jsonc
 {
-  "version": 7,
+  "version": 13,
   "items": [
     { "type": "command", "label": "Copy path", "tool": "copyPath" },
     {

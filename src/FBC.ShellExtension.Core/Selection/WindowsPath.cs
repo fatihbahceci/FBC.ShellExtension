@@ -61,6 +61,15 @@ internal static class WindowsPath
         return IsDriveSpecifier(parent) ? parent + "\\" : parent;
     }
 
+    /// <summary>Whether <paramref name="path"/> is <paramref name="folder"/> or lies inside it, regardless of case.</summary>
+    public static bool IsSameOrInside(string path, string folder)
+    {
+        string inner = TrimEndSeparators(path);
+        string outer = TrimEndSeparators(folder);
+        return string.Equals(inner, outer, StringComparison.OrdinalIgnoreCase)
+            || (inner.Length > outer.Length && inner.StartsWith(outer, StringComparison.OrdinalIgnoreCase) && IsSeparator(inner[outer.Length]));
+    }
+
     /// <summary>From the last dot of the name, as <see cref="System.IO.Path.GetExtension(string)"/> does.</summary>
     public static string GetExtension(string name)
     {

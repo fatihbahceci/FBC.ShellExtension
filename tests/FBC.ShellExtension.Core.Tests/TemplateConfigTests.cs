@@ -98,19 +98,36 @@ public sealed class TemplateConfigTests
     [DataRow(3, "file-tools")]
     [DataRow(4, "folder-tools")]
     [DataRow(5, "organize")]
+    [DataRow(7, "copy-to-folder", "move-to-folder", "create-link", "organize-transfer-separator", "join-folders",
+        "folder-tools-icon-separator", "change-folder-icon", "restore-folder-icon")]
+    [DataRow(8, "organize-into-folders", "organize-properties-separator", "attributes", "change-time", "advanced-delete")]
+    [DataRow(9, "advanced-rename", "find-replace", "find-replace-in-folders")]
+    [DataRow(10, "delete-locked")]
+    [DataRow(11, "file-tools-crypto-separator", "encrypt", "decrypt", "folder-tools-crypto-separator", "encrypt-folder", "decrypt-folder")]
+    [DataRow(12, "sync-folders")]
     public void OlderDefaultMenu_GetsWhatCameSinceWithoutAState(int version, params string[] since)
     {
         // A developer copy of an older default menu, made without a state (ADR-0016).
         string templateText = System.IO.File.ReadAllText(RepoFile(TemplatePath));
         MenuConfig old = Load();
         old.Version = version;
-        old.Items.RemoveAll(entry => since.Contains(entry.Id));
-        string[] expected = [.. All(Load().Items.Where(entry => since.Contains(entry.Id))).Select(entry => entry.Id!)];
+        RemoveAll(old.Items);
+        string[] expected = [.. All(All(Load().Items).Where(entry => since.Contains(entry.Id))).Select(entry => entry.Id!).Distinct()];
 
         TemplateOutcome outcome = TemplateMerger.Apply(templateText, ConfigSerializer.Serialize(old), null, new Version(0, 8));
 
         Assert.AreEqual(TemplateAction.Merged, outcome.Action);
         CollectionAssert.AreEquivalent(expected, outcome.AddedIds.ToArray());
+
+        // The entries came in later templates, at any depth.
+        void RemoveAll(List<MenuEntry> entries)
+        {
+            entries.RemoveAll(entry => since.Contains(entry.Id));
+            foreach (SubmenuEntry submenu in entries.OfType<SubmenuEntry>())
+            {
+                RemoveAll(submenu.Items);
+            }
+        }
     }
 
     [TestMethod]

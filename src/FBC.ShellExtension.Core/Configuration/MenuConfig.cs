@@ -5,10 +5,10 @@ public sealed class MenuConfig
 {
     /// <summary>
     /// The schema version this build writes. Version 2 adds entry ids (ADR-0009), version 3
-    /// built-in tools and <c>enabled</c> (ADR-0015), versions 4 to 7 more tools (ADR-0017 …
-    /// ADR-0020). Older documents are still read, and a missing <c>version</c> means this one.
+    /// built-in tools and <c>enabled</c> (ADR-0015), versions 4 to 13 more tools (ADR-0017 …
+    /// ADR-0033). Older documents are still read, and a missing <c>version</c> means this one.
     /// </summary>
-    public const int CurrentVersion = 7;
+    public const int CurrentVersion = 13;
 
     /// <summary>The oldest schema version this build reads.</summary>
     public const int MinimumVersion = 1;

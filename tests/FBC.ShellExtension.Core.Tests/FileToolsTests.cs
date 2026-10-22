@@ -9,7 +9,7 @@ namespace FBC.ShellExtension.Core.Tests;
 
 /// <summary>The windowed tools on real files in a temporary folder (ADR-0017).</summary>
 [TestClass]
-public sealed class FileToolsTests
+public sealed partial class FileToolsTests
 {
     // "abc" is the test vector of every one of these algorithms.
     private const string AbcMd5 = "900150983cd24fb0d6963f7d28e17f72";
@@ -707,5 +707,122 @@ public sealed class FileToolsTests
         Assert.AreEqual(4, config.RequiredVersion());
         Assert.IsTrue(BuiltinTools.UsesWindow(BuiltinTool.Join));
         Assert.IsFalse(BuiltinTools.UsesWindow(BuiltinTool.CopyPath));
+    }
+
+    [TestMethod]
+    public void ToolsOfVersion8_AndTheItemsTheyTake()
+    {
+        var config = new MenuConfig { Version = 7, Items = [new CommandEntry { Label = "Copy to", Tool = BuiltinTool.CopyToFolder }] };
+
+        Assert.AreEqual(8, config.RequiredVersion());
+        Assert.IsTrue(BuiltinTools.Accepts(BuiltinTool.MoveToFolder, ItemKind.Folder));
+        Assert.IsFalse(BuiltinTools.Accepts(BuiltinTool.CopyToFolder, ItemKind.Background));
+        Assert.IsTrue(BuiltinTools.Accepts(BuiltinTool.CreateLink, ItemKind.File));
+        Assert.IsFalse(BuiltinTools.Accepts(BuiltinTool.JoinFolders, ItemKind.File));
+        Assert.IsTrue(BuiltinTools.Accepts(BuiltinTool.ChangeFolderIcon, ItemKind.Background));
+        Assert.IsFalse(BuiltinTools.Accepts(BuiltinTool.RestoreFolderIcon, ItemKind.Drive));
+        Assert.IsFalse(BuiltinTools.UsesWindow(BuiltinTool.CopyToFolder));
+    }
+
+    [TestMethod]
+    public void FreeItemName_NumbersAFileBeforeItsExtension()
+    {
+        Write("report.pdf", "");
+        Write(".gitignore", "");
+        Directory.CreateDirectory(Path.Combine(_folder, "photos.2024"));
+
+        Assert.AreEqual("report (2).pdf", FileTools.FreeItemName(_folder, "report.pdf", isFile: true));
+        Assert.AreEqual("other.pdf", FileTools.FreeItemName(_folder, "other.pdf", isFile: true));
+        Assert.AreEqual(".gitignore (2)", FileTools.FreeItemName(_folder, ".gitignore", isFile: true));
+        Assert.AreEqual("photos.2024 (2)", FileTools.FreeItemName(_folder, "photos.2024", isFile: false));
+    }
+
+    [TestMethod]
+    public void JoinProblem_WantsTwoFoldersSideBySideAndNoLink()
+    {
+        string a = Directory.CreateDirectory(Path.Combine(_folder, "a")).FullName;
+        string b = Directory.CreateDirectory(Path.Combine(_folder, "b")).FullName;
+        string inner = Directory.CreateDirectory(Path.Combine(a, "inner")).FullName;
+        string link = Path.Combine(_folder, "link");
+        LinkFolder(link, b);
+
+        Assert.IsNull(FileTools.JoinProblem([Folder(a), Folder(b)]));
+        Assert.IsNotNull(FileTools.JoinProblem([Folder(a)]));
+        Assert.IsNotNull(FileTools.JoinProblem([Folder(b), Folder(inner)]));
+        StringAssert.Contains(FileTools.JoinProblem([Folder(a), Folder(link)]), "link");
+    }
+
+    [TestMethod]
+    public void JoinSources_TakeHiddenItems_AndAnEmptiedFolderGoes()
+    {
+        string a = Directory.CreateDirectory(Path.Combine(_folder, "a")).FullName;
+        string b = Directory.CreateDirectory(Path.Combine(_folder, "b")).FullName;
+        System.IO.File.WriteAllText(Path.Combine(a, "one.txt"), "1");
+        string hidden = Path.Combine(b, "desktop.ini");
+        System.IO.File.WriteAllText(hidden, "");
+        System.IO.File.SetAttributes(hidden, FileAttributes.Hidden | FileAttributes.System);
+
+        // Linux drops the attributes above but calls a dot name hidden: the check holds on both.
+        string dotted = Path.Combine(b, ".hidden");
+        System.IO.File.WriteAllText(dotted, "");
+        Directory.CreateDirectory(Path.Combine(b, "sub"));
+
+        CollectionAssert.AreEquivalent(
+            new[] { Path.Combine(a, "one.txt"), hidden, dotted, Path.Combine(b, "sub") },
+            FileTools.JoinSources([Folder(a), Folder(b)]).ToArray());
+
+        Assert.IsFalse(FileTools.RemoveIfEmpty(b));
+        System.IO.File.Delete(Path.Combine(a, "one.txt"));
+
+        // Only Windows refuses to delete a read-only folder; Linux deletes it either way.
+        new DirectoryInfo(a).Attributes |= FileAttributes.ReadOnly;
+        Assert.IsTrue(FileTools.RemoveIfEmpty(a));
+        Assert.IsFalse(Directory.Exists(a));
+    }
+
+    [TestMethod]
+    public void LinkProblem_RefusesALoop()
+    {
+        Assert.IsNotNull(FileTools.LinkProblem(Folder(@"C:\Data\Photos"), @"C:\Data\Photos"));
+        Assert.IsNotNull(FileTools.LinkProblem(Folder(@"C:\Data\Photos"), @"c:\data\photos\2024\"));
+        Assert.IsNull(FileTools.LinkProblem(Folder(@"C:\Data\Photos"), @"C:\Data\Photos 2"));
+        Assert.IsNull(FileTools.LinkProblem(File(@"C:\Data\a.txt"), @"C:\Data"));
+    }
+
+    [TestMethod]
+    public void IconTools_LeaveADriveAlone_HoweverItComes()
+    {
+        Assert.IsNotNull(FileTools.IconProblem(Drive(@"E:\")));
+        Assert.IsNotNull(FileTools.IconProblem(Background(@"E:\")));
+        Assert.IsNotNull(FileTools.IconProblem(Background(@"\\server\share")));
+        Assert.IsNull(FileTools.IconProblem(Background(@"E:\Photos")));
+        Assert.IsNull(FileTools.IconProblem(Folder(@"\\server\share\Photos")));
+    }
+
+    [TestMethod]
+    public void MountPointData_IsWhatMklinkWrites()
+    {
+        // fsutil reparsepoint query of "mklink /J Python34 "C:\Program Files\Python34"": data length
+        // 0x78, then 00 00 3a 00 3c 00 32 00.
+        byte[] data = FileTools.MountPointData(@"C:\Program Files\Python34\");
+
+        Assert.AreEqual(128, data.Length);
+        CollectionAssert.AreEqual(new byte[] { 0x03, 0x00, 0x00, 0xA0, 0x78, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3A, 0x00, 0x3C, 0x00, 0x32, 0x00 }, data[..16]);
+        Assert.AreEqual(@"\??\C:\Program Files\Python34", Encoding.Unicode.GetString(data, 16, 58));
+        Assert.AreEqual(@"C:\Program Files\Python34", Encoding.Unicode.GetString(data, 16 + 60, 50));
+        Assert.AreEqual(0, data[16 + 58] | data[16 + 59] | data[^2] | data[^1]);
+
+        Assert.AreEqual(@"\??\D:\", Encoding.Unicode.GetString(FileTools.MountPointData(@"\\?\D:\"), 16, 14));
+        Assert.ThrowsExactly<ToolFailedException>(() => FileTools.MountPointData(@"\\server\share\folder"));
+        Assert.ThrowsExactly<ToolFailedException>(() => FileTools.MountPointData(@"C:\" + new string('a', 8200)));
+    }
+
+    [TestMethod]
+    public void DesktopIni_IsEmptyWithoutItsIconLines()
+    {
+        Assert.IsFalse(FileTools.DesktopIniHasOtherSettings("\uFEFF[.ShellClassInfo]\r\nIconResource=C:\\icons\\a.ico,0\r\n"));
+        Assert.IsFalse(FileTools.DesktopIniHasOtherSettings("; made by hand\n[.ShellClassInfo]\nIconFile=a.ico\nIconIndex=0\n\n"));
+        Assert.IsTrue(FileTools.DesktopIniHasOtherSettings("[.ShellClassInfo]\r\nLocalizedResourceName=@%SystemRoot%\\system32\\shell32.dll,-21770\r\nIconResource=x,0"));
+        Assert.IsTrue(FileTools.DesktopIniHasOtherSettings("[.ShellClassInfo]\r\nIconResource=x,0\r\n[ViewState]\r\nFolderType=Pictures\r\n"));
     }
 }

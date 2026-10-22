@@ -910,4 +910,514 @@ public static class Strings
     public static string WikiSavedWithMissing(string url, int count, string list) => Format(nameof(WikiSavedWithMissing), url, count, list);
 
     public static string WikiOneFile() => Get(nameof(WikiOneFile));
+
+    public static string ToolCopyToFolder() => Get(nameof(ToolCopyToFolder));
+
+    public static string ToolCopyToFolderNote() => Get(nameof(ToolCopyToFolderNote));
+
+    public static string ToolMoveToFolder() => Get(nameof(ToolMoveToFolder));
+
+    public static string ToolMoveToFolderNote() => Get(nameof(ToolMoveToFolderNote));
+
+    public static string ToolCreateLink() => Get(nameof(ToolCreateLink));
+
+    public static string ToolCreateLinkNote() => Get(nameof(ToolCreateLinkNote));
+
+    public static string ToolJoinFolders() => Get(nameof(ToolJoinFolders));
+
+    public static string ToolJoinFoldersNote() => Get(nameof(ToolJoinFoldersNote));
+
+    public static string ToolChangeFolderIcon() => Get(nameof(ToolChangeFolderIcon));
+
+    public static string ToolChangeFolderIconNote() => Get(nameof(ToolChangeFolderIconNote));
+
+    public static string ToolRestoreFolderIcon() => Get(nameof(ToolRestoreFolderIcon));
+
+    public static string ToolRestoreFolderIconNote() => Get(nameof(ToolRestoreFolderIconNote));
+
+    public static string PickCopyTitle(int count) => Format(nameof(PickCopyTitle), count);
+
+    public static string PickCopyTitleOne(string name) => Format(nameof(PickCopyTitleOne), name);
+
+    public static string PickMoveTitle(int count) => Format(nameof(PickMoveTitle), count);
+
+    public static string PickMoveTitleOne(string name) => Format(nameof(PickMoveTitleOne), name);
+
+    public static string PickLinkTitle(int count) => Format(nameof(PickLinkTitle), count);
+
+    public static string PickLinkTitleOne(string name) => Format(nameof(PickLinkTitleOne), name);
+
+    public static string PickCopyOk() => Get(nameof(PickCopyOk));
+
+    public static string PickMoveOk() => Get(nameof(PickMoveOk));
+
+    public static string PickLinkOk() => Get(nameof(PickLinkOk));
+
+    public static string ToolFileOperationFailed(string message) => Format(nameof(ToolFileOperationFailed), message);
+
+    public static string ToolJoinTwoOrMore() => Get(nameof(ToolJoinTwoOrMore));
+
+    public static string ToolJoinDifferentFolders() => Get(nameof(ToolJoinDifferentFolders));
+
+    public static string ToolJoinLink(string name) => Format(nameof(ToolJoinLink), name);
+
+    public static string PromptJoinQuestion(int count) => Format(nameof(PromptJoinQuestion), count);
+
+    public static string ToolJoinNotRemoved() => Get(nameof(ToolJoinNotRemoved));
+
+    public static string ToolLinkLoop(string name) => Format(nameof(ToolLinkLoop), name);
+
+    public static string ToolLinkNeedsPrivilege(string name) => Format(nameof(ToolLinkNeedsPrivilege), name);
+
+    public static string ToolLinkNotLocal(string name) => Format(nameof(ToolLinkNotLocal), name);
+
+    public static string ToolLinkFailed(string name, string message) => Format(nameof(ToolLinkFailed), name, message);
+
+    public static string ToolLinksFailed() => Get(nameof(ToolLinksFailed));
+
+    public static string ToolIconFailed(string name, string message) => Format(nameof(ToolIconFailed), name, message);
+
+    public static string ToolIconsFailed() => Get(nameof(ToolIconsFailed));
+
+    public static string ToolLinkTooLong() => Get(nameof(ToolLinkTooLong));
+
+    public static string ToolPickerFailed(string message) => Format(nameof(ToolPickerFailed), message);
+
+    public static string ToolIconSpecialFolder(string name) => Format(nameof(ToolIconSpecialFolder), name);
+
+    public static string ToolIconFileMissing(string path) => Format(nameof(ToolIconFileMissing), path);
+
+    public static string ToolIconDrive(string name) => Format(nameof(ToolIconDrive), name);
+
+    public static string ToolLinkPlaceNotLocal(string name) => Format(nameof(ToolLinkPlaceNotLocal), name);
+
+    public static string ToolAttributes() => Get(nameof(ToolAttributes));
+
+    public static string ToolAttributesNote() => Get(nameof(ToolAttributesNote));
+
+    public static string ToolChangeTime() => Get(nameof(ToolChangeTime));
+
+    public static string ToolChangeTimeNote() => Get(nameof(ToolChangeTimeNote));
+
+    public static string ToolOrganizeIntoFolders() => Get(nameof(ToolOrganizeIntoFolders));
+
+    public static string ToolOrganizeIntoFoldersNote() => Get(nameof(ToolOrganizeIntoFoldersNote));
+
+    public static string ToolAdvancedDelete() => Get(nameof(ToolAdvancedDelete));
+
+    public static string ToolAdvancedDeleteNote() => Get(nameof(ToolAdvancedDeleteNote));
+
+    public static string ToolNeedsEditor(string fileName) => Format(nameof(ToolNeedsEditor), fileName);
+
+    public static string ToolEditorFailed(string message) => Format(nameof(ToolEditorFailed), message);
+
+    public static string ToolWindowSelectedOne(string name) => Format(nameof(ToolWindowSelectedOne), name);
+
+    public static string ToolWindowSelected(int count, string names) => Format(nameof(ToolWindowSelected), count, names);
+
+    public static string ToolWindowApply() => Get(nameof(ToolWindowApply));
+
+    public static string ToolWindowClose() => Get(nameof(ToolWindowClose));
+
+    public static string ToolWindowWorking() => Get(nameof(ToolWindowWorking));
+
+    public static string ToolWindowInside() => Get(nameof(ToolWindowInside));
+
+    public static string ToolWindowNotChanged() => Get(nameof(ToolWindowNotChanged));
+
+    public static string AttributeReadOnly() => Get(nameof(AttributeReadOnly));
+
+    public static string AttributeHidden() => Get(nameof(AttributeHidden));
+
+    public static string AttributeSystem() => Get(nameof(AttributeSystem));
+
+    public static string AttributeArchive() => Get(nameof(AttributeArchive));
+
+    public static string AttributesHint() => Get(nameof(AttributesHint));
+
+    public static string TimeCreated() => Get(nameof(TimeCreated));
+
+    public static string TimeModified() => Get(nameof(TimeModified));
+
+    public static string TimeAccessed() => Get(nameof(TimeAccessed));
+
+    public static string TimeNow() => Get(nameof(TimeNow));
+
+    public static string TimeHint() => Get(nameof(TimeHint));
+
+    public static string OrganizeByDate() => Get(nameof(OrganizeByDate));
+
+    public static string OrganizeByExtension() => Get(nameof(OrganizeByExtension));
+
+    public static string OrganizeDateLabel() => Get(nameof(OrganizeDateLabel));
+
+    public static string OrganizeDateModified() => Get(nameof(OrganizeDateModified));
+
+    public static string OrganizeDateCreated() => Get(nameof(OrganizeDateCreated));
+
+    public static string OrganizeDateTaken() => Get(nameof(OrganizeDateTaken));
+
+    public static string OrganizeFoldersLabel() => Get(nameof(OrganizeFoldersLabel));
+
+    public static string OrganizeFolderYear(string example) => Format(nameof(OrganizeFolderYear), example);
+
+    public static string OrganizeFolderYearMonth(string example) => Format(nameof(OrganizeFolderYearMonth), example);
+
+    public static string OrganizeFolderYearMonthDay(string example) => Format(nameof(OrganizeFolderYearMonthDay), example);
+
+    public static string OrganizeFolderYearThenMonth(string example) => Format(nameof(OrganizeFolderYearThenMonth), example);
+
+    public static string OrganizeFileColumn() => Get(nameof(OrganizeFileColumn));
+
+    public static string OrganizeFolderColumn() => Get(nameof(OrganizeFolderColumn));
+
+    public static string OrganizeNoExtension() => Get(nameof(OrganizeNoExtension));
+
+    public static string OrganizeReadingDates() => Get(nameof(OrganizeReadingDates));
+
+    public static string OrganizeSummary(int files, int folders) => Format(nameof(OrganizeSummary), files, folders);
+
+    public static string OrganizeNothing() => Get(nameof(OrganizeNothing));
+
+    public static string OrganizeMove() => Get(nameof(OrganizeMove));
+
+    public static string OrganizeNotMoved() => Get(nameof(OrganizeNotMoved));
+
+    public static string DeletePatternsLabel() => Get(nameof(DeletePatternsLabel));
+
+    public static string DeletePatternsHint() => Get(nameof(DeletePatternsHint));
+
+    public static string DeleteFiles() => Get(nameof(DeleteFiles));
+
+    public static string DeleteFolders() => Get(nameof(DeleteFolders));
+
+    public static string DeleteSubfolders() => Get(nameof(DeleteSubfolders));
+
+    public static string DeleteFind() => Get(nameof(DeleteFind));
+
+    public static string DeletePathColumn() => Get(nameof(DeletePathColumn));
+
+    public static string DeleteSizeColumn() => Get(nameof(DeleteSizeColumn));
+
+    public static string DeleteModifiedColumn() => Get(nameof(DeleteModifiedColumn));
+
+    public static string DeleteFolderSize() => Get(nameof(DeleteFolderSize));
+
+    public static string DeleteRecycle() => Get(nameof(DeleteRecycle));
+
+    public static string DeleteConfirm(int count) => Format(nameof(DeleteConfirm), count);
+
+    public static string DeleteFound(int files, string size, int folders) => Format(nameof(DeleteFound), files, size, folders);
+
+    public static string DeleteNothingFound() => Get(nameof(DeleteNothingFound));
+
+    public static string DeleteUnreadable(int count) => Format(nameof(DeleteUnreadable), count);
+
+    public static string DeleteSearching() => Get(nameof(DeleteSearching));
+
+    public static string DeletePatternsEmpty() => Get(nameof(DeletePatternsEmpty));
+
+    public static string DeletePatternInvalid(string pattern) => Format(nameof(DeletePatternInvalid), pattern);
+
+    public static string DeleteNotDeleted() => Get(nameof(DeleteNotDeleted));
+
+    public static string ToolRecycleFailed(string message) => Format(nameof(ToolRecycleFailed), message);
+
+    public static string OrganizeUnreadable(int count) => Format(nameof(OrganizeUnreadable), count);
+
+    public static string ToolMoveFailed(string message) => Format(nameof(ToolMoveFailed), message);
+
+    public static string ToolAdvancedRename() => Get(nameof(ToolAdvancedRename));
+
+    public static string ToolAdvancedRenameNote() => Get(nameof(ToolAdvancedRenameNote));
+
+    public static string ToolFindReplace() => Get(nameof(ToolFindReplace));
+
+    public static string ToolFindReplaceNote() => Get(nameof(ToolFindReplaceNote));
+
+    public static string ToolRegexInvalid(string message) => Format(nameof(ToolRegexInvalid), message);
+
+    public static string ToolRegexTimeout() => Get(nameof(ToolRegexTimeout));
+
+    public static string ToolRenameFailed(string message) => Format(nameof(ToolRenameFailed), message);
+
+    public static string RenameProblemInvalid() => Get(nameof(RenameProblemInvalid));
+
+    public static string RenameProblemDuplicate() => Get(nameof(RenameProblemDuplicate));
+
+    public static string RenameProblemExists() => Get(nameof(RenameProblemExists));
+
+    public static string RenameProblemSwap() => Get(nameof(RenameProblemSwap));
+
+    public static string RenameTokenUnknown(string token) => Format(nameof(RenameTokenUnknown), token);
+
+    public static string RenameDateFormatInvalid(string format) => Format(nameof(RenameDateFormatInvalid), format);
+
+    public static string ReplaceFindEmpty() => Get(nameof(ReplaceFindEmpty));
+
+    public static string ReplaceTooLarge(int megabytes) => Format(nameof(ReplaceTooLarge), megabytes);
+
+    public static string ReplaceUnmappable() => Get(nameof(ReplaceUnmappable));
+
+    public static string ReplaceNotText() => Get(nameof(ReplaceNotText));
+
+    public static string SearchFindLabel() => Get(nameof(SearchFindLabel));
+
+    public static string SearchReplaceLabel() => Get(nameof(SearchReplaceLabel));
+
+    public static string SearchMatchCase() => Get(nameof(SearchMatchCase));
+
+    public static string SearchRegularExpression() => Get(nameof(SearchRegularExpression));
+
+    public static string RenameNameLabel() => Get(nameof(RenameNameLabel));
+
+    public static string RenameExtensionLabel() => Get(nameof(RenameExtensionLabel));
+
+    public static string RenameTokens() => Get(nameof(RenameTokens));
+
+    public static string RenameNumbersLabel() => Get(nameof(RenameNumbersLabel));
+
+    public static string RenameStart() => Get(nameof(RenameStart));
+
+    public static string RenameStep() => Get(nameof(RenameStep));
+
+    public static string RenameDigits() => Get(nameof(RenameDigits));
+
+    public static string RenameCaseLabel() => Get(nameof(RenameCaseLabel));
+
+    public static string RenameCaseUnchanged() => Get(nameof(RenameCaseUnchanged));
+
+    public static string RenameCaseLower() => Get(nameof(RenameCaseLower));
+
+    public static string RenameCaseUpper() => Get(nameof(RenameCaseUpper));
+
+    public static string RenameCaseTitle() => Get(nameof(RenameCaseTitle));
+
+    public static string RenameOldColumn() => Get(nameof(RenameOldColumn));
+
+    public static string RenameNewColumn() => Get(nameof(RenameNewColumn));
+
+    public static string RenameProblemColumn() => Get(nameof(RenameProblemColumn));
+
+    public static string RenameSummary(int changes, int total) => Format(nameof(RenameSummary), changes, total);
+
+    public static string RenameProblems(int count) => Format(nameof(RenameProblems), count);
+
+    public static string RenameButton() => Get(nameof(RenameButton));
+
+    public static string RenameNotRenamed() => Get(nameof(RenameNotRenamed));
+
+    public static string ReplaceWholeWord() => Get(nameof(ReplaceWholeWord));
+
+    public static string ReplaceFilesLabel() => Get(nameof(ReplaceFilesLabel));
+
+    public static string ReplaceSubfolders() => Get(nameof(ReplaceSubfolders));
+
+    public static string ReplaceBackup() => Get(nameof(ReplaceBackup));
+
+    public static string ReplaceHint(int megabytes) => Format(nameof(ReplaceHint), megabytes);
+
+    public static string ReplaceFileColumn() => Get(nameof(ReplaceFileColumn));
+
+    public static string ReplaceMatchesColumn() => Get(nameof(ReplaceMatchesColumn));
+
+    public static string ReplaceNoteColumn() => Get(nameof(ReplaceNoteColumn));
+
+    public static string ReplacePreview() => Get(nameof(ReplacePreview));
+
+    public static string ReplaceButton() => Get(nameof(ReplaceButton));
+
+    public static string ReplaceSearching() => Get(nameof(ReplaceSearching));
+
+    public static string ReplaceSummary(int matches, int files) => Format(nameof(ReplaceSummary), matches, files);
+
+    public static string ReplaceNothing() => Get(nameof(ReplaceNothing));
+
+    public static string ReplaceUnreadable(int count) => Format(nameof(ReplaceUnreadable), count);
+
+    public static string ReplaceStale() => Get(nameof(ReplaceStale));
+
+    public static string ReplaceConfirm(int matches, int files) => Format(nameof(ReplaceConfirm), matches, files);
+
+    public static string ReplaceNotReplaced() => Get(nameof(ReplaceNotReplaced));
+
+    public static string RenameRegexTooSlow() => Get(nameof(RenameRegexTooSlow));
+
+    public static string RenameProblemTooLong() => Get(nameof(RenameProblemTooLong));
+
+    public static string ReplaceLink() => Get(nameof(ReplaceLink));
+
+    public static string ToolDeleteLocked() => Get(nameof(ToolDeleteLocked));
+
+    public static string ToolDeleteLockedNote() => Get(nameof(ToolDeleteLockedNote));
+
+    public static string LockedNotFound() => Get(nameof(LockedNotFound));
+
+    public static string LockedSearching() => Get(nameof(LockedSearching));
+
+    public static string LockedProgramColumn() => Get(nameof(LockedProgramColumn));
+
+    public static string LockedIdColumn() => Get(nameof(LockedIdColumn));
+
+    public static string LockedKindColumn() => Get(nameof(LockedKindColumn));
+
+    public static string LockedHint() => Get(nameof(LockedHint));
+
+    public static string LockedCloseAndDelete() => Get(nameof(LockedCloseAndDelete));
+
+    public static string LockedDelete() => Get(nameof(LockedDelete));
+
+    public static string LockedAtRestart() => Get(nameof(LockedAtRestart));
+
+    public static string LockedSearchFailed(string message) => Format(nameof(LockedSearchFailed), message);
+
+    public static string LockedTooMany(int count) => Format(nameof(LockedTooMany), count);
+
+    public static string LockedNone() => Get(nameof(LockedNone));
+
+    public static string LockedHolders() => Get(nameof(LockedHolders));
+
+    public static string LockedKindService() => Get(nameof(LockedKindService));
+
+    public static string LockedKindExplorer() => Get(nameof(LockedKindExplorer));
+
+    public static string LockedKindCritical() => Get(nameof(LockedKindCritical));
+
+    public static string LockedKindConsole() => Get(nameof(LockedKindConsole));
+
+    public static string LockedKindProgram() => Get(nameof(LockedKindProgram));
+
+    public static string LockedClosing() => Get(nameof(LockedClosing));
+
+    public static string LockedStillUsed() => Get(nameof(LockedStillUsed));
+
+    public static string LockedEndQuestion(string name) => Format(nameof(LockedEndQuestion), name);
+
+    public static string LockedScheduled(int count) => Format(nameof(LockedScheduled), count);
+
+    public static string LockedArgumentsTooLong() => Get(nameof(LockedArgumentsTooLong));
+
+    public static string LockedElevationFailed(string message) => Format(nameof(LockedElevationFailed), message);
+
+    public static string LockedNotScheduled() => Get(nameof(LockedNotScheduled));
+
+    public static string CryptNotOurs() => Get(nameof(CryptNotOurs));
+
+    public static string CryptWrongPassword() => Get(nameof(CryptWrongPassword));
+
+    public static string CryptAlreadyEncrypted() => Get(nameof(CryptAlreadyEncrypted));
+
+    public static string ToolEncrypt() => Get(nameof(ToolEncrypt));
+
+    public static string ToolEncryptNote() => Get(nameof(ToolEncryptNote));
+
+    public static string ToolDecrypt() => Get(nameof(ToolDecrypt));
+
+    public static string ToolDecryptNote() => Get(nameof(ToolDecryptNote));
+
+    public static string EncryptWithPassword() => Get(nameof(EncryptWithPassword));
+
+    public static string EncryptWithEfs() => Get(nameof(EncryptWithEfs));
+
+    public static string EncryptEfsHint() => Get(nameof(EncryptEfsHint));
+
+    public static string EncryptPasswordHint() => Get(nameof(EncryptPasswordHint));
+
+    public static string CryptPasswordLabel() => Get(nameof(CryptPasswordLabel));
+
+    public static string CryptConfirmLabel() => Get(nameof(CryptConfirmLabel));
+
+    public static string EncryptDeleteOriginals() => Get(nameof(EncryptDeleteOriginals));
+
+    public static string EncryptButton() => Get(nameof(EncryptButton));
+
+    public static string CryptPasswordEmpty() => Get(nameof(CryptPasswordEmpty));
+
+    public static string CryptPasswordsDiffer() => Get(nameof(CryptPasswordsDiffer));
+
+    public static string CryptPasswordShort(int length) => Format(nameof(CryptPasswordShort), length);
+
+    public static string EncryptNotEncrypted() => Get(nameof(EncryptNotEncrypted));
+
+    public static string DecryptSearching() => Get(nameof(DecryptSearching));
+
+    public static string DecryptFound(int password, int efs) => Format(nameof(DecryptFound), password, efs);
+
+    public static string DecryptNothing() => Get(nameof(DecryptNothing));
+
+    public static string DecryptDeleteEncrypted() => Get(nameof(DecryptDeleteEncrypted));
+
+    public static string DecryptHint() => Get(nameof(DecryptHint));
+
+    public static string DecryptButton() => Get(nameof(DecryptButton));
+
+    public static string DecryptNotDecrypted() => Get(nameof(DecryptNotDecrypted));
+
+    public static string ToolSyncFolders() => Get(nameof(ToolSyncFolders));
+
+    public static string ToolSyncFoldersNote() => Get(nameof(ToolSyncFoldersNote));
+
+    public static string SyncFrom() => Get(nameof(SyncFrom));
+
+    public static string SyncTo() => Get(nameof(SyncTo));
+
+    public static string SyncBrowse() => Get(nameof(SyncBrowse));
+
+    public static string SyncSwap() => Get(nameof(SyncSwap));
+
+    public static string SyncExtras() => Get(nameof(SyncExtras));
+
+    public static string SyncHint() => Get(nameof(SyncHint));
+
+    public static string SyncCompare() => Get(nameof(SyncCompare));
+
+    public static string SyncActionColumn() => Get(nameof(SyncActionColumn));
+
+    public static string SyncButton() => Get(nameof(SyncButton));
+
+    public static string SyncComparing() => Get(nameof(SyncComparing));
+
+    public static string SyncNew() => Get(nameof(SyncNew));
+
+    public static string SyncChanged() => Get(nameof(SyncChanged));
+
+    public static string SyncNewerThere() => Get(nameof(SyncNewerThere));
+
+    public static string SyncExtra() => Get(nameof(SyncExtra));
+
+    public static string SyncSame() => Get(nameof(SyncSame));
+
+    public static string SyncSummary(int added, int changed, int newerThere, int extra) => Format(nameof(SyncSummary), added, changed, newerThere, extra);
+
+    public static string SyncConfirm(int copies, int replaced, int extras) => Format(nameof(SyncConfirm), copies, replaced, extras);
+
+    public static string SyncNotDone() => Get(nameof(SyncNotDone));
+
+    public static string SyncNotCompared() => Get(nameof(SyncNotCompared));
+
+    public static string SyncNoDestination() => Get(nameof(SyncNoDestination));
+
+    public static string SyncDestinationMissing(string path) => Format(nameof(SyncDestinationMissing), path);
+
+    public static string SyncInside() => Get(nameof(SyncInside));
+
+    public static string SyncKindDiffers() => Get(nameof(SyncKindDiffers));
+
+    public static string CryptDestinationTaken(string path) => Format(nameof(CryptDestinationTaken), path);
+
+    public static string CryptOriginalKept(string message) => Format(nameof(CryptOriginalKept), message);
+
+    public static string CryptEncryptedKept(string message) => Format(nameof(CryptEncryptedKept), message);
+
+    public static string SyncSizeDiffers() => Get(nameof(SyncSizeDiffers));
+
+    public static string SyncNothingToCopy() => Get(nameof(SyncNothingToCopy));
+
+    public static string SyncLeftAlone(int count) => Format(nameof(SyncLeftAlone), count);
+
+    public static string SyncLinkLeft() => Get(nameof(SyncLinkLeft));
+
+    public static string SyncNotFullPath(string path) => Format(nameof(SyncNotFullPath), path);
+
+    public static string SyncStopped() => Get(nameof(SyncStopped));
 }

@@ -23,12 +23,19 @@ internal static partial class ToolRunner
     public static int Run(RunJob job, BuiltinTool tool) => tool switch
     {
         BuiltinTool.WikiImport => WikiTool.Run(job),
+        _ when BuiltinTools.UsesEditorWindow(tool) => EditorWindow.Run(job),
         _ when BuiltinTools.UsesWindow(tool) => RunInWindow(job, tool),
         BuiltinTool.AppendClipboard => RunAppend(job),
         BuiltinTool.PackToFolder => RunPack(job),
         BuiltinTool.NewFolder => RunNewFolder(job),
         BuiltinTool.RunWithParameters => RunWithParameters(job),
         BuiltinTool.UnpackFolder => RunUnpack(job),
+        BuiltinTool.CopyToFolder => RunCopyOrMove(job, move: false),
+        BuiltinTool.MoveToFolder => RunCopyOrMove(job, move: true),
+        BuiltinTool.CreateLink => RunCreateLink(job),
+        BuiltinTool.JoinFolders => RunJoinFolders(job),
+        BuiltinTool.ChangeFolderIcon => RunChangeFolderIcon(job),
+        BuiltinTool.RestoreFolderIcon => RunRestoreFolderIcon(job),
         _ => RunToClipboard(job, tool),
     };
 

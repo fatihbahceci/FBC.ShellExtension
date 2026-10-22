@@ -41,8 +41,10 @@ public static class TemplateMerger
     /// keeps its <c>version</c>, so one that comes without a state still tells which template it
     /// came from (ADR-0016). Version 1 templates had no ids; the version 2 ones, 0.5.2 to 0.6.2,
     /// all had the same; so did the version 3 ones, 0.7.x, and the versions 4, 5 and 6 ones,
-    /// 0.8.0, 0.9.0 and 0.10.0. A new config version adds the ids of the last template written in
-    /// the old one.
+    /// 0.8.0, 0.9.0 and 0.10.0; the version 7 ones, 0.11.0 to 0.12.x, the version 8 ones, 0.13.x,
+    /// the version 9 ones, 0.14.x, the version 10 ones, 0.15.x, the version 11 ones, 0.16.x, and the
+    /// version 12 ones, 0.17.x, too. A new config version adds the ids of the last template
+    /// written in the old one.
     /// </summary>
     public static readonly IReadOnlyDictionary<int, string[]> TemplateIdsByVersion = new Dictionary<int, string[]>
     {
@@ -87,6 +89,86 @@ public static class TemplateMerger
             "organize", "pack-into-folder", "new-folder", "unpack-folder", "organize-separator", "delete-empty-folders", "delete-permanently",
             "separator-1", "text-files", "count-lines", "append-clipboard",
             "convert", "to-mp3", "to-mp4", "convert-separator", "to-jpg", "to-png",
+        ],
+        [7] =
+        [
+            "open-in-notepad", "command-prompt-here", "command-prompt-here-admin",
+            "copy", "copy-path", "copy-name", "copy-unc-path", "copy-internet-path", "copy-title", "copy-content",
+            "file-tools", "duplicate", "file-tools-checksum-separator", "checksum", "verify-checksum",
+            "file-tools-separator", "split", "join", "file-tools-dll-separator", "run-with-parameters", "register-dll", "unregister-dll",
+            "folder-tools", "folder-size",
+            "organize", "pack-into-folder", "new-folder", "unpack-folder", "organize-separator", "delete-empty-folders", "delete-permanently",
+            "separator-1", "text-files", "count-lines", "append-clipboard", "send-to-wikijs",
+            "convert", "to-mp3", "to-mp4", "convert-separator", "to-jpg", "to-png",
+        ],
+        [8] =
+        [
+            "open-in-notepad", "command-prompt-here", "command-prompt-here-admin",
+            "copy", "copy-path", "copy-name", "copy-unc-path", "copy-internet-path", "copy-title", "copy-content",
+            "file-tools", "duplicate", "file-tools-checksum-separator", "checksum", "verify-checksum",
+            "file-tools-separator", "split", "join", "file-tools-dll-separator", "run-with-parameters", "register-dll", "unregister-dll",
+            "folder-tools", "folder-size", "folder-tools-icon-separator", "change-folder-icon", "restore-folder-icon",
+            "organize", "copy-to-folder", "move-to-folder", "create-link", "organize-transfer-separator",
+            "pack-into-folder", "new-folder", "unpack-folder", "join-folders", "organize-separator", "delete-empty-folders", "delete-permanently",
+            "separator-1", "text-files", "count-lines", "append-clipboard", "send-to-wikijs",
+            "convert", "to-mp3", "to-mp4", "convert-separator", "to-jpg", "to-png",
+        ],
+        [9] =
+        [
+            "open-in-notepad", "command-prompt-here", "command-prompt-here-admin",
+            "copy", "copy-path", "copy-name", "copy-unc-path", "copy-internet-path", "copy-title", "copy-content",
+            "file-tools", "duplicate", "file-tools-checksum-separator", "checksum", "verify-checksum",
+            "file-tools-separator", "split", "join", "file-tools-dll-separator", "run-with-parameters", "register-dll", "unregister-dll",
+            "folder-tools", "folder-size", "folder-tools-icon-separator", "change-folder-icon", "restore-folder-icon",
+            "organize", "copy-to-folder", "move-to-folder", "create-link", "organize-transfer-separator",
+            "pack-into-folder", "new-folder", "unpack-folder", "join-folders", "organize-into-folders",
+            "organize-properties-separator", "attributes", "change-time",
+            "organize-separator", "delete-empty-folders", "advanced-delete", "delete-permanently",
+            "separator-1", "text-files", "count-lines", "append-clipboard", "send-to-wikijs",
+            "convert", "to-mp3", "to-mp4", "convert-separator", "to-jpg", "to-png",
+        ],
+        [10] =
+        [
+            "open-in-notepad", "command-prompt-here", "command-prompt-here-admin", "copy", "copy-path", "copy-name",
+            "copy-unc-path", "copy-internet-path", "copy-title", "copy-content", "file-tools", "duplicate",
+            "find-replace", "file-tools-checksum-separator", "checksum", "verify-checksum", "file-tools-separator",
+            "split", "join", "file-tools-dll-separator", "run-with-parameters", "register-dll", "unregister-dll",
+            "folder-tools", "folder-size", "find-replace-in-folders", "folder-tools-icon-separator",
+            "change-folder-icon", "restore-folder-icon", "organize", "copy-to-folder", "move-to-folder",
+            "create-link", "organize-transfer-separator", "advanced-rename", "pack-into-folder", "new-folder",
+            "unpack-folder", "join-folders", "organize-into-folders", "organize-properties-separator", "attributes",
+            "change-time", "organize-separator", "delete-empty-folders", "advanced-delete", "delete-permanently",
+            "separator-1", "text-files", "count-lines", "append-clipboard", "send-to-wikijs", "convert", "to-mp3",
+            "to-mp4", "convert-separator", "to-jpg", "to-png",
+        ],
+        [11] =
+        [
+            "open-in-notepad", "command-prompt-here", "command-prompt-here-admin", "copy", "copy-path", "copy-name",
+            "copy-unc-path", "copy-internet-path", "copy-title", "copy-content", "file-tools", "duplicate",
+            "find-replace", "file-tools-checksum-separator", "checksum", "verify-checksum", "file-tools-separator",
+            "split", "join", "file-tools-dll-separator", "run-with-parameters", "register-dll", "unregister-dll",
+            "folder-tools", "folder-size", "find-replace-in-folders", "folder-tools-icon-separator",
+            "change-folder-icon", "restore-folder-icon", "organize", "copy-to-folder", "move-to-folder",
+            "create-link", "organize-transfer-separator", "advanced-rename", "pack-into-folder", "new-folder",
+            "unpack-folder", "join-folders", "organize-into-folders", "organize-properties-separator", "attributes",
+            "change-time", "organize-separator", "delete-empty-folders", "advanced-delete", "delete-locked",
+            "delete-permanently", "separator-1", "text-files", "count-lines", "append-clipboard", "send-to-wikijs",
+            "convert", "to-mp3", "to-mp4", "convert-separator", "to-jpg", "to-png",
+        ],
+        [12] =
+        [
+            "open-in-notepad", "command-prompt-here", "command-prompt-here-admin", "copy", "copy-path", "copy-name",
+            "copy-unc-path", "copy-internet-path", "copy-title", "copy-content", "file-tools", "duplicate",
+            "find-replace", "file-tools-crypto-separator", "encrypt", "decrypt", "file-tools-checksum-separator",
+            "checksum", "verify-checksum", "file-tools-separator", "split", "join", "file-tools-dll-separator",
+            "run-with-parameters", "register-dll", "unregister-dll", "folder-tools", "folder-size",
+            "find-replace-in-folders", "folder-tools-crypto-separator", "encrypt-folder", "decrypt-folder",
+            "folder-tools-icon-separator", "change-folder-icon", "restore-folder-icon", "organize", "copy-to-folder",
+            "move-to-folder", "create-link", "organize-transfer-separator", "advanced-rename", "pack-into-folder",
+            "new-folder", "unpack-folder", "join-folders", "organize-into-folders", "organize-properties-separator",
+            "attributes", "change-time", "organize-separator", "delete-empty-folders", "advanced-delete",
+            "delete-locked", "delete-permanently", "separator-1", "text-files", "count-lines", "append-clipboard",
+            "send-to-wikijs", "convert", "to-mp3", "to-mp4", "convert-separator", "to-jpg", "to-png",
         ],
     };
 
