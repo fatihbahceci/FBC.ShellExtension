@@ -1,0 +1,78 @@
+# Sends a released version of FBCTools to winget: wingetcreate updates the FBC.FBCTools manifest
+# in microsoft/winget-pkgs with the release's setup and opens the pull request from the token
+# owner's fork.
+#
+# For now it runs only when started by hand: Actions > winget > Run workflow, with the tag. To
+# send every published release, add the "release" trigger that is commented out below.
+#
+# Needs the repository secret WINGET_TOKEN: a classic personal access token with the public_repo
+# scope (wingetcreate does not take fine-grained tokens). The package must already be in winget:
+# "update" builds on the last merged version.
+name: winget
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag, such as v0.19.0
+        required: true
+  # release:
+  #   types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: winget
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    runs-on: windows-latest
+    env:
+      # Pinned, and checked against the hash Microsoft publishes next to it.
+      WINGETCREATE_VERSION: v1.12.13.0
+      WINGETCREATE_SHA256: 24042BD37915805615E6CF969AC57C6439124C3FE85823327F5F3FB24BD9FFEA
+    steps:
+      - name: Find the release's setup
+        id: release
+        shell: pwsh
+        env:
+          TAG: ${{ github.event.inputs.tag || github.event.release.tag_name }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          if ($env:TAG -notmatch '^v(\d+\.\d+\.\d+)$') { throw "Not a release tag: '$env:TAG'" }
+          $version = $Matches[1]
+          $base = "https://github.com/$env:REPOSITORY/releases/download/$env:TAG"
+          $url = "$base/FBCTools-$version-setup.exe"
+
+          # The setup has to be the one the release vouches for: its .sha256 is published with it.
+          Invoke-WebRequest -Uri $url -OutFile setup.exe
+          Invoke-WebRequest -Uri "$url.sha256" -OutFile setup.exe.sha256
+          $expected = (Get-Content setup.exe.sha256 -Raw).Trim().Split()[0]
+          $actual = (Get-FileHash setup.exe -Algorithm SHA256).Hash
+          if ($actual -ine $expected) { throw "The setup does not match its .sha256 ($actual, expected $expected)" }
+
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "url=$url" >> $env:GITHUB_OUTPUT
+          "notes=https://github.com/$env:REPOSITORY/releases/tag/$env:TAG" >> $env:GITHUB_OUTPUT
+
+      - name: Get wingetcreate
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/microsoft/winget-create/releases/download/$env:WINGETCREATE_VERSION/wingetcreate.exe" -OutFile wingetcreate.exe
+          $actual = (Get-FileHash wingetcreate.exe -Algorithm SHA256).Hash
+          if ($actual -ne $env:WINGETCREATE_SHA256) { throw "wingetcreate.exe does not match its pinned hash ($actual)" }
+
+      - name: Open the pull request
+        shell: pwsh
+        env:
+          # Read by wingetcreate itself, so the token is never on a command line.
+          WINGET_CREATE_GITHUB_TOKEN: ${{ secrets.WINGET_TOKEN }}
+          VERSION: ${{ steps.release.outputs.version }}
+          URL: ${{ steps.release.outputs.url }}
+          NOTES: ${{ steps.release.outputs.notes }}
+        run: |
+          if (-not $env:WINGET_CREATE_GITHUB_TOKEN) { throw "The repository secret WINGET_TOKEN is not set." }
+          .\wingetcreate.exe update FBC.FBCTools --version $env:VERSION --urls $env:URL --release-notes-url $env:NOTES --submit --no-open
+          if ($LASTEXITCODE -ne 0) { throw "wingetcreate ended with exit code $LASTEXITCODE" }
