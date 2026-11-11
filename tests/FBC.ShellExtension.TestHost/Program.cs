@@ -105,7 +105,7 @@ internal static unsafe class Program
             nint submenu = GetSubMenu(menu, i);
             if (submenu != 0)
             {
-                Console.WriteLine($"{indent}{GetText(menu, i)} >");
+                Console.WriteLine($"{indent}{GetText(menu, i)}{IconOf(menu, i)} >");
                 PrintMenu(submenu, depth + 1);
                 continue;
             }
@@ -118,8 +118,23 @@ internal static unsafe class Program
             }
 
             string disabled = (state & MF_GRAYED) != 0 ? " (disabled)" : "";
-            Console.WriteLine($"{indent}[{GetMenuItemID(menu, i) - FirstId}] {GetText(menu, i)}{disabled}");
+            Console.WriteLine($"{indent}[{GetMenuItemID(menu, i) - FirstId}] {GetText(menu, i)}{IconOf(menu, i)}{disabled}");
         }
+    }
+
+    /// <summary>The item's bitmap, as the shell extension set it for an entry icon (ADR-0041): its size and depth.</summary>
+    private static string IconOf(nint menu, int position)
+    {
+        var info = new MENUITEMINFOW { cbSize = (uint)sizeof(MENUITEMINFOW), fMask = MIIM_BITMAP };
+        if (!GetMenuItemInfo(menu, (uint)position, true, &info) || info.hbmpItem == 0)
+        {
+            return "";
+        }
+
+        BITMAP bitmap;
+        return GetObject(info.hbmpItem, sizeof(BITMAP), &bitmap) > 0
+            ? $" (icon {bitmap.bmWidth}x{bitmap.bmHeight}, {bitmap.bmBitsPixel} bpp)"
+            : " (icon, unreadable)";
     }
 
     private static string GetText(nint menu, int position)

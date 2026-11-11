@@ -15,7 +15,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon>..\Shared\FBCTools.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The window's icon with all its sizes; the exe's own resource gives a form only one. -->
+    <EmbeddedResource Include="..\Shared\FBCTools.ico" LogicalName="FBCTools.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FBC.ShellExtension.Core\FBC.ShellExtension.Core.csproj" />

@@ -7,7 +7,7 @@
     licences (ADR-0013), and zips it as artifacts\dist\FBCTools-<version>-win-x64.zip. From the
     same folder Inno Setup builds artifacts\dist\FBCTools-<version>-setup.exe (installer\FBCTools.iss).
     Each gets a .sha256 file next to it. The shell extension, the
-    runner, the restarter and the manager are NativeAOT: single files with no runtime to
+    runner, the restarter, the manager and the taskbar launcher are NativeAOT: single files with no runtime to
     install. The editor is WinForms, which NativeAOT cannot compile; by default it is a
     self-contained single file too, so the zip runs on a machine without .NET.
 
@@ -146,7 +146,7 @@ try {
     }
 
     Write-Step "Publish $name ($Editor editor)"
-    foreach ($project in @('ShellExt', 'Runner', 'Restarter', 'Manager')) {
+    foreach ($project in @('ShellExt', 'Runner', 'Restarter', 'Manager', 'TaskbarMenu')) {
         Invoke-Native 'dotnet' @('publish', "src\FBC.ShellExtension.$project", '-c', 'Release', '-o', $folder)
     }
 
@@ -189,7 +189,8 @@ try {
     # What an install cannot do without; a cleanup that went too far stops here, not in the zip.
     $required = @(
         'FBC.ShellExtension.ShellExt.dll', 'FBC.ShellExtension.Runner.exe', 'FBC.ShellExtension.Restarter.exe',
-        'FBC.ShellExtension.Manager.exe', 'FBC.ShellExtension.Editor.exe', 'config.template.json', 'LICENSE.txt'
+        'FBC.ShellExtension.Manager.exe', 'FBC.ShellExtension.Editor.exe', 'FBC.ShellExtension.TaskbarMenu.exe',
+        'config.template.json', 'LICENSE.txt'
     )
     foreach ($file in $required) {
         if (-not (Test-Path -LiteralPath (Join-Path $folder $file))) {

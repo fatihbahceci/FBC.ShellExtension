@@ -6,6 +6,7 @@ using FBC.ShellExtension.Core.Menu;
 using FBC.ShellExtension.Core.Resources;
 using FBC.ShellExtension.Core.Selection;
 using FBC.ShellExtension.ShellExt.Interop;
+using FBC.ShellExtension.Shared;
 using static FBC.ShellExtension.ShellExt.Interop.NativeMethods;
 
 namespace FBC.ShellExtension.ShellExt;
@@ -25,6 +26,9 @@ internal sealed unsafe partial class ContextMenuHandler : IShellExtInit, IContex
 
     // Offset of "Edit FBCTools menu", which comes after the commands; -1 when it is not shown.
     private int _editOffset = -1;
+
+    // The icon size for the menu being built, read once at its first icon.
+    private int? _iconSize;
 
     public int Initialize(nint pidlFolder, nint pdtobj, nint hkeyProgId)
     {
@@ -46,6 +50,7 @@ internal sealed unsafe partial class ContextMenuHandler : IShellExtInit, IContex
     {
         _commands.Clear();
         _editOffset = -1;
+        _iconSize = null;
         try
         {
             if ((uFlags & CMF_DEFAULTONLY) != 0 || _selection.Count == 0 || idCmdFirst > idCmdLast)
@@ -172,6 +177,7 @@ internal sealed unsafe partial class ContextMenuHandler : IShellExtInit, IContex
                     }
 
                     Check(AppendMenu(menu, MF_STRING, id, command.Label));
+                    SetIcon(menu, command.Icon);
                     _commands.Add(command);
                     break;
 
@@ -186,6 +192,7 @@ internal sealed unsafe partial class ContextMenuHandler : IShellExtInit, IContex
                     {
                         AppendNodes(child, submenu.Children, idCmdFirst, idCmdLast);
                         Check(AppendMenu(menu, MF_POPUP | MF_STRING, (nuint)child, submenu.Label));
+                        SetIcon(menu, submenu.Icon);
                     }
                     catch
                     {
@@ -199,6 +206,39 @@ internal sealed unsafe partial class ContextMenuHandler : IShellExtInit, IContex
                     Check(AppendMenu(menu, MF_SEPARATOR, 0, null));
                     break;
             }
+        }
+    }
+
+    /// <summary>
+    /// The icon of the item just appended (ADR-0041). An icon that cannot be shown leaves the item
+    /// without one and is traced; it never costs the menu.
+    /// </summary>
+    private void SetIcon(nint menu, byte[]? icon)
+    {
+        if (icon is null)
+        {
+            return;
+        }
+
+        try
+        {
+            _iconSize ??= MenuBitmaps.IconSize();
+            nint bitmap = MenuBitmaps.For(icon, _iconSize.Value, out string? problem);
+            if (bitmap == 0)
+            {
+                Diagnostics.Trace($"QueryContextMenu: an icon was left out: {problem}");
+                return;
+            }
+
+            var info = new MENUITEMINFOW { cbSize = (uint)sizeof(MENUITEMINFOW), fMask = MIIM_BITMAP, hbmpItem = bitmap };
+            if (!SetMenuItemInfo(menu, (uint)(GetMenuItemCount(menu) - 1), true, &info))
+            {
+                Diagnostics.Trace($"QueryContextMenu: an icon was left out: SetMenuItemInfo failed ({Marshal.GetLastPInvokeError()})");
+            }
+        }
+        catch (Exception ex)
+        {
+            Diagnostics.Trace($"QueryContextMenu: an icon was left out: {ex}");
         }
     }
 

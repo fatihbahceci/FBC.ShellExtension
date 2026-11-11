@@ -51,9 +51,14 @@ public static class ConfigMaintenance
 
     /// <summary>Replaces the config with a file the user chose; it counts as the user's own from then on.</summary>
     /// <exception cref="ConfigLoadException">The file is not a configuration document.</exception>
-    public static string? Restore(string configPath, string sourcePath, DateTime now)
+    public static string? Restore(string configPath, string sourcePath, DateTime now) =>
+        RestoreText(configPath, File.ReadAllText(sourcePath), now);
+
+    /// <summary><see cref="Restore"/> from the text itself: a backup's menu (ADR-0048).</summary>
+    /// <returns>Where the config before it was copied; null when there was none.</returns>
+    /// <exception cref="ConfigLoadException">The text is not a configuration document.</exception>
+    public static string? RestoreText(string configPath, string text, DateTime now)
     {
-        string text = File.ReadAllText(sourcePath);
         ConfigSerializer.Deserialize(text);
         string? backup = CopyAside(configPath, now);
         ConfigSerializer.SaveText(text, configPath);

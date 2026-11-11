@@ -101,14 +101,28 @@ public static partial class FileTools
                 return new RenamePreview(unchanged, Strings.RenameRegexTooSlow());
             }
 
-            string? problem = !WindowsPath.IsValidName(newName) ? Strings.RenameProblemInvalid()
-                : newName.Length > MaxName || PathIn(item.Directory, newName).Length > MaxPath ? Strings.RenameProblemTooLong()
-                : null;
-            rows.Add(new RenameRow(item, newName, problem));
+            rows.Add(new RenameRow(item, newName, NameProblem(item, newName)));
         }
 
         return new RenamePreview(MarkCycles(MarkTaken(rows, exists)), null);
     }
+
+    /// <summary>
+    /// Names decided elsewhere (Rename from IMDb, ADR-0046), checked as <see cref="PreviewRename"/>
+    /// checks its own: an invalid or too long name, two items given one, a name another item has,
+    /// names that go round. An item given its own name stays as it is.
+    /// </summary>
+    public static RenamePreview PreviewNames(IReadOnlyList<(SelectedItem Item, string NewName)> names, Func<string, bool> exists)
+    {
+        List<RenameRow> rows = [.. names.Select(name => new RenameRow(name.Item, name.NewName,
+            string.Equals(name.NewName, name.Item.Name, StringComparison.Ordinal) ? null : NameProblem(name.Item, name.NewName)))];
+        return new RenamePreview(MarkCycles(MarkTaken(rows, exists)), null);
+    }
+
+    private static string? NameProblem(SelectedItem item, string newName) =>
+        !WindowsPath.IsValidName(newName) ? Strings.RenameProblemInvalid()
+        : newName.Length > MaxName || PathIn(item.Directory, newName).Length > MaxPath ? Strings.RenameProblemTooLong()
+        : null;
 
     /// <summary>
     /// The changing rows of a preview that <see cref="RenamePreview.CanRename"/>, in an order where

@@ -51,6 +51,7 @@ internal static class ToolWindows
                 BuiltinTool.Encrypt => new EncryptForm(items),
                 BuiltinTool.Decrypt => new DecryptForm(items),
                 BuiltinTool.SyncFolders => new SyncForm(items),
+                BuiltinTool.RenameFromImdb => new ImdbRenameForm(items),
                 _ => new AdvancedDeleteForm(items),
             };
             window.Text = title;

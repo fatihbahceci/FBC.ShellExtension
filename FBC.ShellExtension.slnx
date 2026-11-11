@@ -6,6 +6,7 @@
     <Project Path="src/FBC.ShellExtension.Restarter/FBC.ShellExtension.Restarter.csproj" />
     <Project Path="src/FBC.ShellExtension.Runner/FBC.ShellExtension.Runner.csproj" />
     <Project Path="src/FBC.ShellExtension.ShellExt/FBC.ShellExtension.ShellExt.csproj" />
+    <Project Path="src/FBC.ShellExtension.TaskbarMenu/FBC.ShellExtension.TaskbarMenu.csproj" />
     <Project Path="src/FBC.ShellExtension.WikiImport/FBC.ShellExtension.WikiImport.csproj" />
   </Folder>
   <Folder Name="/tests/">

@@ -26,6 +26,7 @@
 #define Manager "FBC.ShellExtension.Manager.exe"
 #define Editor "FBC.ShellExtension.Editor.exe"
 #define Restarter "FBC.ShellExtension.Restarter.exe"
+#define TaskbarMenu "FBC.ShellExtension.TaskbarMenu.exe"
 ; The editor's single-instance mutex (Editor\Program.cs).
 #define EditorMutex "Local\FBCTools.Editor"
 
@@ -98,6 +99,8 @@ Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs 
 
 [Icons]
 Name: "{autoprograms}\FBCTools"; Filename: "{app}\{#Editor}"; Comment: "Edit the FBCTools menu"
+; For the user to pin to the taskbar (right-click, Pin to taskbar); nothing pins it (ADR-0043).
+Name: "{autoprograms}\FBCTools menu"; Filename: "{app}\{#TaskbarMenu}"; Comment: "The FBCTools menu, for the taskbar"
 
 [Run]
 ; Registers this copy with Explorer and creates or updates the menu from the template (ADR-0010).

@@ -25,9 +25,13 @@ public static class SummaryFormatter
         return headline;
     }
 
-    /// <summary>The item a process ran on, or how many when it ran on several.</summary>
-    public static string Subject(PlannedProcess process) =>
-        process.Items.Count == 1 ? process.Items[0].Path : Strings.SummaryItems(process.Items.Count);
+    /// <summary>The item a process ran on, or how many when it ran on several; the program itself when it ran on none (the taskbar menu).</summary>
+    public static string Subject(PlannedProcess process) => process.Items.Count switch
+    {
+        0 => process.FileName,
+        1 => process.Items[0].Path,
+        _ => Strings.SummaryItems(process.Items.Count),
+    };
 
     /// <summary>One log line for a finished process. A multi-line message is indented under it.</summary>
     public static string Line(ProcessResult result)

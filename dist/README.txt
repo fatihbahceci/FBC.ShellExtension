@@ -8,9 +8,10 @@ names, UNC paths or the text of files to the clipboard, calculates and verifies 
 splits files into parts and joins them again, copies or moves items into a folder you
 pick, makes links, joins folders, changes folder icons, sorts files into folders by date or
 extension, changes attributes and times, deletes by name pattern into the Recycle Bin,
-renames by rules, finds and replaces text in files, deletes files that another program holds
-open, encrypts files with a password or Windows' EFS, synchronizes a folder into another, and
-sends a markdown file with its images to a Wiki.js page.
+renames by rules, renames films after their IMDb title (with an OMDb API key of your own),
+finds and replaces text in files, deletes files that another program holds open, encrypts
+files with a password or Windows' EFS, synchronizes a folder into another, and sends a
+markdown file with its images to a Wiki.js page.
 
 Windows 10 or 11 on x64 (not Arm64). No administrator rights are needed.
 
@@ -38,8 +39,14 @@ Getting started
 4. Right-click a file. On Windows 11 the menu is under "Show more options"
    (Shift + right-click opens that menu directly).
 
-Your menu is stored in %APPDATA%\FBCTools\config.json. Tools in the Editor backs it up or
-restores it; File > Use factory default puts back the menu this version comes with.
+Your menu is stored in %APPDATA%\FBCTools\config.json, the tools' settings next to it. Tools
+in the Editor backs them up in one .zip or restores them; the keys in the backup are encrypted
+with a password you choose, written as plain text, or left out. File > Use factory default puts
+back the menu this version comes with.
+
+The taskbar: tick "Show in taskbar" on the commands you want there, then pin
+FBC.ShellExtension.TaskbarMenu.exe to the taskbar (right-click it, Pin to taskbar; on
+Windows 11 under Show more options). Help > Add the menu to the taskbar shows the file.
 
 
 Moving or updating

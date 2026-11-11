@@ -70,16 +70,32 @@ public sealed class WikiSettings
     /// <exception cref="WikiException">The file cannot be read; it is left as it is.</exception>
     public static WikiSettings Load(string path)
     {
+        string? text;
+        try
+        {
+            text = File.Exists(path) ? File.ReadAllText(path) : null;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            throw new WikiException(Strings.WikiSettingsInvalid(path, ex.Message));
+        }
+
+        return text is null ? new WikiSettings() : FromJson(text, path);
+    }
+
+    /// <summary>The settings in <paramref name="text"/>: a file's, or a backup's (ADR-0048).</summary>
+    /// <param name="source">Where the text came from, for the message.</param>
+    /// <exception cref="WikiException">The text is not settings.</exception>
+    public static WikiSettings FromJson(string text, string source)
+    {
         WikiSettings? settings;
         try
         {
-            settings = File.Exists(path)
-                ? JsonSerializer.Deserialize(File.ReadAllText(path), WikiSettingsContext.Default.WikiSettings)
-                : null;
+            settings = JsonSerializer.Deserialize(text, WikiSettingsContext.Default.WikiSettings);
         }
-        catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException)
+        catch (JsonException ex)
         {
-            throw new WikiException(Strings.WikiSettingsInvalid(path, ex.Message));
+            throw new WikiException(Strings.WikiSettingsInvalid(source, ex.Message));
         }
 
         settings ??= new WikiSettings();
@@ -87,6 +103,8 @@ public sealed class WikiSettings
         settings.Targets = [.. (settings.Targets ?? []).Where(target => target is not null)];
         return settings;
     }
+
+    public string ToJson() => JsonSerializer.Serialize(this, WikiSettingsContext.Default.WikiSettings);
 
     /// <summary>
     /// Reads the file again, makes <paramref name="change"/> to it and saves it, so that two
@@ -111,7 +129,7 @@ public sealed class WikiSettings
         string temporary = $"{path}.{Guid.NewGuid():N}.tmp";
         try
         {
-            File.WriteAllText(temporary, JsonSerializer.Serialize(this, WikiSettingsContext.Default.WikiSettings));
+            File.WriteAllText(temporary, ToJson());
             File.Move(temporary, path, overwrite: true);
         }
         finally

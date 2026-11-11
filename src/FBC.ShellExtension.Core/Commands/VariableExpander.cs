@@ -66,6 +66,22 @@ public static class VariableExpander
     public static string Expand(string template, SelectedItem current, IReadOnlyList<SelectedItem> all) =>
         Expand(template, current, all, Environment.GetEnvironmentVariable);
 
+    /// <summary>Whether <paramref name="template"/> names the selection (<c>{path}</c> and the others): then what it gives depends on the item.</summary>
+    public static bool UsesSelection(string template)
+    {
+        var probe = new SelectedItem(@"C:", ItemKind.Folder);
+        for (int open = template.IndexOf('{'); open >= 0; open = template.IndexOf('{', open + 1))
+        {
+            int close = template.IndexOf('}', open + 1);
+            if (close > open + 1 && GetPlaceholder(template.AsSpan(open + 1, close - open - 1), probe, [probe]) is not null)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private static string? GetPlaceholder(ReadOnlySpan<char> name, SelectedItem current, IReadOnlyList<SelectedItem> all)
     {
         if (name.Equals("path", StringComparison.OrdinalIgnoreCase))

@@ -70,6 +70,23 @@ public static class ConfigValidator
                 {
                     ValidateMatch(match, $"{entryPath}.match", issues);
                 }
+
+                if (labeled.Icon is { } icon)
+                {
+                    if (version < 14)
+                    {
+                        issues.Add(new($"{entryPath}.icon", Strings.ValidationIconNeedsVersion()));
+                    }
+                    else if (MenuIcon.Problem(icon) is { } problem)
+                    {
+                        issues.Add(new($"{entryPath}.icon", problem));
+                    }
+                }
+            }
+
+            if (entry is CommandEntry { ShowInTaskbar: not null } && version < 15)
+            {
+                issues.Add(new($"{entryPath}.showInTaskbar", Strings.ValidationTaskbarNeedsVersion()));
             }
 
             switch (entry)

@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
     Developer loop: build, test, publish the shell extension, the runner, the editor, the
-    Explorer restarter and the manager with the template, and optionally install them for
-    Explorer and set up the config.
+    Explorer restarter, the manager and the taskbar launcher with the template, and optionally
+    install them for Explorer and set up the config.
 
 .DESCRIPTION
     Written for Windows PowerShell 5.1 (the "powershell" that ships with Windows) and kept to
@@ -359,7 +359,7 @@ try {
     }
 
     Write-Step "Publish to $artifacts"
-    foreach ($project in @('src\FBC.ShellExtension.ShellExt', 'src\FBC.ShellExtension.Runner', 'src\FBC.ShellExtension.Editor', 'src\FBC.ShellExtension.Restarter', 'src\FBC.ShellExtension.Manager')) {
+    foreach ($project in @('src\FBC.ShellExtension.ShellExt', 'src\FBC.ShellExtension.Runner', 'src\FBC.ShellExtension.Editor', 'src\FBC.ShellExtension.Restarter', 'src\FBC.ShellExtension.Manager', 'src\FBC.ShellExtension.TaskbarMenu')) {
         Invoke-Native 'dotnet' @('publish', $project, '-c', $Configuration, '-o', $artifacts)
     }
 

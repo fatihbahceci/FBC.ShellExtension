@@ -30,6 +30,12 @@ public static class ProductInfo
     /// <summary>The Explorer restarter, published next to the others (ADR-0008).</summary>
     public const string RestarterFileName = "FBC.ShellExtension.Restarter.exe";
 
+    /// <summary>What the user pins to the taskbar; it starts the runner with <see cref="TaskbarMenuArgument"/> (ADR-0043).</summary>
+    public const string TaskbarMenuFileName = "FBC.ShellExtension.TaskbarMenu.exe";
+
+    /// <summary>The runner's argument for the taskbar menu.</summary>
+    public const string TaskbarMenuArgument = "--taskbar";
+
     /// <summary>The version of this build, without the commit (ADR-0004).</summary>
     public static Version Version { get; } = typeof(ProductInfo).Assembly.GetName().Version ?? new Version(0, 0);
 

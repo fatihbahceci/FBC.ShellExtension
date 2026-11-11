@@ -17,4 +17,9 @@
     <ProjectReference Include="..\FBC.ShellExtension.Core\FBC.ShellExtension.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Entry icons as menu bitmaps; the runner's taskbar menu compiles the same source (ADR-0041, ADR-0043). -->
+    <Compile Include="..\Shared\MenuBitmaps.cs" Link="Shared\MenuBitmaps.cs" />
+  </ItemGroup>
+
 </Project>

@@ -76,6 +76,44 @@ internal static unsafe partial class Native
 
     [LibraryImport("user32.dll", EntryPoint = "GetMenuStringW")]
     public static partial int GetMenuString(nint hMenu, uint uIDItem, char* lpString, int cchMax, uint flags);
+
+    public const uint MIIM_BITMAP = 0x00000080;
+
+    [LibraryImport("user32.dll", EntryPoint = "GetMenuItemInfoW")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool GetMenuItemInfo(nint hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPosition, MENUITEMINFOW* lpmii);
+
+    [LibraryImport("gdi32.dll", EntryPoint = "GetObjectW")]
+    public static partial int GetObject(nint h, int c, void* pv);
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal unsafe struct MENUITEMINFOW
+{
+    public uint cbSize;
+    public uint fMask;
+    public uint fType;
+    public uint fState;
+    public uint wID;
+    public nint hSubMenu;
+    public nint hbmpChecked;
+    public nint hbmpUnchecked;
+    public nuint dwItemData;
+    public char* dwTypeData;
+    public uint cch;
+    public nint hbmpItem;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal unsafe struct BITMAP
+{
+    public int bmType;
+    public int bmWidth;
+    public int bmHeight;
+    public int bmWidthBytes;
+    public ushort bmPlanes;
+    public ushort bmBitsPixel;
+    public void* bmBits;
 }
 
 internal sealed class HResultException(string message) : Exception(message);

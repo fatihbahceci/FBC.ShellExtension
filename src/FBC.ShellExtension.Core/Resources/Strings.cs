@@ -1470,4 +1470,238 @@ public static class Strings
     public static string WikiKeySavedEnvironment(string site) => Format(nameof(WikiKeySavedEnvironment), site);
 
     public static string WikiKeyForgetConfirmEnvironment(string site) => Format(nameof(WikiKeyForgetConfirmEnvironment), site);
+
+    public static string ValidationIconNeedsVersion() => Get(nameof(ValidationIconNeedsVersion));
+
+    public static string ValidationIconTooLarge(int kilobytes, int max) => Format(nameof(ValidationIconTooLarge), kilobytes, max);
+
+    public static string ValidationIconNotPng() => Get(nameof(ValidationIconNotPng));
+
+    public static string ValidationIconDimensions(int width, int height, int max) => Format(nameof(ValidationIconDimensions), width, height, max);
+
+    public static string EditorFieldIcon() => Get(nameof(EditorFieldIcon));
+
+    public static string EditorIconChoose() => Get(nameof(EditorIconChoose));
+
+    public static string EditorIconRefresh() => Get(nameof(EditorIconRefresh));
+
+    public static string EditorIconRemove() => Get(nameof(EditorIconRemove));
+
+    public static string EditorIconFilter() => Get(nameof(EditorIconFilter));
+
+    public static string EditorIconFailed(string problem) => Format(nameof(EditorIconFailed), problem);
+
+    public static string EditorIconProgramUsesSelection() => Get(nameof(EditorIconProgramUsesSelection));
+
+    public static string EditorIconProgramNotFound(string program) => Format(nameof(EditorIconProgramNotFound), program);
+
+    public static string EditorIconNoneInFile(string path) => Format(nameof(EditorIconNoneInFile), path);
+
+    public static string ValidationTaskbarNeedsVersion() => Get(nameof(ValidationTaskbarNeedsVersion));
+
+    public static string TaskbarMenuEmpty() => Get(nameof(TaskbarMenuEmpty));
+
+    public static string TaskbarMenuRunnerFailed(string runner, string message) => Format(nameof(TaskbarMenuRunnerFailed), runner, message);
+
+    public static string EditorTaskbarShow() => Get(nameof(EditorTaskbarShow));
+
+    public static string EditorTaskbarTool() => Get(nameof(EditorTaskbarTool));
+
+    public static string EditorTaskbarSelection() => Get(nameof(EditorTaskbarSelection));
+
+    public static string EditorTaskbarNothingInside() => Get(nameof(EditorTaskbarNothingInside));
+
+    public static string EditorMenuTaskbarHelp() => Get(nameof(EditorMenuTaskbarHelp));
+
+    public static string EditorTaskbarHelpHeading() => Get(nameof(EditorTaskbarHelpHeading));
+
+    public static string EditorTaskbarHelpText(string path) => Format(nameof(EditorTaskbarHelpText), path);
+
+    public static string EditorTaskbarHelpMissing(string path) => Format(nameof(EditorTaskbarHelpMissing), path);
+
+    public static string EditorTaskbarHelpShow() => Get(nameof(EditorTaskbarHelpShow));
+
+    public static string EditorTaskbarHelpCopy() => Get(nameof(EditorTaskbarHelpCopy));
+
+    public static string ToolRenameFromImdb() => Get(nameof(ToolRenameFromImdb));
+
+    public static string ToolRenameFromImdbNote() => Get(nameof(ToolRenameFromImdbNote));
+
+    public static string ImdbFormatLabel() => Get(nameof(ImdbFormatLabel));
+
+    public static string ImdbTokens() => Get(nameof(ImdbTokens));
+
+    public static string ImdbSubfolders() => Get(nameof(ImdbSubfolders));
+
+    public static string ImdbSearch() => Get(nameof(ImdbSearch));
+
+    public static string ImdbStop() => Get(nameof(ImdbStop));
+
+    public static string ImdbKeyLink() => Get(nameof(ImdbKeyLink));
+
+    public static string ImdbFileColumn() => Get(nameof(ImdbFileColumn));
+
+    public static string ImdbFilmColumn() => Get(nameof(ImdbFilmColumn));
+
+    public static string ImdbStateColumn() => Get(nameof(ImdbStateColumn));
+
+    public static string ImdbStateWaiting() => Get(nameof(ImdbStateWaiting));
+
+    public static string ImdbStateNotFound() => Get(nameof(ImdbStateNotFound));
+
+    public static string ImdbStateChoose() => Get(nameof(ImdbStateChoose));
+
+    public static string ImdbStateLeft() => Get(nameof(ImdbStateLeft));
+
+    public static string ImdbFilm(string title, string year, string imdbId) => Format(nameof(ImdbFilm), title, year, imdbId);
+
+    public static string ImdbReading() => Get(nameof(ImdbReading));
+
+    public static string ImdbNoFiles() => Get(nameof(ImdbNoFiles));
+
+    public static string ImdbFiles(int files, int films) => Format(nameof(ImdbFiles), files, films);
+
+    public static string ImdbSearching(int done, int total) => Format(nameof(ImdbSearching), done, total);
+
+    public static string ImdbSummary(int found, int films, int changes) => Format(nameof(ImdbSummary), found, films, changes);
+
+    public static string ImdbMenuChoose() => Get(nameof(ImdbMenuChoose));
+
+    public static string ImdbMenuLeave() => Get(nameof(ImdbMenuLeave));
+
+    public static string ImdbMenuOpen() => Get(nameof(ImdbMenuOpen));
+
+    public static string ImdbNoKey() => Get(nameof(ImdbNoKey));
+
+    public static string ImdbSearchStopped() => Get(nameof(ImdbSearchStopped));
+
+    public static string ImdbKeyInvalid() => Get(nameof(ImdbKeyInvalid));
+
+    public static string ImdbLimitReached() => Get(nameof(ImdbLimitReached));
+
+    public static string ImdbAnswerError(string error) => Format(nameof(ImdbAnswerError), error);
+
+    public static string ImdbAnswerUnreadable() => Get(nameof(ImdbAnswerUnreadable));
+
+    public static string ImdbHttpError(int status) => Format(nameof(ImdbHttpError), status);
+
+    public static string ImdbNoAnswer(string message) => Format(nameof(ImdbNoAnswer), message);
+
+    public static string ImdbFormatEmpty() => Get(nameof(ImdbFormatEmpty));
+
+    public static string ImdbChooseTitle() => Get(nameof(ImdbChooseTitle));
+
+    public static string ImdbChooseFor(string name) => Format(nameof(ImdbChooseFor), name);
+
+    public static string ImdbQueryLabel() => Get(nameof(ImdbQueryLabel));
+
+    public static string ImdbYearLabel() => Get(nameof(ImdbYearLabel));
+
+    public static string ImdbTitleColumn() => Get(nameof(ImdbTitleColumn));
+
+    public static string ImdbYearColumn() => Get(nameof(ImdbYearColumn));
+
+    public static string ImdbIdColumn() => Get(nameof(ImdbIdColumn));
+
+    public static string ImdbChooseNone() => Get(nameof(ImdbChooseNone));
+
+    public static string ImdbAsking() => Get(nameof(ImdbAsking));
+
+    public static string ImdbSelect() => Get(nameof(ImdbSelect));
+
+    public static string ImdbSkip() => Get(nameof(ImdbSkip));
+
+    public static string ImdbStopAsking() => Get(nameof(ImdbStopAsking));
+
+    public static string OmdbKeyTitle() => Get(nameof(OmdbKeyTitle));
+
+    public static string OmdbKeyLabel() => Get(nameof(OmdbKeyLabel));
+
+    public static string OmdbKeyHelp(string page) => Format(nameof(OmdbKeyHelp), page);
+
+    public static string OmdbKeyStored() => Get(nameof(OmdbKeyStored));
+
+    public static string OmdbKeyNoneStored() => Get(nameof(OmdbKeyNoneStored));
+
+    public static string OmdbKeyNotSaved(string problem) => Format(nameof(OmdbKeyNotSaved), problem);
+
+    public static string OmdbKeySaved() => Get(nameof(OmdbKeySaved));
+
+    public static string OmdbKeySave() => Get(nameof(OmdbKeySave));
+
+    public static string OmdbKeyForget() => Get(nameof(OmdbKeyForget));
+
+    public static string OmdbKeyForgetConfirm() => Get(nameof(OmdbKeyForgetConfirm));
+
+    public static string OmdbSettingsUnreadable(string path, string problem) => Format(nameof(OmdbSettingsUnreadable), path, problem);
+
+    public static string EditorMenuOmdbKey() => Get(nameof(EditorMenuOmdbKey));
+
+    public static string ImdbTokenUnknown(string token) => Format(nameof(ImdbTokenUnknown), token);
+
+    public static string OmdbKeyUnreadable() => Get(nameof(OmdbKeyUnreadable));
+
+    public static string BackupNotOurs(string path) => Format(nameof(BackupNotOurs), path);
+
+    public static string BackupNewer(string path, string version) => Format(nameof(BackupNewer), path, version);
+
+    public static string BackupKeyOmdb() => Get(nameof(BackupKeyOmdb));
+
+    public static string BackupKeyWiki(string site) => Format(nameof(BackupKeyWiki), site);
+
+    public static string BackupRestoredOmdb() => Get(nameof(BackupRestoredOmdb));
+
+    public static string BackupRestoredOmdbKey() => Get(nameof(BackupRestoredOmdbKey));
+
+    public static string BackupRestoredWiki(int keys) => Format(nameof(BackupRestoredWiki), keys);
+
+    public static string BackupRestoredMenu() => Get(nameof(BackupRestoredMenu));
+
+    public static string BackupRestored(string path) => Format(nameof(BackupRestored), path);
+
+    public static string BackupRestoredAside() => Get(nameof(BackupRestoredAside));
+
+    public static string BackupNotRestored(string name, string problem) => Format(nameof(BackupNotRestored), name, problem);
+
+    public static string BackupTitle() => Get(nameof(BackupTitle));
+
+    public static string BackupIntro() => Get(nameof(BackupIntro));
+
+    public static string BackupKeysGroup() => Get(nameof(BackupKeysGroup));
+
+    public static string BackupKeysList(string keys) => Format(nameof(BackupKeysList), keys);
+
+    public static string BackupKeysPassword() => Get(nameof(BackupKeysPassword));
+
+    public static string BackupKeysPlain() => Get(nameof(BackupKeysPlain));
+
+    public static string BackupKeysNone() => Get(nameof(BackupKeysNone));
+
+    public static string BackupUnreadable(string keys) => Format(nameof(BackupUnreadable), keys);
+
+    public static string BackupProblems(string problems) => Format(nameof(BackupProblems), problems);
+
+    public static string BackupSave() => Get(nameof(BackupSave));
+
+    public static string BackupNoConfig(string path) => Format(nameof(BackupNoConfig), path);
+
+    public static string BackupNotSaved(string problem) => Format(nameof(BackupNotSaved), problem);
+
+    public static string BackupSaved(string path) => Format(nameof(BackupSaved), path);
+
+    public static string EditorBackupFilter() => Get(nameof(EditorBackupFilter));
+
+    public static string EditorRestoreFilter() => Get(nameof(EditorRestoreFilter));
+
+    public static string BackupPasswordTitle() => Get(nameof(BackupPasswordTitle));
+
+    public static string BackupPasswordPrompt(string name) => Format(nameof(BackupPasswordPrompt), name);
+
+    public static string BackupRestore() => Get(nameof(BackupRestore));
+
+    public static string BackupWithoutKeys() => Get(nameof(BackupWithoutKeys));
+
+    public static string BackupKeysNotDecrypted(string problem) => Format(nameof(BackupKeysNotDecrypted), problem);
+
+    public static string BackupEntryUnreadable(string entry, string backup) => Format(nameof(BackupEntryUnreadable), entry, backup);
 }

@@ -3,7 +3,11 @@ using FBC.ShellExtension.Core.Selection;
 
 namespace FBC.ShellExtension.Core.Menu;
 
-public abstract record MenuNode;
+public abstract record MenuNode
+{
+    /// <summary>The entry's icon, a PNG (ADR-0041); null for none and for separators.</summary>
+    public byte[]? Icon { get; init; }
+}
 
 /// <summary>A clickable item: what the shell extension hands to the runner as a job.</summary>
 /// <param name="Items">The items it runs on: the whole selection, or the matching part of it.</param>
@@ -46,7 +50,7 @@ public static class MenuBuilder
                 case CommandEntry { Tool: { } tool } toolEntry:
                     if (RuleMatcher.Filter(toolEntry.Match, selection) is { } toolItems)
                     {
-                        nodes.Add(new ToolNode(toolEntry.Label, tool, toolItems));
+                        nodes.Add(new ToolNode(toolEntry.Label, tool, toolItems) { Icon = toolEntry.Icon });
                     }
 
                     break;
@@ -54,7 +58,7 @@ public static class MenuBuilder
                 case CommandEntry { Command: { } command } commandEntry:
                     if (RuleMatcher.Filter(commandEntry.Match, selection) is { } items)
                     {
-                        nodes.Add(new CommandNode(commandEntry.Label, command, items));
+                        nodes.Add(new CommandNode(commandEntry.Label, command, items) { Icon = commandEntry.Icon });
                     }
 
                     break;
@@ -63,7 +67,45 @@ public static class MenuBuilder
                     if (RuleMatcher.Filter(submenu.Match, selection) is { } received
                         && Build(submenu.Items, received) is { Count: > 0 } children)
                     {
-                        nodes.Add(new SubmenuNode(submenu.Label, children));
+                        nodes.Add(new SubmenuNode(submenu.Label, children) { Icon = submenu.Icon });
+                    }
+
+                    break;
+
+                case SeparatorEntry:
+                    nodes.Add(SeparatorNode.Instance);
+                    break;
+            }
+        }
+
+        return TrimSeparators(nodes);
+    }
+
+    /// <summary>
+    /// The taskbar menu (ADR-0043): the commands marked for it that can run with nothing selected,
+    /// and the submenus that hold any, with nothing else in them. The rules for the selection do
+    /// not apply; every command is given no items. Switched-off entries stay out, as in Explorer.
+    /// </summary>
+    public static IReadOnlyList<MenuNode> BuildForTaskbar(IReadOnlyList<MenuEntry?> entries)
+    {
+        var nodes = new List<MenuNode>(entries.Count);
+        foreach (MenuEntry? entry in entries)
+        {
+            if (entry is { IsEnabled: false })
+            {
+                continue;
+            }
+
+            switch (entry)
+            {
+                case CommandEntry { ShowInTaskbar: true, Command: { } command } commandEntry when TaskbarMenu.Fits(commandEntry):
+                    nodes.Add(new CommandNode(commandEntry.Label, command, []) { Icon = commandEntry.Icon });
+                    break;
+
+                case SubmenuEntry submenu:
+                    if (BuildForTaskbar(submenu.Items) is { Count: > 0 } children)
+                    {
+                        nodes.Add(new SubmenuNode(submenu.Label, children) { Icon = submenu.Icon });
                     }
 
                     break;

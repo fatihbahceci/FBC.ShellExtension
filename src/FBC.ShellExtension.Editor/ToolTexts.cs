@@ -46,6 +46,7 @@ internal static class ToolTexts
         BuiltinTool.Encrypt => Strings.ToolEncrypt(),
         BuiltinTool.Decrypt => Strings.ToolDecrypt(),
         BuiltinTool.SyncFolders => Strings.ToolSyncFolders(),
+        BuiltinTool.RenameFromImdb => Strings.ToolRenameFromImdb(),
         _ => tool.ToString(),
     };
 
@@ -88,6 +89,7 @@ internal static class ToolTexts
         BuiltinTool.Encrypt => Strings.ToolEncryptNote(),
         BuiltinTool.Decrypt => Strings.ToolDecryptNote(),
         BuiltinTool.SyncFolders => Strings.ToolSyncFoldersNote(),
+        BuiltinTool.RenameFromImdb => Strings.ToolRenameFromImdbNote(),
         _ => "",
     };
 }

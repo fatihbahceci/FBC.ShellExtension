@@ -86,7 +86,37 @@ public static class FileCrypto
     /// <summary>Writes <paramref name="source"/> encrypted to <paramref name="destination"/>, a new file.</summary>
     /// <exception cref="IOException">Reading or writing failed; nothing is left at the destination.</exception>
     /// <exception cref="UnauthorizedAccessException">Windows refused; nothing is left at the destination.</exception>
-    public static void Encrypt(string source, string destination, Key key, CancellationToken cancellationToken)
+    public static void Encrypt(string source, string destination, Key key, CancellationToken cancellationToken) =>
+        Write(destination, output =>
+        {
+            using var input = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read);
+            EncryptStream(input, output, key, cancellationToken);
+        });
+
+    /// <summary>Bytes encrypted in memory, in the files' format: a backup's keys (ADR-0048).</summary>
+    public static byte[] Encrypt(byte[] plain, Key key)
+    {
+        using var input = new MemoryStream(plain, writable: false);
+        using var output = new MemoryStream();
+        EncryptStream(input, output, key, CancellationToken.None);
+        return output.ToArray();
+    }
+
+    /// <summary>Bytes <see cref="Encrypt(byte[], Key)"/> made, decrypted in memory.</summary>
+    /// <exception cref="ToolFailedException">Not ours, a wrong password, or changed bytes.</exception>
+    public static byte[] Decrypt(byte[] data, string password)
+    {
+        using var input = new MemoryStream(data, writable: false);
+        (byte[] header, int chunkSize, Key key) = ReadHeader(input, password, []);
+        using (key)
+        using (var output = new MemoryStream())
+        {
+            DecryptChunks(input, output, header, chunkSize, key, CancellationToken.None);
+            return output.ToArray();
+        }
+    }
+
+    private static void EncryptStream(Stream input, Stream output, Key key, CancellationToken cancellationToken)
     {
         byte[] header = new byte[HeaderSize];
         s_magic.CopyTo(header, 0);
@@ -94,40 +124,35 @@ public static class FileCrypto
         key.Salt.CopyTo(header, 12);
         BinaryPrimitives.WriteInt32LittleEndian(header.AsSpan(28), ChunkSize);
         RandomNumberGenerator.Fill(header.AsSpan(32, PrefixSize));
-
-        Write(destination, output =>
+        using var aes = new AesGcm(key.Bytes, TagSize);
+        output.Write(header);
+        byte[] plain = new byte[ChunkSize];
+        byte[] cipher = new byte[ChunkSize];
+        byte[] tag = new byte[TagSize];
+        byte[] nonce = new byte[12];
+        header.AsSpan(32, PrefixSize).CopyTo(nonce);
+        int length = input.ReadAtLeast(plain, ChunkSize, throwOnEndOfStream: false);
+        for (uint number = 0; ; number++)
         {
-            using var input = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read);
-            using var aes = new AesGcm(key.Bytes, TagSize);
-            output.Write(header);
-            byte[] plain = new byte[ChunkSize];
-            byte[] cipher = new byte[ChunkSize];
-            byte[] tag = new byte[TagSize];
-            byte[] nonce = new byte[12];
-            header.AsSpan(32, PrefixSize).CopyTo(nonce);
-            int length = input.ReadAtLeast(plain, ChunkSize, throwOnEndOfStream: false);
-            for (uint number = 0; ; number++)
+            cancellationToken.ThrowIfCancellationRequested();
+
+            // A full chunk is the last only when nothing follows it.
+            int next = length == ChunkSize ? input.ReadByte() : -1;
+            bool last = next < 0;
+            SetNonce(nonce, number, last);
+            aes.Encrypt(nonce, plain.AsSpan(0, length), cipher.AsSpan(0, length), tag, header);
+            output.Write(cipher, 0, length);
+            output.Write(tag);
+            if (last)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                // A full chunk is the last only when nothing follows it.
-                int next = length == ChunkSize ? input.ReadByte() : -1;
-                bool last = next < 0;
-                SetNonce(nonce, number, last);
-                aes.Encrypt(nonce, plain.AsSpan(0, length), cipher.AsSpan(0, length), tag, header);
-                output.Write(cipher, 0, length);
-                output.Write(tag);
-                if (last)
-                {
-                    break;
-                }
-
-                plain[0] = (byte)next;
-                length = 1 + input.ReadAtLeast(plain.AsSpan(1), ChunkSize - 1, throwOnEndOfStream: false);
+                break;
             }
 
-            CryptographicOperations.ZeroMemory(plain);
-        });
+            plain[0] = (byte)next;
+            length = 1 + input.ReadAtLeast(plain.AsSpan(1), ChunkSize - 1, throwOnEndOfStream: false);
+        }
+
+        CryptographicOperations.ZeroMemory(plain);
     }
 
     /// <summary>Writes the decrypted <paramref name="source"/> to <paramref name="destination"/>, a new file.</summary>
@@ -138,6 +163,15 @@ public static class FileCrypto
     public static void Decrypt(string source, string destination, string password, Dictionary<string, Key> keys, CancellationToken cancellationToken)
     {
         using var input = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+        // Read before anything is written: a file that is not ours leaves nothing behind.
+        (byte[] header, int chunkSize, Key key) = ReadHeader(input, password, keys);
+        Write(destination, output => DecryptChunks(input, output, header, chunkSize, key, cancellationToken));
+    }
+
+    /// <summary>The header, checked, and the key for it: one already derived for the same salt and iterations, or a new one, kept.</summary>
+    private static (byte[] Header, int ChunkSize, Key Key) ReadHeader(Stream input, string password, Dictionary<string, Key> keys)
+    {
         byte[] header = new byte[HeaderSize];
         int iterations;
         int chunkSize;
@@ -157,43 +191,45 @@ public static class FileCrypto
             keys[id] = key;
         }
 
-        Write(destination, output =>
+        return (header, chunkSize, key);
+    }
+
+    private static void DecryptChunks(Stream input, Stream output, byte[] header, int chunkSize, Key key, CancellationToken cancellationToken)
+    {
+        using var aes = new AesGcm(key.Bytes, TagSize);
+        byte[] cipher = new byte[chunkSize + TagSize];
+        byte[] plain = new byte[chunkSize];
+        byte[] nonce = new byte[12];
+        header.AsSpan(32, PrefixSize).CopyTo(nonce);
+        for (uint number = 0; ; number++)
         {
-            using var aes = new AesGcm(key.Bytes, TagSize);
-            byte[] cipher = new byte[chunkSize + TagSize];
-            byte[] plain = new byte[chunkSize];
-            byte[] nonce = new byte[12];
-            header.AsSpan(32, PrefixSize).CopyTo(nonce);
-            for (uint number = 0; ; number++)
+            cancellationToken.ThrowIfCancellationRequested();
+            int length = input.ReadAtLeast(cipher, cipher.Length, throwOnEndOfStream: false);
+            if (length < TagSize)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                int length = input.ReadAtLeast(cipher, cipher.Length, throwOnEndOfStream: false);
-                if (length < TagSize)
-                {
-                    throw new ToolFailedException(Strings.CryptWrongPassword());
-                }
-
-                bool last = length < cipher.Length || input.Position == input.Length;
-                SetNonce(nonce, number, last);
-                int plainLength = length - TagSize;
-                try
-                {
-                    aes.Decrypt(nonce, cipher.AsSpan(0, plainLength), cipher.AsSpan(plainLength, TagSize), plain.AsSpan(0, plainLength), header);
-                }
-                catch (AuthenticationTagMismatchException)
-                {
-                    throw new ToolFailedException(Strings.CryptWrongPassword());
-                }
-
-                output.Write(plain, 0, plainLength);
-                if (last)
-                {
-                    break;
-                }
+                throw new ToolFailedException(Strings.CryptWrongPassword());
             }
 
-            CryptographicOperations.ZeroMemory(plain);
-        });
+            bool last = length < cipher.Length || input.Position == input.Length;
+            SetNonce(nonce, number, last);
+            int plainLength = length - TagSize;
+            try
+            {
+                aes.Decrypt(nonce, cipher.AsSpan(0, plainLength), cipher.AsSpan(plainLength, TagSize), plain.AsSpan(0, plainLength), header);
+            }
+            catch (AuthenticationTagMismatchException)
+            {
+                throw new ToolFailedException(Strings.CryptWrongPassword());
+            }
+
+            output.Write(plain, 0, plainLength);
+            if (last)
+            {
+                break;
+            }
+        }
+
+        CryptographicOperations.ZeroMemory(plain);
     }
 
     private static void SetNonce(byte[] nonce, uint number, bool last)

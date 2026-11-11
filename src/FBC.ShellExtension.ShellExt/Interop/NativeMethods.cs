@@ -22,6 +22,8 @@ internal static unsafe partial class NativeMethods
     public const uint MF_BYPOSITION = 0x00000400;
     public const uint MF_SEPARATOR = 0x00000800;
 
+    public const uint MIIM_BITMAP = 0x00000080;
+
     public const ushort CF_HDROP = 15;
     public const uint DVASPECT_CONTENT = 1;
     public const uint TYMED_HGLOBAL = 1;
@@ -93,4 +95,28 @@ internal static unsafe partial class NativeMethods
     [LibraryImport("user32.dll", EntryPoint = "InsertMenuW", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
     [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool InsertMenu(nint hMenu, uint uPosition, uint uFlags, nuint uIDNewItem, string? lpNewItem);
+
+    [LibraryImport("user32.dll", SetLastError = true)]
+    public static partial int GetMenuItemCount(nint hMenu);
+
+    [LibraryImport("user32.dll", EntryPoint = "SetMenuItemInfoW", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool SetMenuItemInfo(nint hmenu, uint item, [MarshalAs(UnmanagedType.Bool)] bool fByPositon, MENUITEMINFOW* lpmii);
+}
+
+[StructLayout(LayoutKind.Sequential)]
+internal unsafe struct MENUITEMINFOW
+{
+    public uint cbSize;
+    public uint fMask;
+    public uint fType;
+    public uint fState;
+    public uint wID;
+    public nint hSubMenu;
+    public nint hbmpChecked;
+    public nint hbmpUnchecked;
+    public nuint dwItemData;
+    public char* dwTypeData;
+    public uint cch;
+    public nint hbmpItem;
 }

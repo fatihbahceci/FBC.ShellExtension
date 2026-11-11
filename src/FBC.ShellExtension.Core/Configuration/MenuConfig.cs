@@ -6,9 +6,11 @@ public sealed class MenuConfig
     /// <summary>
     /// The schema version this build writes. Version 2 adds entry ids (ADR-0009), version 3
     /// built-in tools and <c>enabled</c> (ADR-0015), versions 4 to 13 more tools (ADR-0017 …
-    /// ADR-0033). Older documents are still read, and a missing <c>version</c> means this one.
+    /// ADR-0033), version 14 entry icons (ADR-0041), version 15 the taskbar menu (ADR-0043), version
+    /// 16 Rename from IMDb (ADR-0046). Older documents are still read, and a missing <c>version</c>
+    /// means this one.
     /// </summary>
-    public const int CurrentVersion = 13;
+    public const int CurrentVersion = 16;
 
     /// <summary>The oldest schema version this build reads.</summary>
     public const int MinimumVersion = 1;
@@ -19,8 +21,8 @@ public sealed class MenuConfig
     public List<MenuEntry> Items { get; set; } = [];
 
     /// <summary>
-    /// The lowest version that can hold what the entries use: the version of the newest built-in
-    /// tool, 3 for an <c>enabled</c> value, 2 for an id, otherwise 1. The editor raises
+    /// The lowest version that can hold what the entries use: 15 for <c>showInTaskbar</c>, 14 for an icon, the version of the
+    /// newest built-in tool, 3 for an <c>enabled</c> value, 2 for an id, otherwise 1. The editor raises
     /// <see cref="Version"/> to it.
     /// </summary>
     public int RequiredVersion()
@@ -41,6 +43,16 @@ public sealed class MenuConfig
                 if (entry is CommandEntry { Tool: { } tool })
                 {
                     required = Math.Max(required, BuiltinTools.SinceVersion(tool));
+                }
+
+                if (entry is LabeledEntry { Icon: not null })
+                {
+                    required = Math.Max(required, 14);
+                }
+
+                if (entry is CommandEntry { ShowInTaskbar: not null })
+                {
+                    required = Math.Max(required, 15);
                 }
 
                 if (entry.Enabled is not null)

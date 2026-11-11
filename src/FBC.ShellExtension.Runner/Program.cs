@@ -12,8 +12,9 @@ using static FBC.ShellExtension.Runner.Interop.Native;
 namespace FBC.ShellExtension.Runner;
 
 /// <summary>
-/// Started by the shell extension with <c>--job &lt;file&gt;</c>, or by itself, elevated, with
-/// <c>--worker &lt;pipe&gt; &lt;pid&gt;</c> for commands that run as administrator (ADR-0006).
+/// Started by the shell extension with <c>--job &lt;file&gt;</c>, by itself, elevated, with
+/// <c>--worker &lt;pipe&gt; &lt;pid&gt;</c> for commands that run as administrator (ADR-0006), or by the
+/// taskbar launcher with <c>--taskbar</c> (ADR-0043).
 /// </summary>
 internal static class Program
 {
@@ -34,6 +35,7 @@ internal static class Program
             {
                 [WorkerProtocol.WorkerArgument, var pipe, var parent] => WorkerHost.Run(pipe, parent),
                 [JobFile.Argument, var jobPath] => RunJob(jobPath),
+                [ProductInfo.TaskbarMenuArgument] => TaskbarMenuWindow.Run(),
                 _ => ShowMessage(Strings.RunnerUsage(), MB_ICONINFORMATION, 2),
             };
         }
@@ -55,13 +57,25 @@ internal static class Program
             return ShowMessage(ex.Message, MB_ICONERROR, 1);
         }
 
+        return Run(job);
+    }
+
+    /// <summary>
+    /// A job from a file, or from the taskbar menu with <paramref name="withoutSelection"/>
+    /// (ADR-0043). Only the taskbar menu runs a command with nothing selected: a job file without
+    /// items (a rule that let none through) plans nothing, as before.
+    /// </summary>
+    internal static int Run(RunJob job, bool withoutSelection = false)
+    {
         if (job.Tool is { } tool)
         {
             return ToolRunner.Run(job, tool);
         }
 
         // Expanded here, as the user: an elevated worker may be another account (ADR-0006).
-        IReadOnlyList<PlannedProcess> plan = CommandPlanner.Plan(job.Command, job.Items);
+        IReadOnlyList<PlannedProcess> plan = withoutSelection
+            ? CommandPlanner.PlanWithoutSelection(job.Command, Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), Environment.GetEnvironmentVariable)
+            : CommandPlanner.Plan(job.Command, job.Items);
 
         if (job.Command.RunMode == RunMode.Launch)
         {

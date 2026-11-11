@@ -18,4 +18,9 @@
     <ProjectReference Include="..\FBC.ShellExtension.WikiImport\FBC.ShellExtension.WikiImport.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Entry icons in the taskbar menu, the same source as the shell extension's (ADR-0041, ADR-0043). -->
+    <Compile Include="..\Shared\MenuBitmaps.cs" Link="Shared\MenuBitmaps.cs" />
+  </ItemGroup>
+
 </Project>

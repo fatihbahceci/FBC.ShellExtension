@@ -2,7 +2,7 @@
   // The template: the menu FBCTools starts with. README.md describes its entries ("Varsayilan
   // menu") and the fields. Every entry has an id, so a later template can add its new entries to
   // a menu the user has changed (ADR-0009).
-  "version": 13,
+  "version": 16,
   "items": [
     {
       "type": "command",
@@ -217,6 +217,19 @@
           "label": "Advanced rename…",
           "match": { "targets": ["file", "folder"], "mode": "any" },
           "tool": "advancedRename"
+        },
+        {
+          // A window of the editor's: looks the films up on OMDb with the user's own key and
+          // shows every new name first; a folder's videos and subtitles are taken (ADR-0046).
+          "type": "command",
+          "id": "rename-from-imdb",
+          "label": "Rename from IMDb…",
+          "match": {
+            "targets": ["file", "folder", "background"],
+            "extensions": ["mkv", "mp4", "avi", "mov", "wmv", "flv", "webm", "m4v", "mpg", "mpeg", "ts", "3gp", "srt", "sub", "idx", "ass", "ssa", "vtt", "sup", "smi"],
+            "mode": "any"
+          },
+          "tool": "renameFromImdb"
         },
         {
           "type": "command",

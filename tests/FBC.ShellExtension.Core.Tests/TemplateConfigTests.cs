@@ -105,6 +105,7 @@ public sealed class TemplateConfigTests
     [DataRow(10, "delete-locked")]
     [DataRow(11, "file-tools-crypto-separator", "encrypt", "decrypt", "folder-tools-crypto-separator", "encrypt-folder", "decrypt-folder")]
     [DataRow(12, "sync-folders")]
+    [DataRow(15, "rename-from-imdb")]
     public void OlderDefaultMenu_GetsWhatCameSinceWithoutAState(int version, params string[] since)
     {
         // A developer copy of an older default menu, made without a state (ADR-0016).

@@ -120,12 +120,15 @@ public enum BuiltinTool
 
     /// <summary>Copies what is new or changed in a folder into another, one way, with a preview (ADR-0033).</summary>
     SyncFolders,
+
+    /// <summary>Looks films up on OMDb and renames each video and its subtitles to the title, year and IMDb id (ADR-0046).</summary>
+    RenameFromImdb,
 }
 
 /// <summary>What the runner and the config rules need to know about each tool.</summary>
 public static class BuiltinTools
 {
-    /// <summary>The config version that introduced the tool (ADR-0015 … ADR-0033).</summary>
+    /// <summary>The config version that introduced the tool (ADR-0015 … ADR-0033, ADR-0046).</summary>
     public static int SinceVersion(BuiltinTool tool) => tool switch
     {
         BuiltinTool.CopyPath or BuiltinTool.CopyName or BuiltinTool.CopyUncPath or BuiltinTool.CopyContent => 3,
@@ -139,6 +142,7 @@ public static class BuiltinTools
         BuiltinTool.DeleteLocked => 11,
         BuiltinTool.Encrypt or BuiltinTool.Decrypt => 12,
         BuiltinTool.SyncFolders => 13,
+        BuiltinTool.RenameFromImdb => 16,
         _ => 6,
     };
 
@@ -157,7 +161,8 @@ public static class BuiltinTools
     /// </summary>
     public static bool UsesEditorWindow(BuiltinTool tool) => tool is BuiltinTool.Attributes or BuiltinTool.ChangeTime
         or BuiltinTool.OrganizeIntoFolders or BuiltinTool.AdvancedDelete or BuiltinTool.AdvancedRename or BuiltinTool.FindReplace
-        or BuiltinTool.DeleteLocked or BuiltinTool.Encrypt or BuiltinTool.Decrypt or BuiltinTool.SyncFolders;
+        or BuiltinTool.DeleteLocked or BuiltinTool.Encrypt or BuiltinTool.Decrypt or BuiltinTool.SyncFolders
+        or BuiltinTool.RenameFromImdb;
 
     /// <summary>The kinds of item the tool works on; the template's match rules offer it only for those.</summary>
     public static bool Accepts(BuiltinTool tool, ItemKind kind) => tool switch
@@ -170,7 +175,8 @@ public static class BuiltinTools
         BuiltinTool.PackToFolder or BuiltinTool.DeletePermanently or BuiltinTool.CopyToFolder or BuiltinTool.MoveToFolder
             or BuiltinTool.CreateLink or BuiltinTool.Attributes or BuiltinTool.ChangeTime or BuiltinTool.AdvancedRename
             or BuiltinTool.DeleteLocked or BuiltinTool.Encrypt or BuiltinTool.Decrypt => kind is ItemKind.File or ItemKind.Folder,
-        BuiltinTool.OrganizeIntoFolders or BuiltinTool.FindReplace => kind is ItemKind.File or ItemKind.Folder or ItemKind.Background,
+        BuiltinTool.OrganizeIntoFolders or BuiltinTool.FindReplace or BuiltinTool.RenameFromImdb
+            => kind is ItemKind.File or ItemKind.Folder or ItemKind.Background,
         BuiltinTool.ChangeFolderIcon or BuiltinTool.RestoreFolderIcon or BuiltinTool.SyncFolders => kind is ItemKind.Folder or ItemKind.Background,
         _ => kind == ItemKind.File,
     };

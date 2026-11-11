@@ -52,9 +52,11 @@ partial class MainForm
         ffmpegSeparator = new ToolStripSeparator();
         ffmpegItem = new ToolStripMenuItem();
         wikiKeyItem = new ToolStripMenuItem();
+        omdbKeyItem = new ToolStripMenuItem();
         previewItem = new ToolStripMenuItem();
         helpMenu = new ToolStripMenuItem();
         aboutItem = new ToolStripMenuItem();
+        taskbarHelpItem = new ToolStripMenuItem();
         toolStrip = new ToolStrip();
         addCommandButton = new ToolStripButton();
         addSubmenuButton = new ToolStripButton();
@@ -252,7 +254,7 @@ partial class MainForm
         //
         // toolsMenu
         //
-        toolsMenu.DropDownItems.AddRange(new ToolStripItem[] { checkItem, toolsSeparator, backupItem, restoreItem, ffmpegSeparator, ffmpegItem, wikiKeyItem });
+        toolsMenu.DropDownItems.AddRange(new ToolStripItem[] { checkItem, toolsSeparator, backupItem, restoreItem, ffmpegSeparator, ffmpegItem, wikiKeyItem, omdbKeyItem });
         toolsMenu.Name = "toolsMenu";
         toolsMenu.Text = "Tools";
         //
@@ -269,13 +271,13 @@ partial class MainForm
         // backupItem
         //
         backupItem.Name = "backupItem";
-        backupItem.Text = "Back up the configuration…";
+        backupItem.Text = "Back up the menu and settings…";
         backupItem.Click += OnBackup;
         //
         // restoreItem
         //
         restoreItem.Name = "restoreItem";
-        restoreItem.Text = "Restore a configuration…";
+        restoreItem.Text = "Restore a backup…";
         restoreItem.Click += OnRestore;
         //
         // resetItem
@@ -300,14 +302,23 @@ partial class MainForm
         wikiKeyItem.Text = "Wiki.js key or token…";
         wikiKeyItem.Click += OnWikiKey;
         //
+        // omdbKeyItem
+        //
+        omdbKeyItem.Name = "omdbKeyItem";
+        omdbKeyItem.Text = "OMDb API key…";
+        omdbKeyItem.Click += OnOmdbKey;
+        //
         // helpMenu
         //
-        helpMenu.DropDownItems.AddRange(new ToolStripItem[] { aboutItem });
+        helpMenu.DropDownItems.AddRange(new ToolStripItem[] { taskbarHelpItem, aboutItem });
         helpMenu.Name = "helpMenu";
         helpMenu.Text = "&Help";
         //
         // aboutItem
         //
+        taskbarHelpItem.Name = "taskbarHelpItem";
+        taskbarHelpItem.Text = "Add the menu to the taskbar…";
+        taskbarHelpItem.Click += OnTaskbarHelp;
         aboutItem.Name = "aboutItem";
         aboutItem.Text = "&About";
         aboutItem.Click += OnAbout;
@@ -661,8 +672,10 @@ partial class MainForm
     private ToolStripSeparator ffmpegSeparator;
     private ToolStripMenuItem ffmpegItem;
     private ToolStripMenuItem wikiKeyItem;
+    private ToolStripMenuItem omdbKeyItem;
     private ToolStripMenuItem previewItem;
     private ToolStripMenuItem helpMenu;
+    private ToolStripMenuItem taskbarHelpItem;
     private ToolStripMenuItem aboutItem;
     private ToolStrip toolStrip;
     private ToolStripButton addCommandButton;

@@ -4,6 +4,8 @@ using FBC.ShellExtension.Core.Configuration;
 using FBC.ShellExtension.Core.Editing;
 using FBC.ShellExtension.Core.Resources;
 using FBC.ShellExtension.Core.Setup;
+using FBC.ShellExtension.Core.Tools;
+using FBC.ShellExtension.WikiImport;
 
 namespace FBC.ShellExtension.Editor;
 
@@ -35,6 +37,15 @@ public partial class MainForm : Form
     {
         _path = path;
         InitializeComponent();
+
+        // FBCTools.ico with every size it has: the title bar takes the small one, the taskbar the large.
+        using (Stream? icon = typeof(MainForm).Assembly.GetManifestResourceStream("FBCTools.ico"))
+        {
+            if (icon is not null)
+            {
+                Icon = new Icon(icon);
+            }
+        }
         ApplyStrings();
         entryEditor.Changing += key =>
         {
@@ -80,7 +91,9 @@ public partial class MainForm : Form
         resetItem.Text = Strings.EditorMenuReset();
         ffmpegItem.Text = Strings.EditorMenuFfmpeg();
         wikiKeyItem.Text = Strings.EditorMenuWikiKey();
+        omdbKeyItem.Text = Strings.EditorMenuOmdbKey();
         helpMenu.Text = Strings.EditorMenuHelp();
+        taskbarHelpItem.Text = Strings.EditorMenuTaskbarHelp();
         aboutItem.Text = Strings.EditorMenuAbout();
         // The toolbar would otherwise answer Alt+letter too, against the fields' own access keys.
         foreach (ToolStripItem item in toolStrip.Items)
@@ -885,30 +898,119 @@ public partial class MainForm : Form
         }
     }
 
+    /// <summary>One .zip with the menu and the tools' settings and keys (ADR-0048); the manager's <c>backup</c> copies the menu alone.</summary>
     private void OnBackup(object? sender, EventArgs e)
     {
-        using var dialog = new SaveFileDialog
-        {
-            Filter = Strings.EditorConfigFilter(),
-            FileName = Path.GetFileName(ConfigLocation.BackupPath(_path, DateTime.Now)),
-            OverwritePrompt = true,
-        };
-
-        if (dialog.ShowDialog(this) == DialogResult.OK)
-        {
-            ShowManagerResult(ManagerClient.Run("backup", dialog.FileName), this);
-        }
+        using var form = new BackupForm(_path);
+        form.ShowDialog(this);
     }
 
+    /// <summary>A backup .zip, or a menu backed up on its own (a <c>.json</c>, as before 0.23.0), which the manager restores.</summary>
     private void OnRestore(object? sender, EventArgs e)
     {
-        using var dialog = new OpenFileDialog { Filter = Strings.EditorConfigFilter() };
-        if (dialog.ShowDialog(this) != DialogResult.OK || !ConfirmReplace())
+        using var dialog = new OpenFileDialog { Filter = Strings.EditorRestoreFilter() };
+        if (dialog.ShowDialog(this) != DialogResult.OK)
         {
             return;
         }
 
-        RunReplacing("restore", dialog.FileName);
+        if (BackupArchive.IsArchive(dialog.FileName))
+        {
+            RestoreBackup(dialog.FileName);
+        }
+        else if (ConfirmReplace())
+        {
+            RunReplacing("restore", dialog.FileName);
+        }
+    }
+
+    /// <summary>
+    /// The menu first, as the manager restores one (the one before is copied aside), then the
+    /// tools' settings with their keys, put back into DPAPI for this Windows user. Encrypted keys
+    /// ask for the backup's password; without it the rest is restored and this computer's keys stay.
+    /// </summary>
+    private void RestoreBackup(string path)
+    {
+        BackupContent content;
+        try
+        {
+            content = BackupArchive.Read(path);
+            ConfigSerializer.Deserialize(content.Config);
+        }
+        catch (Exception ex) when (ex is BackupException or ConfigLoadException or IOException or UnauthorizedAccessException)
+        {
+            MessageBox.Show(this, ex.Message, ProductInfo.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+
+        BackupKeys? keys = content.PlainKeys;
+        if (content.EncryptedKeys is { } encrypted)
+        {
+            string? problem = null;
+            while (true)
+            {
+                using var ask = new BackupPasswordForm(Path.GetFileName(path), problem);
+                DialogResult answer = ask.ShowDialog(this);
+                if (answer == DialogResult.Ignore)
+                {
+                    break;
+                }
+
+                if (answer != DialogResult.OK)
+                {
+                    return;
+                }
+
+                Cursor = Cursors.WaitCursor;
+                try
+                {
+                    keys = BackupArchive.DecryptKeys(encrypted, ask.Password);
+                    break;
+                }
+                catch (ToolFailedException ex)
+                {
+                    problem = Strings.BackupKeysNotDecrypted(ex.Message);
+                }
+                finally
+                {
+                    Cursor = Cursors.Default;
+                }
+            }
+        }
+
+        if (!ConfirmReplace())
+        {
+            return;
+        }
+
+        _checkingDisk = true;
+        try
+        {
+            DateTime now = DateTime.Now;
+            try
+            {
+                ConfigMaintenance.RestoreText(_path, content.Config, now);
+            }
+            catch (Exception ex) when (ex is ConfigLoadException or IOException or UnauthorizedAccessException)
+            {
+                MessageBox.Show(this, Strings.BackupNotRestored(Path.GetFileName(_path), ex.Message), ProductInfo.Name,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            List<string> lines = [Strings.BackupRestoredMenu(), .. Backups.RestoreSettings(content, Path.GetFileName(path), keys, new DpapiProtector(), now)];
+            if (_document.ChangedOnDisk())
+            {
+                Reload();
+            }
+
+            MessageBox.Show(this, $"{Strings.BackupRestored(path)}\n\n• {string.Join("\n• ", lines)}\n\n{Strings.BackupRestoredAside()}",
+                ProductInfo.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        finally
+        {
+            _checkingDisk = false;
+        }
     }
 
     private void OnReset(object? sender, EventArgs e)
@@ -941,6 +1043,13 @@ public partial class MainForm : Form
     private void OnWikiKey(object? sender, EventArgs e)
     {
         using var form = new WikiKeyForm();
+        form.ShowDialog(this);
+    }
+
+    /// <summary>The OMDb API key Rename from IMDb uses (ADR-0046).</summary>
+    private void OnOmdbKey(object? sender, EventArgs e)
+    {
+        using var form = new OmdbKeyForm();
         form.ShowDialog(this);
     }
 
@@ -1017,6 +1126,50 @@ public partial class MainForm : Form
             Enabled = true;
             progress.Close();
         }
+    }
+
+    /// <summary>
+    /// How to put the menu on the taskbar (ADR-0043): what can be done for the user is done here,
+    /// showing and copying the file; only the pinning, which Windows keeps for the user, is left.
+    /// </summary>
+    private void OnTaskbarHelp(object? sender, EventArgs e)
+    {
+        string path = Path.Combine(AppContext.BaseDirectory, ProductInfo.TaskbarMenuFileName);
+        var page = new TaskDialogPage
+        {
+            Caption = ProductInfo.Name,
+            Heading = Strings.EditorTaskbarHelpHeading(),
+            Icon = TaskDialogIcon.Information,
+        };
+
+        if (!File.Exists(path))
+        {
+            page.Text = Strings.EditorTaskbarHelpMissing(path);
+            page.Buttons.Add(TaskDialogButton.Close);
+            TaskDialog.ShowDialog(this, page);
+            return;
+        }
+
+        page.Text = Strings.EditorTaskbarHelpText(path);
+        var show = new TaskDialogCommandLinkButton(Strings.EditorTaskbarHelpShow()) { AllowCloseDialog = false };
+        var copy = new TaskDialogCommandLinkButton(Strings.EditorTaskbarHelpCopy()) { AllowCloseDialog = false };
+        show.Click += (_, _) => ShowInExplorer(path);
+        copy.Click += (_, _) =>
+        {
+            try
+            {
+                Clipboard.SetText(path);
+            }
+            catch (System.Runtime.InteropServices.ExternalException)
+            {
+                // Another program holds the clipboard; the path is in the text above.
+            }
+        };
+        page.Buttons.Add(show);
+        page.Buttons.Add(copy);
+        page.Buttons.Add(TaskDialogButton.Close);
+        page.DefaultButton = show;
+        TaskDialog.ShowDialog(this, page);
     }
 
     private void OnAbout(object? sender, EventArgs e) =>

@@ -655,6 +655,27 @@ public sealed class WikiSettingsTests
     }
 
     [TestMethod]
+    public void Settings_GoThroughTextForABackup()
+    {
+        // A backup carries the settings without their keys, and puts the keys back apart (ADR-0048).
+        var protector = new ReversingProtector();
+        var settings = new WikiSettings { LinkStyle = LinkStyle.FullUrl };
+        settings.SetKey("https://wiki.local", "abc123", protector);
+        settings.SetTarget(@"C:\docs\a.md", "https://wiki.local/en/a");
+        settings.Sites[0].ApiKey = null;
+
+        WikiSettings back = WikiSettings.FromJson(settings.ToJson(), "backup");
+        back.SetKey("https://wiki.local", "abc123", protector);
+
+        Assert.AreEqual(LinkStyle.FullUrl, back.LinkStyle);
+        Assert.AreEqual("https://wiki.local/en/a", back.TargetFor(@"C:\docs\a.md"));
+        Assert.AreEqual("abc123", back.KeyFor("https://wiki.local", protector));
+        Assert.HasCount(1, back.Sites);
+        Assert.IsEmpty(WikiSettings.FromJson("""{ "sites": null }""", "backup").Sites);
+        Assert.ThrowsExactly<WikiException>(() => WikiSettings.FromJson("{ broken", "backup"));
+    }
+
+    [TestMethod]
     public void BrokenSettings_AreReportedNotReplaced()
     {
         string path = Path.Combine(Path.GetTempPath(), $"fbctools-wiki-{Guid.NewGuid():N}.json");

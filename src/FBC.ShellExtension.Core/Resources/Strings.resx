@@ -801,10 +801,10 @@ Restarts Windows Explorer through Restart Manager and opens its folder windows a
     <value>&amp;Check the installation</value>
   </data>
   <data name="EditorMenuBackup" xml:space="preserve">
-    <value>&amp;Back up the configuration…</value>
+    <value>&amp;Back up the menu and settings…</value>
   </data>
   <data name="EditorMenuRestore" xml:space="preserve">
-    <value>&amp;Restore a configuration…</value>
+    <value>&amp;Restore a backup…</value>
   </data>
   <data name="EditorMenuReset" xml:space="preserve">
     <value>Use factory &amp;default…</value>
@@ -2220,5 +2220,363 @@ Or your own token, when you sign in to the wiki with your company account: sign 
   </data>
   <data name="WikiKeyForgetConfirmEnvironment" xml:space="preserve">
     <value>Forget the key or token kept for {0}? While FBC_WIKI_APIKEY is set, Send to Wiki.js uses that instead.</value>
+  </data>
+  <data name="ValidationIconNeedsVersion" xml:space="preserve">
+    <value>An icon needs configuration version 14.</value>
+  </data>
+  <data name="ValidationIconTooLarge" xml:space="preserve">
+    <value>The icon is {0} KB; at most {1} KB is allowed.</value>
+  </data>
+  <data name="ValidationIconNotPng" xml:space="preserve">
+    <value>The icon is not a PNG image.</value>
+  </data>
+  <data name="ValidationIconDimensions" xml:space="preserve">
+    <value>The icon is {0}×{1} pixels; at most {2}×{2} is allowed.</value>
+  </data>
+  <data name="EditorFieldIcon" xml:space="preserve">
+    <value>Icon:</value>
+  </data>
+  <data name="EditorIconChoose" xml:space="preserve">
+    <value>Choose icon…</value>
+  </data>
+  <data name="EditorIconRefresh" xml:space="preserve">
+    <value>Refresh icon</value>
+  </data>
+  <data name="EditorIconRemove" xml:space="preserve">
+    <value>Remove icon</value>
+  </data>
+  <data name="EditorIconFilter" xml:space="preserve">
+    <value>Icons, pictures and programs (*.ico;*.png;*.exe;*.dll;*.lnk)|*.ico;*.png;*.exe;*.dll;*.lnk|All files (*.*)|*.*</value>
+  </data>
+  <data name="EditorIconFailed" xml:space="preserve">
+    <value>No icon was taken: {0}</value>
+  </data>
+  <data name="EditorIconProgramUsesSelection" xml:space="preserve">
+    <value>the program depends on the selection ({path} and the others). Use Choose icon… instead.</value>
+  </data>
+  <data name="EditorIconProgramNotFound" xml:space="preserve">
+    <value>"{0}" was not found. Give its full path, or use Choose icon….</value>
+  </data>
+  <data name="EditorIconNoneInFile" xml:space="preserve">
+    <value>{0} has no icon that could be read.</value>
+  </data>
+  <data name="ValidationTaskbarNeedsVersion" xml:space="preserve">
+    <value>Show in taskbar needs configuration version 15.</value>
+  </data>
+  <data name="TaskbarMenuEmpty" xml:space="preserve">
+    <value>Nothing to show: tick "Show in taskbar" on a program that does not use the selection</value>
+  </data>
+  <data name="TaskbarMenuRunnerFailed" xml:space="preserve">
+    <value>The FBCTools menu could not be opened: {0} did not start ({1}).</value>
+  </data>
+  <data name="EditorTaskbarShow" xml:space="preserve">
+    <value>Show in taskbar</value>
+  </data>
+  <data name="EditorTaskbarTool" xml:space="preserve">
+    <value>A built-in tool works on a selection; the taskbar menu has none.</value>
+  </data>
+  <data name="EditorTaskbarSelection" xml:space="preserve">
+    <value>It uses the selection ({path} and the others); the taskbar menu has none, so it is not shown there.</value>
+  </data>
+  <data name="EditorTaskbarNothingInside" xml:space="preserve">
+    <value>Nothing in it can go in the taskbar menu.</value>
+  </data>
+  <data name="EditorMenuTaskbarHelp" xml:space="preserve">
+    <value>Add the menu to the &amp;taskbar…</value>
+  </data>
+  <data name="EditorTaskbarHelpHeading" xml:space="preserve">
+    <value>The FBCTools menu on the taskbar</value>
+  </data>
+  <data name="EditorTaskbarHelpText" xml:space="preserve">
+    <value>FBCTools can open a menu from the taskbar, with the commands you tick "Show in taskbar" for.
+
+1. Pin it to the taskbar. Installed with the setup: in the Start menu, right-click "FBCTools menu" and choose Pin to taskbar (under More). Otherwise: show the file below in Explorer, right-click it and choose Pin to taskbar (on Windows 11 under Show more options).
+2. Tick "Show in taskbar" on the commands it should list. A submenu's box ticks everything in it that can run with nothing selected.
+
+Windows does not let a program pin itself; that one click is yours.
+
+{0}</value>
+  </data>
+  <data name="EditorTaskbarHelpMissing" xml:space="preserve">
+    <value>{0} is not next to the editor, so there is nothing to pin. It comes with the setup and the zip.</value>
+  </data>
+  <data name="EditorTaskbarHelpShow" xml:space="preserve">
+    <value>Show the file in Explorer</value>
+  </data>
+  <data name="EditorTaskbarHelpCopy" xml:space="preserve">
+    <value>Copy its path</value>
+  </data>
+  <data name="ToolRenameFromImdb" xml:space="preserve">
+    <value>Rename from IMDb</value>
+  </data>
+  <data name="ToolRenameFromImdbNote" xml:space="preserve">
+    <value>Opens a window that looks the selected films up on OMDb, with an API key of your own, and renames each video and the subtitles named after it to the film's title, year and IMDb id: by default "Title (2010) [imdbid-tt1234567]", as Jellyfin reads it (for Plex, write the name as {title} ({year}) {imdb-{imdbid}}). A folder gives its videos and subtitles. Every new name is shown first.</value>
+  </data>
+  <data name="ImdbFormatLabel" xml:space="preserve">
+    <value>&amp;Name:</value>
+  </data>
+  <data name="ImdbTokens" xml:space="preserve">
+    <value>{title}, {year} and {imdbid} are the film's. A subtitle keeps its language (.en), a film in parts its part (- cd1).</value>
+  </data>
+  <data name="ImdbSubfolders" xml:space="preserve">
+    <value>Also in sub&amp;folders</value>
+  </data>
+  <data name="ImdbSearch" xml:space="preserve">
+    <value>&amp;Search</value>
+  </data>
+  <data name="ImdbStop" xml:space="preserve">
+    <value>S&amp;top</value>
+  </data>
+  <data name="ImdbKeyLink" xml:space="preserve">
+    <value>OMDb API key…</value>
+  </data>
+  <data name="ImdbFileColumn" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="ImdbFilmColumn" xml:space="preserve">
+    <value>Film</value>
+  </data>
+  <data name="ImdbStateColumn" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="ImdbStateWaiting" xml:space="preserve">
+    <value>Not looked up yet</value>
+  </data>
+  <data name="ImdbStateNotFound" xml:space="preserve">
+    <value>Not found; double-click to search</value>
+  </data>
+  <data name="ImdbStateChoose" xml:space="preserve">
+    <value>Several films; double-click to choose</value>
+  </data>
+  <data name="ImdbStateLeft" xml:space="preserve">
+    <value>Left as it is</value>
+  </data>
+  <data name="ImdbFilm" xml:space="preserve">
+    <value>{0} ({1}), {2}</value>
+  </data>
+  <data name="ImdbReading" xml:space="preserve">
+    <value>Reading the folders…</value>
+  </data>
+  <data name="ImdbNoFiles" xml:space="preserve">
+    <value>There is no video or subtitle here.</value>
+  </data>
+  <data name="ImdbFiles" xml:space="preserve">
+    <value>{0} files, {1} films. Search looks them up on OMDb.</value>
+  </data>
+  <data name="ImdbSearching" xml:space="preserve">
+    <value>Looking up {0} of {1}…</value>
+  </data>
+  <data name="ImdbSummary" xml:space="preserve">
+    <value>{0} of {1} films found; {2} names change.</value>
+  </data>
+  <data name="ImdbMenuChoose" xml:space="preserve">
+    <value>&amp;Choose the film…</value>
+  </data>
+  <data name="ImdbMenuLeave" xml:space="preserve">
+    <value>&amp;Leave the name as it is</value>
+  </data>
+  <data name="ImdbMenuOpen" xml:space="preserve">
+    <value>&amp;Open on IMDb</value>
+  </data>
+  <data name="ImdbNoKey" xml:space="preserve">
+    <value>Rename from IMDb looks the films up on OMDb, which needs an API key of your own; a free one gives 1,000 searches a day. Enter the key now?</value>
+  </data>
+  <data name="ImdbSearchStopped" xml:space="preserve">
+    <value>The search stopped:</value>
+  </data>
+  <data name="ImdbKeyInvalid" xml:space="preserve">
+    <value>OMDb does not take the API key. A new key works only after the link in OMDb's e-mail is opened.</value>
+  </data>
+  <data name="ImdbLimitReached" xml:space="preserve">
+    <value>The API key has used up today's searches; OMDb takes it again tomorrow.</value>
+  </data>
+  <data name="ImdbAnswerError" xml:space="preserve">
+    <value>OMDb answered: {0}</value>
+  </data>
+  <data name="ImdbAnswerUnreadable" xml:space="preserve">
+    <value>OMDb's answer could not be read.</value>
+  </data>
+  <data name="ImdbHttpError" xml:space="preserve">
+    <value>OMDb answered with HTTP status {0}.</value>
+  </data>
+  <data name="ImdbNoAnswer" xml:space="preserve">
+    <value>OMDb could not be reached: {0}</value>
+  </data>
+  <data name="ImdbFormatEmpty" xml:space="preserve">
+    <value>The name needs a template, such as {title} ({year}).</value>
+  </data>
+  <data name="ImdbChooseTitle" xml:space="preserve">
+    <value>Choose the film</value>
+  </data>
+  <data name="ImdbChooseFor" xml:space="preserve">
+    <value>For {0}</value>
+  </data>
+  <data name="ImdbQueryLabel" xml:space="preserve">
+    <value>&amp;Title or IMDb address:</value>
+  </data>
+  <data name="ImdbYearLabel" xml:space="preserve">
+    <value>&amp;Year:</value>
+  </data>
+  <data name="ImdbTitleColumn" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="ImdbYearColumn" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="ImdbIdColumn" xml:space="preserve">
+    <value>IMDb ID</value>
+  </data>
+  <data name="ImdbChooseNone" xml:space="preserve">
+    <value>Nothing found. Change the title or the year, or paste the film's IMDb address.</value>
+  </data>
+  <data name="ImdbAsking" xml:space="preserve">
+    <value>Asking OMDb…</value>
+  </data>
+  <data name="ImdbSelect" xml:space="preserve">
+    <value>S&amp;elect</value>
+  </data>
+  <data name="ImdbSkip" xml:space="preserve">
+    <value>S&amp;kip</value>
+  </data>
+  <data name="ImdbStopAsking" xml:space="preserve">
+    <value>Stop &amp;asking</value>
+  </data>
+  <data name="OmdbKeyTitle" xml:space="preserve">
+    <value>OMDb API key</value>
+  </data>
+  <data name="OmdbKeyLabel" xml:space="preserve">
+    <value>API &amp;key:</value>
+  </data>
+  <data name="OmdbKeyHelp" xml:space="preserve">
+    <value>OMDb gives a free key, 1,000 searches a day, at {0}. It comes by e-mail and works once the link in the e-mail is opened. The key is kept encrypted for your Windows user.</value>
+  </data>
+  <data name="OmdbKeyStored" xml:space="preserve">
+    <value>A key is kept.</value>
+  </data>
+  <data name="OmdbKeyNoneStored" xml:space="preserve">
+    <value>No key is kept.</value>
+  </data>
+  <data name="OmdbKeyNotSaved" xml:space="preserve">
+    <value>Not kept: {0}</value>
+  </data>
+  <data name="OmdbKeySaved" xml:space="preserve">
+    <value>The OMDb API key is kept.</value>
+  </data>
+  <data name="OmdbKeySave" xml:space="preserve">
+    <value>Check and &amp;save</value>
+  </data>
+  <data name="OmdbKeyForget" xml:space="preserve">
+    <value>&amp;Forget</value>
+  </data>
+  <data name="OmdbKeyForgetConfirm" xml:space="preserve">
+    <value>Forget the OMDb API key? Rename from IMDb asks for one again.</value>
+  </data>
+  <data name="OmdbSettingsUnreadable" xml:space="preserve">
+    <value>{0} could not be read: {1}</value>
+  </data>
+  <data name="EditorMenuOmdbKey" xml:space="preserve">
+    <value>&amp;OMDb API key…</value>
+  </data>
+  <data name="ImdbTokenUnknown" xml:space="preserve">
+    <value>{0} is not something a name can hold: use {{title}}, {{year}} or {{imdbid}}.</value>
+  </data>
+  <data name="OmdbKeyUnreadable" xml:space="preserve">
+    <value>A key is kept, but this Windows user cannot read it (it was saved by another user or on another computer). Enter it again.</value>
+  </data>
+  <data name="BackupNotOurs" xml:space="preserve">
+    <value>{0} is not an FBCTools backup.</value>
+  </data>
+  <data name="BackupNewer" xml:space="preserve">
+    <value>{0} was made by FBCTools {1}, which writes backups this version cannot read. Update FBCTools to restore it.</value>
+  </data>
+  <data name="BackupKeyOmdb" xml:space="preserve">
+    <value>the OMDb API key</value>
+  </data>
+  <data name="BackupKeyWiki" xml:space="preserve">
+    <value>the Wiki.js key or token for {0}</value>
+  </data>
+  <data name="BackupRestoredOmdb" xml:space="preserve">
+    <value>Rename from IMDb's settings</value>
+  </data>
+  <data name="BackupRestoredOmdbKey" xml:space="preserve">
+    <value>Rename from IMDb's settings, with the OMDb API key</value>
+  </data>
+  <data name="BackupRestoredWiki" xml:space="preserve">
+    <value>Send to Wiki.js's settings, with {0} keys or tokens from the backup</value>
+  </data>
+  <data name="BackupRestoredMenu" xml:space="preserve">
+    <value>the menu</value>
+  </data>
+  <data name="BackupRestored" xml:space="preserve">
+    <value>Restored from {0}:</value>
+  </data>
+  <data name="BackupRestoredAside" xml:space="preserve">
+    <value>What was there before is kept next to it as a .bak.json file. What the backup did not carry stays as this computer had it: a key, a Wiki.js site, the page a file went to.</value>
+  </data>
+  <data name="BackupNotRestored" xml:space="preserve">
+    <value>{0} was not restored: {1}</value>
+  </data>
+  <data name="BackupTitle" xml:space="preserve">
+    <value>Back up</value>
+  </data>
+  <data name="BackupIntro" xml:space="preserve">
+    <value>One .zip file with the menu and the settings of Rename from IMDb and Send to Wiki.js. Tools › Restore a backup… puts it back, on this computer or another. The menu is the one saved on the disk.</value>
+  </data>
+  <data name="BackupKeysGroup" xml:space="preserve">
+    <value>Keys</value>
+  </data>
+  <data name="BackupKeysList" xml:space="preserve">
+    <value>The settings hold {0}. Here they are kept for your Windows user only; in the backup they have to be readable elsewhere too.</value>
+  </data>
+  <data name="BackupKeysPassword" xml:space="preserve">
+    <value>&amp;Encrypt them with a password, asked again when the backup is restored</value>
+  </data>
+  <data name="BackupKeysPlain" xml:space="preserve">
+    <value>Write them as &amp;plain text: whoever has the file can read and use them</value>
+  </data>
+  <data name="BackupKeysNone" xml:space="preserve">
+    <value>&amp;Leave them out: they are entered again after a restore elsewhere</value>
+  </data>
+  <data name="BackupUnreadable" xml:space="preserve">
+    <value>This Windows user cannot read these keys, so they stay out of the backup: {0}.</value>
+  </data>
+  <data name="BackupProblems" xml:space="preserve">
+    <value>Not in the backup: {0}</value>
+  </data>
+  <data name="BackupSave" xml:space="preserve">
+    <value>&amp;Save…</value>
+  </data>
+  <data name="BackupNoConfig" xml:space="preserve">
+    <value>There is no menu to back up yet: {0} does not exist.</value>
+  </data>
+  <data name="BackupNotSaved" xml:space="preserve">
+    <value>The backup was not saved: {0}</value>
+  </data>
+  <data name="BackupSaved" xml:space="preserve">
+    <value>The backup is saved: {0}</value>
+  </data>
+  <data name="EditorBackupFilter" xml:space="preserve">
+    <value>FBCTools backup (*.zip)|*.zip</value>
+  </data>
+  <data name="EditorRestoreFilter" xml:space="preserve">
+    <value>FBCTools backup (*.zip)|*.zip|Menu backed up on its own (*.json)|*.json|All files (*.*)|*.*</value>
+  </data>
+  <data name="BackupPasswordTitle" xml:space="preserve">
+    <value>Restore a backup</value>
+  </data>
+  <data name="BackupPasswordPrompt" xml:space="preserve">
+    <value>The keys in {0} are encrypted with the backup's password. Type it to restore them too.</value>
+  </data>
+  <data name="BackupRestore" xml:space="preserve">
+    <value>&amp;Restore</value>
+  </data>
+  <data name="BackupWithoutKeys" xml:space="preserve">
+    <value>Restore without the &amp;keys</value>
+  </data>
+  <data name="BackupKeysNotDecrypted" xml:space="preserve">
+    <value>The keys were not decrypted: {0}.</value>
+  </data>
+  <data name="BackupEntryUnreadable" xml:space="preserve">
+    <value>{0} in {1} cannot be read, so this computer's {0} is left as it is.</value>
   </data>
 </root>

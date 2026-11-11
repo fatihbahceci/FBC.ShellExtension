@@ -35,8 +35,17 @@ says where it appears:
 - by extension or name pattern, with exclusions;
 - for a minimum or maximum number of selected items.
 
-Every entry can be switched off without deleting it. The shell extension reads the file again
-whenever it changes, so Explorer never needs a restart for a menu change.
+Every entry can be switched off without deleting it. Commands and submenus can also have an
+icon: the program's own, taken by the Editor, or any `.ico`, `.png`, `.exe`, `.dll` or `.lnk`
+you choose.
+
+The shell extension reads your menu file again whenever it changes, so Explorer never needs a
+restart for a menu change.
+
+**A menu on the taskbar too.** Tick "Show in taskbar" on the programs you start often, pin
+FBCTools menu to the taskbar once, and a click there opens a menu with just those (and the
+submenus around them). Nothing is selected there, so it lists programs that do not need a
+selection. The Editor's Help menu shows the file to pin.
 
 **Any program, run the way you need.**
 - **Variables** for the selection: `{path}`, `{dir}`, `{name}`, `{nameNoExt}`, `{ext}`,
@@ -65,7 +74,9 @@ whenever it changes, so Explorer never needs a restart for a menu change.
   - see the processes a command would start, with the variables filled in;
   - **Run** a command through FBCTools, as the menu would.
 - **Edit FBCTools menu…** at the bottom of the Explorer menu opens it.
-- Its **Tools** menu checks the installation, backs up or restores your menu, checks and
+- Its **Tools** menu checks the installation, backs up or restores your menu and the tools'
+  settings in one `.zip` (the keys in it encrypted with a password you choose, as plain text,
+  or left out, so that the backup also restores on another computer), checks and
   installs ffmpeg, and keeps the Wiki.js key or token that Send to Wiki.js uses. **File › Use
   factory default** puts back the menu this version comes with.
 
@@ -114,6 +125,7 @@ them as the entry's **Kind**.
 | Attributes | `attributes` | Sets or clears read-only, hidden, system and archive, on everything inside the selected folders too if you like. Only what you change is written |
 | Change time | `changeTime` | Sets when items were created, modified and last accessed |
 | Advanced rename | `advancedRename` | Renames the selected items by rules: find and replace (plain text or a regular expression), a name template with `{name}`, a number `{n}`, `{parent}` and `{date}`, the extension and the case. Every new name is shown first, and nothing is renamed while one has a problem. Windows does the renaming, so Undo in Explorer takes it back |
+| Rename from IMDb | `renameFromImdb` | Looks the selected films up on [OMDb](https://www.omdbapi.com/) with an API key of your own (a free one gives 1,000 searches a day; enter it under Tools › OMDb API key… in the editor, where it is kept encrypted for your Windows user) and renames each video and the subtitles named after it to `{title} ({year}) [imdbid-{imdbid}]`, the form Jellyfin reads (Plex reads its own: write the name as `{title} ({year}) {imdb-{imdbid}}`). A subtitle keeps its language (`.en`, `.tr.forced`, `_en`, `.es-419`, and `.English` after a year or a release word, so that titles such as Johnny English or Dr. No stay whole) and a film in parts its part (` - cd1`). A film is taken only when OMDb is sure; otherwise you choose it, or paste its IMDb address. A folder gives its videos and subtitles, its subfolders' too if you like. Every new name is shown first, nothing is renamed while one has a problem, and Undo in Explorer takes it back. FBCTools is not affiliated with OMDb or IMDb |
 | Find and replace | `findReplace` | Finds text in the selected files, or in the files of the selected folders that match a name pattern, shows how many matches each holds, and replaces them. Each file keeps its encoding, byte order mark and line endings; the old file can stay as `name.bak`. Hidden folders such as `.git` are skipped |
 | Advanced delete | `advancedDelete` | Finds the files and folders whose names match patterns such as `*.tmp; ~*; Thumbs.db` under a folder, lists them, and sends the ones you leave ticked to the Recycle Bin |
 | Run with parameters | `runWithParameters` | Asks for arguments and starts the selected program with them |
@@ -122,8 +134,8 @@ them as the entry's **Kind**.
 The clipboard tools work without opening a window. Checksums, split and join, count lines,
 duplicate, folder size and the delete tools show their progress in a window that can be
 cancelled and stays open with the results. Organize into folders, Attributes, Change time,
-Advanced delete, Advanced rename, Find and replace, Unlock and delete, Encrypt, Decrypt and
-Synchronize folders open a window of their own, with their
+Advanced delete, Advanced rename, Find and replace, Unlock and delete, Encrypt, Decrypt,
+Synchronize folders and Rename from IMDb open a window of their own, with their
 options and a preview. Copying, moving, joining, organizing and renaming use Windows' own engine,
 so Explorer asks what to do when a name is taken, and Advanced delete sends to the Recycle Bin
 through it; the other
@@ -195,6 +207,7 @@ FBCTools
 │  ├─ Create link…
 │  ├─ Synchronize folders…
 │  ├─ Advanced rename…
+│  ├─ Rename from IMDb…
 │  ├─ Pack into folder…
 │  ├─ New folder…
 │  ├─ Unpack folder
@@ -226,7 +239,8 @@ Download from the [Releases](https://github.com/fatihbahceci/FBC.ShellExtension/
 - **Setup**, `FBCTools-<version>-setup.exe`:
   - installs for your account into `%LOCALAPPDATA%\Programs\FBCTools`, without administrator
     rights;
-  - adds the menu to Explorer and puts **FBCTools** (the Editor) in the Start menu.
+  - adds the menu to Explorer and puts **FBCTools** (the Editor) and **FBCTools menu** (to pin
+    to the taskbar) in the Start menu.
 
   A newer setup updates it; **Settings › Apps** removes it.
 - **Portable**, `FBCTools-<version>-win-x64.zip`:
@@ -240,8 +254,9 @@ Each file has a `.sha256` next to it.
 On Windows 11 the FBCTools menu is in the classic menu: **Show more options**, or
 Shift+right-click to open it directly.
 
-Your menu is `%APPDATA%\FBCTools\config.json`. Uninstalling leaves it there; the Editor's
-Tools menu backs it up and restores it.
+Your menu is `%APPDATA%\FBCTools\config.json`, next to the settings of Rename from IMDb
+(`omdb.json`) and Send to Wiki.js (`wiki-import.json`). Uninstalling leaves them there; the
+Editor's Tools menu backs them up and restores them.
 
 ## Writing your own entries
 
@@ -249,7 +264,7 @@ The Editor is the easy way. The file itself looks like this:
 
 ```jsonc
 {
-  "version": 13,
+  "version": 16,
   "items": [
     { "type": "command", "label": "Copy path", "tool": "copyPath" },
     {
@@ -302,6 +317,8 @@ never silently ignored.
 | `command.showOutput`, `closeOnSuccess`, `outputEncoding` | The program's live output in the window; closing it on success; `oem`, `utf8` or `ansi` |
 | `tool` | A [built-in tool](#built-in-tools) instead of `command` |
 | `enabled` | `false` keeps the entry but hides it |
+| `icon` | A PNG, base64, shown before the label (commands and submenus; at most 16 KB). The Editor writes it |
+| `showInTaskbar` | `true` puts a command in the taskbar menu too; only a program that does not use the selection is shown there |
 
 Variables are inserted without quotes, so write the quotes yourself: `"\"{path}\""`.
 
@@ -346,6 +363,8 @@ The projects:
 | `src/FBC.ShellExtension.Editor` | The Editor (WinForms) |
 | `src/FBC.ShellExtension.Manager` | Registration, the menu's updates, backups, ffmpeg (NativeAOT, console) |
 | `src/FBC.ShellExtension.Restarter` | Restarts Explorer and reopens its windows (NativeAOT, console) |
+| `src/FBC.ShellExtension.TaskbarMenu` | FBCTools menu, the program you pin to the taskbar (NativeAOT) |
+| `src/Shared` | Source two programs compile (menu icons), and FBCTools' icon |
 | `src/FBC.ShellExtension.WikiImport` | Send to Wiki.js |
 | `installer/` | The setup (Inno Setup) |
 | `tests/` | Unit tests (MSTest), and a host that loads the DLL without Explorer |
